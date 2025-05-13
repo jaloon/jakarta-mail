@@ -40,7 +40,10 @@
  */
 package com.sun.mail.util.logging;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.LogRecord;
 
 /**
@@ -74,16 +77,6 @@ public class CompactFormatter extends java.util.logging.Formatter {
     }
 
     /**
-     * Used to load declared classes encase class loader doesn't allow loading
-     * during JVM termination. This method is used with unit testing.
-     *
-     * @return an array of classes never null.
-     */
-    private static Class<?>[] loadDeclaredClasses() {
-        return new Class<?>[]{Alternate.class};
-    }
-
-    /**
      * Holds the java.util.Formatter pattern.
      */
     private final String fmt;
@@ -100,12 +93,153 @@ public class CompactFormatter extends java.util.logging.Formatter {
      * Creates an instance with the given format pattern.
      *
      * @param format the {@linkplain java.util.Formatter pattern} or null to use
-     * the LogManager default. The arguments are described in the
-     * {@linkplain #format(java.util.logging.LogRecord) format} method.
+     *               the LogManager default. The arguments are described in the
+     *               {@linkplain #format(java.util.logging.LogRecord) format} method.
      */
     public CompactFormatter(final String format) {
         String p = getClass().getName();
         this.fmt = format == null ? initFormat(p) : format;
+    }
+
+    /**
+     * Used to load declared classes encase class loader doesn't allow loading
+     * during JVM termination. This method is used with unit testing.
+     *
+     * @return an array of classes never null.
+     */
+    private static Class<?>[] loadDeclaredClasses() {
+        return new Class<?>[]{Alternate.class};
+    }
+
+    /**
+     * Searches the given message for all instances fully qualified class name
+     * with simple class name based off of the types contained in the given
+     * parameter array.
+     *
+     * @param msg the message.
+     * @param t   the throwable cause chain to search or null.
+     * @return the modified message string.
+     */
+    private static String replaceClassName(String msg, Throwable t) {
+        if (!isNullOrSpaces(msg)) {
+            int limit = 0;
+            for (Throwable c = t; c != null; c = c.getCause()) {
+                final Class<?> k = c.getClass();
+                msg = msg.replace(k.getName(), simpleClassName(k));
+
+                // Deal with excessive cause chains and cyclic throwables.
+                if (++limit == (1 << 16)) {
+                    break; // Give up.
+                }
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * Searches the given message for all instances fully qualified class name
+     * with simple class name based off of the types contained in the given
+     * parameter array.
+     *
+     * @param msg the message or null.
+     * @param p   the parameter array or null.
+     * @return the modified message string.
+     */
+    private static String replaceClassName(String msg, Object[] p) {
+        if (!isNullOrSpaces(msg) && p != null) {
+            for (Object o : p) {
+                if (o != null) {
+                    final Class<?> k = o.getClass();
+                    msg = msg.replace(k.getName(), simpleClassName(k));
+                }
+            }
+        }
+        return msg;
+    }
+
+    /**
+     * Gets the simple class name from the given class. This is a workaround for
+     * BUG ID JDK-8057919.
+     *
+     * @param k the class object.
+     * @return the simple class name or null.
+     * @since JavaMail 1.5.3
+     */
+    private static String simpleClassName(final Class<?> k) {
+        try {
+            return k.getSimpleName();
+        } catch (final InternalError JDK8057919) {
+        }
+        return simpleClassName(k.getName());
+    }
+
+    /**
+     * Converts a fully qualified class name to a simple class name. If the
+     * leading part of the given string is not a legal class name then the given
+     * string is returned.
+     *
+     * @param name the fully qualified class name prefix or null.
+     * @return the simple class name or given input.
+     */
+    private static String simpleClassName(String name) {
+        if (name != null) {
+            int cursor = 0;
+            int sign = -1;
+            int dot = -1;
+            for (int c, prev = dot; cursor < name.length();
+                 cursor += Character.charCount(c)) {
+                c = name.codePointAt(cursor);
+                if (!Character.isJavaIdentifierPart(c)) {
+                    if (c == ((int) '.')) {
+                        if ((dot + 1) != cursor && (dot + 1) != sign) {
+                            prev = dot;
+                            dot = cursor;
+                        } else {
+                            return name;
+                        }
+                    } else {
+                        if ((dot + 1) == cursor) {
+                            dot = prev;
+                        }
+                        break;
+                    }
+                } else {
+                    if (c == ((int) '$')) {
+                        sign = cursor;
+                    }
+                }
+            }
+
+            if (dot > -1 && ++dot < cursor && ++sign < cursor) {
+                name = name.substring(sign > dot ? sign : dot);
+            }
+        }
+        return name;
+    }
+
+    /**
+     * Converts a file name with an extension to a file name without an
+     * extension.
+     *
+     * @param name the full file name or null.
+     * @return the simple file name or null.
+     */
+    private static String simpleFileName(String name) {
+        if (name != null) {
+            final int index = name.lastIndexOf('.');
+            name = index > -1 ? name.substring(0, index) : name;
+        }
+        return name;
+    }
+
+    /**
+     * Determines is the given string is null or spaces.
+     *
+     * @param s the string or null.
+     * @return true if null or spaces.
+     */
+    private static boolean isNullOrSpaces(final String s) {
+        return s == null || s.trim().length() == 0;
     }
 
     /**
@@ -227,7 +361,7 @@ public class CompactFormatter extends java.util.logging.Formatter {
      */
     @Override
     public String format(final LogRecord record) {
-        //LogRecord is mutable so define local vars.
+        // LogRecord is mutable so define local vars.
         ResourceBundle rb = record.getResourceBundle();
         Locale l = rb == null ? null : rb.getLocale();
 
@@ -235,24 +369,24 @@ public class CompactFormatter extends java.util.logging.Formatter {
         String thrown = formatThrown(record);
         String err = formatError(record);
         Object[] params = {
-            formatZonedDateTime(record),
-            formatSource(record),
-            formatLoggerName(record),
-            formatLevel(record),
-            msg,
-            thrown,
-            new Alternate(msg, thrown),
-            new Alternate(thrown, msg),
-            record.getSequenceNumber(),
-            formatThreadID(record),
-            err,
-            new Alternate(msg, err),
-            new Alternate(err, msg),
-            formatBackTrace(record),
-            record.getResourceBundleName(),
-            record.getMessage()};
+                formatZonedDateTime(record),
+                formatSource(record),
+                formatLoggerName(record),
+                formatLevel(record),
+                msg,
+                thrown,
+                new Alternate(msg, thrown),
+                new Alternate(thrown, msg),
+                record.getSequenceNumber(),
+                formatThreadID(record),
+                err,
+                new Alternate(msg, err),
+                new Alternate(err, msg),
+                formatBackTrace(record),
+                record.getResourceBundleName(),
+                record.getMessage()};
 
-        if (l == null) { //BUG ID 6282094
+        if (l == null) { // BUG ID 6282094
             return String.format(fmt, params);
         } else {
             return String.format(l, fmt, params);
@@ -440,18 +574,18 @@ public class CompactFormatter extends java.util.logging.Formatter {
                         break;
                     } else {
                         if (trace.length == 0) {
-                           trace = ste;
+                            trace = ste;
                         }
                     }
 
-                    //Deal with excessive cause chains
-                    //and cyclic throwables.
+                    // Deal with excessive cause chains
+                    // and cyclic throwables.
                     if (++limit == (1 << 16)) {
-                        break; //Give up.
+                        break; // Give up.
                     }
                 }
 
-                //Punt.
+                // Punt.
                 if (isNullOrSpaces(site) && trace.length != 0) {
                     site = formatStackTraceElement(trace[0]);
                 }
@@ -476,7 +610,7 @@ public class CompactFormatter extends java.util.logging.Formatter {
             }
         }
 
-        //Check if all code was compiled with no debugging info.
+        // Check if all code was compiled with no debugging info.
         if (isNullOrSpaces(site)) {
             for (StackTraceElement s : trace) {
                 if (!defaultIgnore(s)) {
@@ -505,7 +639,7 @@ public class CompactFormatter extends java.util.logging.Formatter {
             result = s.toString();
         }
 
-        //If the class name contains the simple file name then remove file name.
+        // If the class name contains the simple file name then remove file name.
         v = simpleFileName(s.getFileName());
         if (v != null && result.startsWith(v)) {
             result = result.replace(s.getFileName(), "");
@@ -644,140 +778,9 @@ public class CompactFormatter extends java.util.logging.Formatter {
     private String initFormat(final String p) {
         String v = LogManagerProperties.fromLogManager(p.concat(".format"));
         if (isNullOrSpaces(v)) {
-            v = "%7$#.160s%n"; //160 chars split between message and thrown.
+            v = "%7$#.160s%n"; // 160 chars split between message and thrown.
         }
         return v;
-    }
-
-    /**
-     * Searches the given message for all instances fully qualified class name
-     * with simple class name based off of the types contained in the given
-     * parameter array.
-     *
-     * @param msg the message.
-     * @param t the throwable cause chain to search or null.
-     * @return the modified message string.
-     */
-    private static String replaceClassName(String msg, Throwable t) {
-        if (!isNullOrSpaces(msg)) {
-            int limit = 0;
-            for (Throwable c = t; c != null; c = c.getCause()) {
-                final Class<?> k = c.getClass();
-                msg = msg.replace(k.getName(), simpleClassName(k));
-
-                //Deal with excessive cause chains and cyclic throwables.
-                if (++limit == (1 << 16)) {
-                    break; //Give up.
-                }
-            }
-        }
-        return msg;
-    }
-
-    /**
-     * Searches the given message for all instances fully qualified class name
-     * with simple class name based off of the types contained in the given
-     * parameter array.
-     *
-     * @param msg the message or null.
-     * @param p the parameter array or null.
-     * @return the modified message string.
-     */
-    private static String replaceClassName(String msg, Object[] p) {
-        if (!isNullOrSpaces(msg) && p != null) {
-            for (Object o : p) {
-                if (o != null) {
-                    final Class<?> k = o.getClass();
-                    msg = msg.replace(k.getName(), simpleClassName(k));
-                }
-            }
-        }
-        return msg;
-    }
-
-    /**
-     * Gets the simple class name from the given class. This is a workaround for
-     * BUG ID JDK-8057919.
-     *
-     * @param k the class object.
-     * @return the simple class name or null.
-     * @since JavaMail 1.5.3
-     */
-    private static String simpleClassName(final Class<?> k) {
-        try {
-            return k.getSimpleName();
-        } catch (final InternalError JDK8057919) {
-        }
-        return simpleClassName(k.getName());
-    }
-
-    /**
-     * Converts a fully qualified class name to a simple class name. If the
-     * leading part of the given string is not a legal class name then the given
-     * string is returned.
-     *
-     * @param name the fully qualified class name prefix or null.
-     * @return the simple class name or given input.
-     */
-    private static String simpleClassName(String name) {
-        if (name != null) {
-            int cursor = 0;
-            int sign = -1;
-            int dot = -1;
-            for (int c, prev = dot; cursor < name.length();
-                    cursor += Character.charCount(c)) {
-                c = name.codePointAt(cursor);
-                if (!Character.isJavaIdentifierPart(c)) {
-                    if (c == ((int) '.')) {
-                        if ((dot + 1) != cursor && (dot + 1) != sign) {
-                            prev = dot;
-                            dot = cursor;
-                        } else {
-                            return name;
-                        }
-                    } else {
-                        if ((dot + 1) == cursor) {
-                            dot = prev;
-                        }
-                        break;
-                    }
-                } else {
-                    if (c == ((int) '$')) {
-                        sign = cursor;
-                    }
-                }
-            }
-
-            if (dot > -1 && ++dot < cursor && ++sign < cursor) {
-                name = name.substring(sign > dot ? sign : dot);
-            }
-        }
-        return name;
-    }
-
-    /**
-     * Converts a file name with an extension to a file name without an
-     * extension.
-     *
-     * @param name the full file name or null.
-     * @return the simple file name or null.
-     */
-    private static String simpleFileName(String name) {
-        if (name != null) {
-            final int index = name.lastIndexOf('.');
-            name = index > -1 ? name.substring(0, index) : name;
-        }
-        return name;
-    }
-
-    /**
-     * Determines is the given string is null or spaces.
-     *
-     * @param s the string or null.
-     * @return true if null or spaces.
-     */
-    private static boolean isNullOrSpaces(final String s) {
-        return s == null || s.trim().length() == 0;
     }
 
     /**
@@ -797,7 +800,7 @@ public class CompactFormatter extends java.util.logging.Formatter {
         /**
          * Creates an alternate output.
          *
-         * @param left the left side or null.
+         * @param left  the left side or null.
          * @param right the right side or null.
          */
         Alternate(final String left, final String right) {
@@ -805,9 +808,9 @@ public class CompactFormatter extends java.util.logging.Formatter {
             this.right = String.valueOf(right);
         }
 
-        @SuppressWarnings("override") //JDK-6954234
+        @SuppressWarnings("override") // JDK-6954234
         public void formatTo(java.util.Formatter formatter, int flags,
-                int width, int precision) {
+                             int width, int precision) {
 
             String l = left;
             String r = right;
@@ -863,8 +866,8 @@ public class CompactFormatter extends java.util.logging.Formatter {
         /**
          * Pad the given input string.
          *
-         * @param flags the formatter flags.
-         * @param s the string to pad.
+         * @param flags  the formatter flags.
+         * @param s      the string to pad.
          * @param length the final string length.
          * @return the padded string.
          */

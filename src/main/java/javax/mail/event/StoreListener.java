@@ -40,8 +40,6 @@
 
 package javax.mail.event;
 
-import java.util.*;
-
 /**
  * This is the Listener interface for Store Notifications.
  *
@@ -50,12 +48,12 @@ import java.util.*;
 
 public interface StoreListener extends java.util.EventListener {
 
-   /**
-    * Invoked when the Store generates a notification event.
-    *
-    * @param	e	the StoreEvent
-    * @see StoreEvent#ALERT
-    * @see StoreEvent#NOTICE
-    */
-   public void notification(StoreEvent e);
+    /**
+     * Invoked when the Store generates a notification event.
+     *
+     * @param e the StoreEvent
+     * @see StoreEvent#ALERT
+     * @see StoreEvent#NOTICE
+     */
+    public void notification(StoreEvent e);
 }

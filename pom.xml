@@ -121,7 +121,7 @@
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
-            <!-- ???? -->
+            <!-- 打包源码 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -135,14 +135,14 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- javadoc?? -->
+            <!-- javadoc插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.11.2</version>
                 <configuration>
                     <additionalOptions>
-                        <!-- ??????????????? -->
+                        <!-- 禁用文档检查，避免构建过程报错 -->
                         <additionalOption>-Xdoclint:none</additionalOption>
                     </additionalOptions>
                 </configuration>
@@ -155,7 +155,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- central???? -->
+            <!-- central发布插件 -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>

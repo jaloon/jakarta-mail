@@ -48,39 +48,37 @@ import javax.mail.event.MessageCountEvent;
  * This class provides notification of messages that have been removed
  * since the folder was last synchronized.
  *
- * @since	JavaMail 1.5.1
- * @author	Bill Shannon
+ * @author Bill Shannon
+ * @since JavaMail 1.5.1
  */
 
 public class MessageVanishedEvent extends MessageCountEvent {
 
+    // a reusable empty array
+    private static final Message[] noMessages = {};
+    private static final long serialVersionUID = 2142028010250024922L;
     /**
      * The message UIDs.
      */
-    private long[] uids;
-
-    // a reusable empty array
-    private static final Message[] noMessages = { };
-
-    private static final long serialVersionUID = 2142028010250024922L;
+    private final long[] uids;
 
     /**
      * Constructor.
      *
-     * @param folder  	the containing folder
-     * @param uids	the UIDs for the vanished messages
+     * @param folder the containing folder
+     * @param uids   the UIDs for the vanished messages
      */
     public MessageVanishedEvent(Folder folder, long[] uids) {
-	super(folder, REMOVED, true, noMessages);
-	this.uids = uids;
+        super(folder, REMOVED, true, noMessages);
+        this.uids = uids;
     }
 
     /**
      * Return the UIDs for this event.
      *
-     * @return  the UIDs
+     * @return the UIDs
      */
     public long[] getUIDs() {
-	return uids;
+        return uids;
     }
 }

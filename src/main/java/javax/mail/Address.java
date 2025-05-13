@@ -60,15 +60,15 @@ public abstract class Address implements Serializable {
     /**
      * Return a type string that identifies this address type.
      *
-     * @return	address type
-     * @see	javax.mail.internet.InternetAddress
+     * @return address type
+     * @see    javax.mail.internet.InternetAddress
      */
     public abstract String getType();
 
     /**
      * Return a String representation of this address object.
      *
-     * @return	string representation of this address
+     * @return string representation of this address
      */
     @Override
     public abstract String toString();
@@ -83,7 +83,7 @@ public abstract class Address implements Serializable {
      * <code>equals</code> and <code>hashCode</code> - objects that
      * compare as equal must have the same hashCode.
      *
-     * @param	address	Address object
+     * @param    address    Address object
      */
     @Override
     public abstract boolean equals(Object address);

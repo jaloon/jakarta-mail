@@ -40,14 +40,11 @@
 
 package javax.mail.event;
 
-import java.util.*;
-
 /**
  * This is the Listener interface for Transport events
  *
  * @author John Mani
  * @author Max Spivak
- *
  * @see javax.mail.Transport
  * @see javax.mail.event.TransportEvent
  */
@@ -56,20 +53,23 @@ public interface TransportListener extends java.util.EventListener {
 
     /**
      * Invoked when a Message is succesfully delivered.
-     * @param	e TransportEvent
+     *
+     * @param e TransportEvent
      */
     public void messageDelivered(TransportEvent e);
 
     /**
      * Invoked when a Message is not delivered.
-     * @param	e TransportEvent
+     *
+     * @param e TransportEvent
      * @see TransportEvent
      */
     public void messageNotDelivered(TransportEvent e);
 
     /**
      * Invoked when a Message is partially delivered.
-     * @param	e TransportEvent
+     *
+     * @param e TransportEvent
      * @see TransportEvent
      */
     public void messagePartiallyDelivered(TransportEvent e);

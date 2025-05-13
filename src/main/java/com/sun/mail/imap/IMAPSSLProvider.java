@@ -47,7 +47,7 @@ import javax.mail.Provider;
  */
 public class IMAPSSLProvider extends Provider {
     public IMAPSSLProvider() {
-	super(Provider.Type.STORE, "imaps", IMAPSSLStore.class.getName(),
-	    "Oracle", null);
+        super(Provider.Type.STORE, "imaps", IMAPSSLStore.class.getName(),
+                "Oracle", null);
     }
 }

@@ -45,9 +45,9 @@ package javax.mail;
  * Message. The only valid methods on an expunged Message are
  * <code>isExpunged()</code> and <code>getMessageNumber()</code>.
  *
- * @see	   javax.mail.Message#isExpunged()
- * @see	   javax.mail.Message#getMessageNumber()
  * @author John Mani
+ * @see     javax.mail.Message#isExpunged()
+ * @see     javax.mail.Message#getMessageNumber()
  */
 
 public class MessageRemovedException extends MessagingException {
@@ -58,17 +58,17 @@ public class MessageRemovedException extends MessagingException {
      * Constructs a MessageRemovedException with no detail message.
      */
     public MessageRemovedException() {
-	super();
+        super();
     }
 
     /**
      * Constructs a MessageRemovedException with the specified
      * detail message.
      *
-     * @param s		The detailed error message
+     * @param s The detailed error message
      */
     public MessageRemovedException(String s) {
-	super(s);
+        super(s);
     }
 
     /**
@@ -76,11 +76,11 @@ public class MessageRemovedException extends MessagingException {
      * detail message and embedded exception.  The exception is chained
      * to this exception.
      *
-     * @param s		The detailed error message
-     * @param e		The embedded exception
-     * @since		JavaMail 1.5
+     * @param s The detailed error message
+     * @param e The embedded exception
+     * @since JavaMail 1.5
      */
     public MessageRemovedException(String s, Exception e) {
-	super(s, e);
+        super(s, e);
     }
 }

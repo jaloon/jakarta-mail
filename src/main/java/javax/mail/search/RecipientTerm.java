@@ -40,8 +40,8 @@
 
 package javax.mail.search;
 
-import javax.mail.Message;
 import javax.mail.Address;
+import javax.mail.Message;
 
 /**
  * This class implements comparisons for the Recipient Address headers.
@@ -51,6 +51,7 @@ import javax.mail.Address;
  */
 public final class RecipientTerm extends AddressTerm {
 
+    private static final long serialVersionUID = 6548700653122680468L;
     /**
      * The recipient type.
      *
@@ -58,52 +59,50 @@ public final class RecipientTerm extends AddressTerm {
      */
     private Message.RecipientType type;
 
-    private static final long serialVersionUID = 6548700653122680468L;
-
     /**
      * Constructor.
      *
-     * @param type	the recipient type
-     * @param address	the address to match for
+     * @param type    the recipient type
+     * @param address the address to match for
      */
     public RecipientTerm(Message.RecipientType type, Address address) {
-	super(address);
-	this.type = type;
+        super(address);
+        this.type = type;
     }
 
     /**
      * Return the type of recipient to match with.
      *
-     * @return	the recipient type
+     * @return the recipient type
      */
     public Message.RecipientType getRecipientType() {
-	return type;
+        return type;
     }
 
     /**
      * The match method.
      *
-     * @param msg	The address match is applied to this Message's recepient
-     *			address
-     * @return		true if the match succeeds, otherwise false
+     * @param msg The address match is applied to this Message's recepient
+     *            address
+     * @return true if the match succeeds, otherwise false
      */
     @Override
     public boolean match(Message msg) {
-	Address[] recipients;
+        Address[] recipients;
 
-	try {
- 	    recipients = msg.getRecipients(type);
-	} catch (Exception e) {
-	    return false;
-	}
+        try {
+            recipients = msg.getRecipients(type);
+        } catch (Exception e) {
+            return false;
+        }
 
-	if (recipients == null)
-	    return false;
+        if (recipients == null)
+            return false;
 
-	for (int i=0; i < recipients.length; i++)
-	    if (super.match(recipients[i]))
-		return true;
-	return false;
+        for (int i = 0; i < recipients.length; i++)
+            if (super.match(recipients[i]))
+                return true;
+        return false;
     }
 
     /**
@@ -111,10 +110,10 @@ public final class RecipientTerm extends AddressTerm {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof RecipientTerm))
-	    return false;
-	RecipientTerm rt = (RecipientTerm)obj;
-	return rt.type.equals(this.type) && super.equals(obj);
+        if (!(obj instanceof RecipientTerm))
+            return false;
+        RecipientTerm rt = (RecipientTerm) obj;
+        return rt.type.equals(this.type) && super.equals(obj);
     }
 
     /**
@@ -122,6 +121,6 @@ public final class RecipientTerm extends AddressTerm {
      */
     @Override
     public int hashCode() {
-	return type.hashCode() + super.hashCode();
+        return type.hashCode() + super.hashCode();
     }
 }

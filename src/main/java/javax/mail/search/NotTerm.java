@@ -49,6 +49,7 @@ import javax.mail.Message;
  * @author John Mani
  */
 public final class NotTerm extends SearchTerm {
+    private static final long serialVersionUID = 7152293214217310216L;
     /**
      * The search term to negate.
      *
@@ -56,25 +57,23 @@ public final class NotTerm extends SearchTerm {
      */
     private SearchTerm term;
 
-    private static final long serialVersionUID = 7152293214217310216L;
-
     public NotTerm(SearchTerm t) {
-	term = t;
+        term = t;
     }
 
     /**
      * Return the term to negate.
      *
-     * @return	the Term
+     * @return the Term
      */
     public SearchTerm getTerm() {
-	return term;
+        return term;
     }
 
     /* The NOT operation */
     @Override
     public boolean match(Message msg) {
-	return !term.match(msg);
+        return !term.match(msg);
     }
 
     /**
@@ -82,10 +81,10 @@ public final class NotTerm extends SearchTerm {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof NotTerm))
-	    return false;
-	NotTerm nt = (NotTerm)obj;
-	return nt.term.equals(this.term);
+        if (!(obj instanceof NotTerm))
+            return false;
+        NotTerm nt = (NotTerm) obj;
+        return nt.term.equals(this.term);
     }
 
     /**
@@ -93,6 +92,6 @@ public final class NotTerm extends SearchTerm {
      */
     @Override
     public int hashCode() {
-	return term.hashCode() << 1;
+        return term.hashCode() << 1;
     }
 }

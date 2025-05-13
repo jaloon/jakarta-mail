@@ -40,71 +40,71 @@
 
 package com.sun.mail.imap.protocol;
 
+import com.sun.mail.iap.ParsingException;
+
 import javax.mail.Flags;
-import com.sun.mail.iap.*; 
 
 /**
- * This class 
+ * This class
  *
- * @author  John Mani
+ * @author John Mani
  */
 
 public class FLAGS extends Flags implements Item {
 
     // IMAP item name
-    static final char[] name = {'F','L','A','G','S'};
-    public int msgno;
-
+    static final char[] name = {'F', 'L', 'A', 'G', 'S'};
     private static final long serialVersionUID = 439049847053756670L;
+    public int msgno;
 
     /**
      * Constructor.
      *
-     * @param	r	the IMAPResponse
-     * @exception	ParsingException	for parsing failures
+     * @param r the IMAPResponse
+     * @throws ParsingException for parsing failures
      */
     public FLAGS(IMAPResponse r) throws ParsingException {
-	msgno = r.getNumber();
+        msgno = r.getNumber();
 
-	r.skipSpaces();
-	String[] flags = r.readSimpleList();
-	if (flags != null) { // if not empty flaglist
-	    for (int i = 0; i < flags.length; i++) {
-		String s = flags[i];
-		if (s.length() >= 2 && s.charAt(0) == '\\') {
-		    switch (Character.toUpperCase(s.charAt(1))) {
-		    case 'S': // \Seen
-			add(Flags.Flag.SEEN);
-			break;
-		    case 'R': // \Recent
-			add(Flags.Flag.RECENT);
-			break;
-		    case 'D':
-			if (s.length() >= 3) {
-			    char c = s.charAt(2);
-			    if (c == 'e' || c == 'E') // \Deleted
-				add(Flags.Flag.DELETED);
-			    else if (c == 'r' || c == 'R') // \Draft
-				add(Flags.Flag.DRAFT);
-			} else
-			    add(s);	// unknown, treat it as a user flag
-			break;
-		    case 'A': // \Answered
-			add(Flags.Flag.ANSWERED);
-			break;
-		    case 'F': // \Flagged
-			add(Flags.Flag.FLAGGED);
-			break;
-		    case '*': // \*
-			add(Flags.Flag.USER);
-			break;
-		    default:
-			add(s);		// unknown, treat it as a user flag
-			break;
-		    }
-		} else
-		    add(s);
-	    }
-	}
+        r.skipSpaces();
+        String[] flags = r.readSimpleList();
+        if (flags != null) { // if not empty flaglist
+            for (int i = 0; i < flags.length; i++) {
+                String s = flags[i];
+                if (s.length() >= 2 && s.charAt(0) == '\\') {
+                    switch (Character.toUpperCase(s.charAt(1))) {
+                        case 'S': // \Seen
+                            add(Flags.Flag.SEEN);
+                            break;
+                        case 'R': // \Recent
+                            add(Flags.Flag.RECENT);
+                            break;
+                        case 'D':
+                            if (s.length() >= 3) {
+                                char c = s.charAt(2);
+                                if (c == 'e' || c == 'E') // \Deleted
+                                    add(Flags.Flag.DELETED);
+                                else if (c == 'r' || c == 'R') // \Draft
+                                    add(Flags.Flag.DRAFT);
+                            } else
+                                add(s);    // unknown, treat it as a user flag
+                            break;
+                        case 'A': // \Answered
+                            add(Flags.Flag.ANSWERED);
+                            break;
+                        case 'F': // \Flagged
+                            add(Flags.Flag.FLAGGED);
+                            break;
+                        case '*': // \*
+                            add(Flags.Flag.USER);
+                            break;
+                        default:
+                            add(s);        // unknown, treat it as a user flag
+                            break;
+                    }
+                } else
+                    add(s);
+            }
+        }
     }
 }

@@ -40,30 +40,26 @@
 
 package javax.mail.internet;
 
+import com.sun.mail.util.MailLogger;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.*;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Level;
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.text.NumberFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.text.ParseException;
-
-import com.sun.mail.util.MailLogger;
 
 /**
  * Formats and parses date specification based on
  * <a href="http://www.ietf.org/rfc/rfc2822.txt" target="_top">RFC 2822</a>. <p>
- *
+ * <p>
  * This class does not support methods that influence the format. It always
  * formats the date based on the specification below.<p>
- *
+ * <p>
  * 3.3. Date and Time Specification
  * <p>
  * Date and time occur in several header fields.  This section specifies
@@ -135,16 +131,16 @@ import com.sun.mail.util.MailLogger;
  * the range -9959 through +9959.
  *
  * <h3><a name="synchronization">Synchronization</a></h3>
- * 
+ *
  * <p>
  * Date formats are not synchronized.
  * It is recommended to create separate format instances for each thread.
  * If multiple threads access a format concurrently, it must be synchronized
  * externally.
  *
- * @author	Anthony Vanelverdinghe
- * @author	Max Spivak
- * @since	JavaMail 1.2
+ * @author Anthony Vanelverdinghe
+ * @author Max Spivak
+ * @since JavaMail 1.2
  */
 public class MailDateFormat extends SimpleDateFormat {
 
@@ -171,7 +167,7 @@ public class MailDateFormat extends SimpleDateFormat {
      * previous implementation.
      *
      * @return the object to be serialized
-     * @throws ObjectStreamException	never
+     * @throws ObjectStreamException never
      */
     private Object writeReplace() throws ObjectStreamException {
         MailDateFormat fmt = new MailDateFormat();
@@ -185,8 +181,8 @@ public class MailDateFormat extends SimpleDateFormat {
      * implementation.
      *
      * @param in the stream containing the serialized object
-     * @throws IOException	on read failures
-     * @throws ClassNotFoundException	never
+     * @throws IOException            on read failures
+     * @throws ClassNotFoundException never
      */
     private void readObject(ObjectInputStream in)
             throws IOException, ClassNotFoundException {
@@ -206,18 +202,18 @@ public class MailDateFormat extends SimpleDateFormat {
     }
 
     /**
-     * Formats the given date in the format specified by 
+     * Formats the given date in the format specified by
      * RFC 2822 in the current TimeZone.
      *
-     * @param   date            the Date object
-     * @param   dateStrBuf      the formatted string
-     * @param   fieldPosition   the current field position
-     * @return	StringBuffer    the formatted String
-     * @since			JavaMail 1.2
+     * @param date          the Date object
+     * @param dateStrBuf    the formatted string
+     * @param fieldPosition the current field position
+     * @return StringBuffer the formatted String
+     * @since JavaMail 1.2
      */
     @Override
     public StringBuffer format(Date date, StringBuffer dateStrBuf,
-            FieldPosition fieldPosition) {
+                               FieldPosition fieldPosition) {
         return super.format(date, dateStrBuf, fieldPosition);
     }
 
@@ -234,10 +230,10 @@ public class MailDateFormat extends SimpleDateFormat {
      * uses the UTC time zone in this case.
      * </ul>
      *
-     * @param   text    the formatted date to be parsed
-     * @param   pos     the current parse position
-     * @return	Date    the parsed date. In case of error, returns null.
-     * @since		JavaMail 1.2
+     * @param text the formatted date to be parsed
+     * @param pos  the current parse position
+     * @return Date the parsed date. In case of error, returns null.
+     * @since JavaMail 1.2
      */
     @Override
     public Date parse(String text, ParsePosition pos) {
@@ -365,11 +361,11 @@ public class MailDateFormat extends SimpleDateFormat {
      * @param zone
      * @return the date, as specified by the parameters
      * @throws IllegalArgumentException if this instance's Calendar is
-     * non-lenient and any of the parameters have invalid values, or if dayName
-     * is not consistent with day-month-year
+     *                                  non-lenient and any of the parameters have invalid values, or if dayName
+     *                                  is not consistent with day-month-year
      */
     private Date toDate(int dayName, int day, int month, int year,
-            int hour, int minute, int second, int zone) {
+                        int hour, int minute, int second, int zone) {
         if (second == LEAP_SECOND) {
             second = 59;
         }

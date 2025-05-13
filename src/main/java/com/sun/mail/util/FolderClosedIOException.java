@@ -40,8 +40,8 @@
 
 package com.sun.mail.util;
 
-import java.io.IOException;
 import javax.mail.Folder;
+import java.io.IOException;
 
 /**
  * A variant of FolderClosedException that can be thrown from methods
@@ -52,34 +52,35 @@ import javax.mail.Folder;
  */
 
 public class FolderClosedIOException extends IOException {
+    private static final long serialVersionUID = 4281122580365555735L;
     transient private Folder folder;
 
-    private static final long serialVersionUID = 4281122580365555735L;
-    
     /**
      * Constructor
-     * @param folder	the Folder
+     *
+     * @param folder the Folder
      */
     public FolderClosedIOException(Folder folder) {
-	this(folder, null);
+        this(folder, null);
     }
 
     /**
      * Constructor
-     * @param folder 	the Folder
-     * @param message	the detailed error message
+     *
+     * @param folder  the Folder
+     * @param message the detailed error message
      */
     public FolderClosedIOException(Folder folder, String message) {
-	super(message);
-	this.folder = folder;
+        super(message);
+        this.folder = folder;
     }
 
     /**
      * Returns the dead Folder object
      *
-     * @return	the dead Folder
+     * @return the dead Folder
      */
     public Folder getFolder() {
-	return folder;
+        return folder;
     }
 }

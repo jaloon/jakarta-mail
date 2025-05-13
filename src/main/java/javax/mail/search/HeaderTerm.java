@@ -40,8 +40,8 @@
 
 package javax.mail.search;
 
-import java.util.Locale;
 import javax.mail.Message;
+import java.util.Locale;
 
 /**
  * This class implements comparisons for Message headers.
@@ -51,14 +51,13 @@ import javax.mail.Message;
  * @author John Mani
  */
 public final class HeaderTerm extends StringTerm {
+    private static final long serialVersionUID = 8342514650333389122L;
     /**
      * The name of the header.
      *
      * @serial
      */
     private String headerName;
-
-    private static final long serialVersionUID = 8342514650333389122L;
 
     /**
      * Constructor.
@@ -67,42 +66,42 @@ public final class HeaderTerm extends StringTerm {
      * @param pattern    The pattern to search for
      */
     public HeaderTerm(String headerName, String pattern) {
-	super(pattern);
-	this.headerName = headerName;
+        super(pattern);
+        this.headerName = headerName;
     }
 
     /**
      * Return the name of the header to compare with.
      *
-     * @return	the name of the header
+     * @return the name of the header
      */
     public String getHeaderName() {
-	return headerName;
+        return headerName;
     }
 
     /**
      * The header match method.
      *
-     * @param msg	The match is applied to this Message's header
-     * @return		true if the match succeeds, otherwise false
+     * @param msg The match is applied to this Message's header
+     * @return true if the match succeeds, otherwise false
      */
     @Override
     public boolean match(Message msg) {
-	String[] headers;
+        String[] headers;
 
-	try {
-	    headers = msg.getHeader(headerName);
-	} catch (Exception e) {
-	    return false;
-	}
+        try {
+            headers = msg.getHeader(headerName);
+        } catch (Exception e) {
+            return false;
+        }
 
-	if (headers == null)
-	    return false;
+        if (headers == null)
+            return false;
 
-	for (int i=0; i < headers.length; i++)
-	    if (super.match(headers[i]))
-		return true;
-	return false;
+        for (int i = 0; i < headers.length; i++)
+            if (super.match(headers[i]))
+                return true;
+        return false;
     }
 
     /**
@@ -110,11 +109,11 @@ public final class HeaderTerm extends StringTerm {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof HeaderTerm))
-	    return false;
-	HeaderTerm ht = (HeaderTerm)obj;
-	// XXX - depends on header comparisons being case independent
-	return ht.headerName.equalsIgnoreCase(headerName) && super.equals(ht);
+        if (!(obj instanceof HeaderTerm))
+            return false;
+        HeaderTerm ht = (HeaderTerm) obj;
+        // XXX - depends on header comparisons being case independent
+        return ht.headerName.equalsIgnoreCase(headerName) && super.equals(ht);
     }
 
     /**
@@ -122,8 +121,8 @@ public final class HeaderTerm extends StringTerm {
      */
     @Override
     public int hashCode() {
-	// XXX - depends on header comparisons being case independent
-	return headerName.toLowerCase(Locale.ENGLISH).hashCode() +
-					super.hashCode();
+        // XXX - depends on header comparisons being case independent
+        return headerName.toLowerCase(Locale.ENGLISH).hashCode() +
+                super.hashCode();
     }
 }

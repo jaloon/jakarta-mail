@@ -48,15 +48,15 @@ import javax.activation.DataSource;
  * be implemented more efficiently by being aware of such
  * <code>DataSources</code> and using the appropriate methods to access
  * <code>BodyParts</code>. <p>
- *
+ * <p>
  * Note that the data of a MultipartDataSource is also available as
  * an input stream. <p>
- *
+ * <p>
  * This interface will typically be implemented by providers that
  * preparse multipart bodies, for example an IMAP provider.
  *
- * @author	John Mani
- * @see		javax.activation.DataSource
+ * @author John Mani
+ * @see        javax.activation.DataSource
  */
 
 public interface MultipartDataSource extends DataSource {
@@ -64,18 +64,18 @@ public interface MultipartDataSource extends DataSource {
     /**
      * Return the number of enclosed BodyPart objects.
      *
-     * @return          number of parts
+     * @return number of parts
      */
     public int getCount();
 
     /**
      * Get the specified Part.  Parts are numbered starting at 0.
      *
-     * @param index     the index of the desired Part
-     * @return          the Part
-     * @exception       IndexOutOfBoundsException if the given index
-     *			is out of range.
-     * @exception       MessagingException for other failures
+     * @param index the index of the desired Part
+     * @return the Part
+     * @throws IndexOutOfBoundsException if the given index
+     *                                   is out of range.
+     * @throws MessagingException        for other failures
      */
     public BodyPart getBodyPart(int index) throws MessagingException;
 

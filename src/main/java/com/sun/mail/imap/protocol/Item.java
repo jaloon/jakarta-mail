@@ -43,12 +43,12 @@ package com.sun.mail.imap.protocol;
 /**
  * A tagging interface for all IMAP data items.
  * Note that the "name" field of all IMAP items MUST be in uppercase. <p>
- *
+ * <p>
  * See the BODY, BODYSTRUCTURE, ENVELOPE, FLAGS, INTERNALDATE, RFC822DATA,
  * RFC822SIZE, and UID classes.
  *
- * @author  John Mani
+ * @author John Mani
  */
 
-public interface Item { 
+public interface Item {
 }

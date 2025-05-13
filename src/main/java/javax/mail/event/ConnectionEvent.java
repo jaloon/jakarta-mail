@@ -40,24 +40,21 @@
 
 package javax.mail.event;
 
-import java.util.*;
-import javax.mail.*;
-
 /**
  * This class models Connection events.
  *
  * @author John Mani
  */
 
-public class ConnectionEvent extends MailEvent  {
+public class ConnectionEvent extends MailEvent {
 
     /** A connection was opened. */
-    public static final int OPENED 		= 1;
+    public static final int OPENED = 1;
     /** A connection was disconnected (not currently used). */
-    public static final int DISCONNECTED 	= 2;
+    public static final int DISCONNECTED = 2;
     /** A connection was closed. */
-    public static final int CLOSED 		= 3;
-
+    public static final int CLOSED = 3;
+    private static final long serialVersionUID = -1855480171284792957L;
     /**
      * The event type.
      *
@@ -65,25 +62,24 @@ public class ConnectionEvent extends MailEvent  {
      */
     protected int type;
 
-    private static final long serialVersionUID = -1855480171284792957L;
-
     /**
      * Construct a ConnectionEvent.
      *
-     * @param	source  The source object
-     * @param	type	the event type
+     * @param source The source object
+     * @param type   the event type
      */
     public ConnectionEvent(Object source, int type) {
-	super(source);
-	this.type = type;
+        super(source);
+        this.type = type;
     }
 
     /**
      * Return the type of this event
-     * @return  type
+     *
+     * @return type
      */
     public int getType() {
-	return type;
+        return type;
     }
 
     /**
@@ -91,11 +87,11 @@ public class ConnectionEvent extends MailEvent  {
      */
     @Override
     public void dispatch(Object listener) {
-	if (type == OPENED)
-	    ((ConnectionListener)listener).opened(this);
-	else if (type == DISCONNECTED)
-	    ((ConnectionListener)listener).disconnected(this);
-	else if (type == CLOSED)
-	    ((ConnectionListener)listener).closed(this);
+        if (type == OPENED)
+            ((ConnectionListener) listener).opened(this);
+        else if (type == DISCONNECTED)
+            ((ConnectionListener) listener).disconnected(this);
+        else if (type == CLOSED)
+            ((ConnectionListener) listener).closed(this);
     }
 }

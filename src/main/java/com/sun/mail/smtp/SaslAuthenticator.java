@@ -48,6 +48,6 @@ import javax.mail.MessagingException;
 
 public interface SaslAuthenticator {
     public boolean authenticate(String[] mechs, String realm, String authzid,
-				String u, String p) throws MessagingException;
+                                String u, String p) throws MessagingException;
 
 }

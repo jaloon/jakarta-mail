@@ -54,7 +54,7 @@ public abstract class MailEvent extends EventObject {
     /**
      * Construct a MailEvent referring to the given source.
      *
-     * @param	source	the source of the event
+     * @param source the source of the event
      */
     public MailEvent(Object source) {
         super(source);
@@ -64,7 +64,7 @@ public abstract class MailEvent extends EventObject {
      * This method invokes the appropriate method on a listener for
      * this event. Subclasses provide the implementation.
      *
-     * @param	listener	the listener to invoke on
+     * @param listener the listener to invoke on
      */
     public abstract void dispatch(Object listener);
 }

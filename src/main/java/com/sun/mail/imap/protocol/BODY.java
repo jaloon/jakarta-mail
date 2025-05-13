@@ -40,20 +40,21 @@
 
 package com.sun.mail.imap.protocol;
 
+import com.sun.mail.iap.ByteArray;
+import com.sun.mail.iap.ParsingException;
+
 import java.io.ByteArrayInputStream;
-import com.sun.mail.iap.*;
-import com.sun.mail.util.ASCIIUtility;
 
 /**
  * The BODY fetch response item.
  *
- * @author  John Mani
- * @author  Bill Shannon
+ * @author John Mani
+ * @author Bill Shannon
  */
 
 public class BODY implements Item {
-    
-    static final char[] name = {'B','O','D','Y'};
+
+    static final char[] name = {'B', 'O', 'D', 'Y'};
 
     private final int msgno;
     private final ByteArray data;
@@ -64,48 +65,48 @@ public class BODY implements Item {
     /**
      * Constructor
      *
-     * @param	r	the FetchResponse
-     * @exception	ParsingException	for parsing failures
+     * @param r the FetchResponse
+     * @throws ParsingException for parsing failures
      */
     public BODY(FetchResponse r) throws ParsingException {
-	msgno = r.getNumber();
+        msgno = r.getNumber();
 
-	r.skipSpaces();
+        r.skipSpaces();
 
-	if (r.readByte() != '[')
-	    throw new ParsingException(
-		    "BODY parse error: missing ``['' at section start");
-	section = r.readString(']');
-	if (r.readByte() != ']')
-	    throw new ParsingException(
-		    "BODY parse error: missing ``]'' at section end");
-	isHeader = section.regionMatches(true, 0, "HEADER", 0, 6);
+        if (r.readByte() != '[')
+            throw new ParsingException(
+                    "BODY parse error: missing ``['' at section start");
+        section = r.readString(']');
+        if (r.readByte() != ']')
+            throw new ParsingException(
+                    "BODY parse error: missing ``]'' at section end");
+        isHeader = section.regionMatches(true, 0, "HEADER", 0, 6);
 
-	if (r.readByte() == '<') { // origin
-	    origin = r.readNumber();
-	    r.skip(1); // skip '>';
-	} else
-	    origin = 0;
+        if (r.readByte() == '<') { // origin
+            origin = r.readNumber();
+            r.skip(1); // skip '>';
+        } else
+            origin = 0;
 
-	data = r.readByteArray();
+        data = r.readByteArray();
     }
 
     public ByteArray getByteArray() {
-	return data;
+        return data;
     }
 
     public ByteArrayInputStream getByteArrayInputStream() {
-	if (data != null)
-	    return data.toByteArrayInputStream();
-	else
-	    return null;
+        if (data != null)
+            return data.toByteArrayInputStream();
+        else
+            return null;
     }
 
     public boolean isHeader() {
-	return isHeader;
+        return isHeader;
     }
 
     public String getSection() {
-	return section;
+        return section;
     }
 }

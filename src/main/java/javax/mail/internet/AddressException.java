@@ -48,13 +48,13 @@ package javax.mail.internet;
  */
 
 public class AddressException extends ParseException {
+    private static final long serialVersionUID = 9134583443539323120L;
     /**
      * The string being parsed.
      *
      * @serial
      */
     protected String ref = null;
-
     /**
      * The index in the string where the error occurred, or -1 if not known.
      *
@@ -62,77 +62,76 @@ public class AddressException extends ParseException {
      */
     protected int pos = -1;
 
-    private static final long serialVersionUID = 9134583443539323120L;
-
     /**
      * Constructs an AddressException with no detail message.
      */
     public AddressException() {
-	super();
+        super();
     }
 
     /**
      * Constructs an AddressException with the specified detail message.
-     * @param s		the detail message
+     *
+     * @param s the detail message
      */
     public AddressException(String s) {
-	super(s);
+        super(s);
     }
 
     /**
      * Constructs an AddressException with the specified detail message
      * and reference info.
      *
-     * @param	s	the detail message
-     * @param	ref	the string being parsed
+     * @param    s    the detail message
+     * @param    ref    the string being parsed
      */
     public AddressException(String s, String ref) {
-	super(s);
-	this.ref = ref;
+        super(s);
+        this.ref = ref;
     }
 
     /**
      * Constructs an AddressException with the specified detail message
      * and reference info.
      *
-     * @param	s	the detail message
-     * @param	ref	the string being parsed
-     * @param	pos	the position of the error
+     * @param    s    the detail message
+     * @param    ref    the string being parsed
+     * @param    pos    the position of the error
      */
     public AddressException(String s, String ref, int pos) {
-	super(s);
-	this.ref = ref;
-	this.pos = pos;
+        super(s);
+        this.ref = ref;
+        this.pos = pos;
     }
 
     /**
      * Get the string that was being parsed when the error was detected
      * (null if not relevant).
      *
-     * @return	the string that was being parsed
+     * @return the string that was being parsed
      */
     public String getRef() {
-	return ref;
+        return ref;
     }
 
     /**
      * Get the position with the reference string where the error was
      * detected (-1 if not relevant).
      *
-     * @return	the position within the string of the error
+     * @return the position within the string of the error
      */
     public int getPos() {
-	return pos;
+        return pos;
     }
 
     @Override
     public String toString() {
-	String s = super.toString();
-	if (ref == null)
-	    return s;
-	s += " in string ``" + ref + "''";
-	if (pos < 0)
-	    return s;
-	return s + " at position " + pos;
+        String s = super.toString();
+        if (ref == null)
+            return s;
+        s += " in string ``" + ref + "''";
+        if (pos < 0)
+            return s;
+        return s + " at position " + pos;
     }
 }

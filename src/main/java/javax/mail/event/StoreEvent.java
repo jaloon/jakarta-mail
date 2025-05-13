@@ -40,8 +40,7 @@
 
 package javax.mail.event;
 
-import java.util.*;
-import javax.mail.*;
+import javax.mail.Store;
 
 /**
  * This class models notifications from the Store connection. These
@@ -57,20 +56,19 @@ public class StoreEvent extends MailEvent {
     /**
      * Indicates that this message is an ALERT.
      */
-    public static final int ALERT 		= 1;
+    public static final int ALERT = 1;
 
     /**
      * Indicates that this message is a NOTICE.
      */
-    public static final int NOTICE 		= 2;
-
+    public static final int NOTICE = 2;
+    private static final long serialVersionUID = 1938704919992515330L;
     /**
      * The event type.
      *
      * @serial
      */
     protected int type;
-
     /**
      * The message text to be presented to the user.
      *
@@ -78,30 +76,28 @@ public class StoreEvent extends MailEvent {
      */
     protected String message;
 
-    private static final long serialVersionUID = 1938704919992515330L;
-
     /**
      * Construct a StoreEvent.
      *
-     * @param	store	the source Store
-     * @param	type	the event type
-     * @param	message	a message assoicated with the event
+     * @param store   the source Store
+     * @param type    the event type
+     * @param message a message assoicated with the event
      */
     public StoreEvent(Store store, int type, String message) {
-	super(store);
-	this.type = type;
-	this.message = message;
+        super(store);
+        this.type = type;
+        this.message = message;
     }
 
     /**
      * Return the type of this event.
      *
-     * @return  type
+     * @return type
      * @see #ALERT
      * @see #NOTICE
      */
     public int getMessageType() {
-	return type;
+        return type;
     }
 
     /**
@@ -110,7 +106,7 @@ public class StoreEvent extends MailEvent {
      * @return message from the Store
      */
     public String getMessage() {
-	return message;
+        return message;
     }
 
     /**
@@ -118,6 +114,6 @@ public class StoreEvent extends MailEvent {
      */
     @Override
     public void dispatch(Object listener) {
-	((StoreListener)listener).notification(this);
+        ((StoreListener) listener).notification(this);
     }
 }

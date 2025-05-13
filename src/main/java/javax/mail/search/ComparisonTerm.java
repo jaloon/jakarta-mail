@@ -54,7 +54,7 @@ public abstract class ComparisonTerm extends SearchTerm {
     public static final int NE = 4;
     public static final int GT = 5;
     public static final int GE = 6;
-
+    private static final long serialVersionUID = 1456646953666474308L;
     /**
      * The comparison.
      *
@@ -62,17 +62,15 @@ public abstract class ComparisonTerm extends SearchTerm {
      */
     protected int comparison;
 
-    private static final long serialVersionUID = 1456646953666474308L;
-
     /**
      * Equality comparison.
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof ComparisonTerm))
-	    return false;
-	ComparisonTerm ct = (ComparisonTerm)obj;
-	return ct.comparison == this.comparison;
+        if (!(obj instanceof ComparisonTerm))
+            return false;
+        ComparisonTerm ct = (ComparisonTerm) obj;
+        return ct.comparison == this.comparison;
     }
 
     /**
@@ -80,6 +78,6 @@ public abstract class ComparisonTerm extends SearchTerm {
      */
     @Override
     public int hashCode() {
-	return comparison;
+        return comparison;
     }
 }

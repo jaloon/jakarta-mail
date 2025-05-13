@@ -40,8 +40,6 @@
 
 package com.sun.mail.imap;
 
-import java.util.*;
-
 /**
  * An access control list entry for a particular authentication identifier
  * (user or group).  Associates a set of Rights with the identifier.
@@ -53,46 +51,37 @@ import java.util.*;
 
 public class ACL implements Cloneable {
 
-    private String name;
+    private final String name;
     private Rights rights;
 
     /**
      * Construct an ACL entry for the given identifier and with no rights.
      *
-     * @param	name	the identifier name
+     * @param name the identifier name
      */
     public ACL(String name) {
-	this.name = name;
-	this.rights = new Rights();
+        this.name = name;
+        this.rights = new Rights();
     }
 
     /**
      * Construct an ACL entry for the given identifier with the given rights.
      *
-     * @param	name	the identifier name
-     * @param	rights	the rights
+     * @param name   the identifier name
+     * @param rights the rights
      */
     public ACL(String name, Rights rights) {
-	this.name = name;
-	this.rights = rights;
+        this.name = name;
+        this.rights = rights;
     }
 
     /**
      * Get the identifier name for this ACL entry.
      *
-     * @return	the identifier name
+     * @return the identifier name
      */
     public String getName() {
-	return name;
-    }
-
-    /**
-     * Set the rights associated with this ACL entry.
-     *
-     * @param	rights	the rights
-     */
-    public void setRights(Rights rights) {
-	this.rights = rights;
+        return name;
     }
 
     /**
@@ -100,10 +89,19 @@ public class ACL implements Cloneable {
      * Returns the actual Rights object referenced by this ACL;
      * modifications to the Rights object will effect this ACL.
      *
-     * @return	the rights
+     * @return the rights
      */
     public Rights getRights() {
-	return rights;
+        return rights;
+    }
+
+    /**
+     * Set the rights associated with this ACL entry.
+     *
+     * @param rights the rights
+     */
+    public void setRights(Rights rights) {
+        this.rights = rights;
     }
 
     /**
@@ -111,8 +109,8 @@ public class ACL implements Cloneable {
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
-	ACL acl = (ACL)super.clone();
-	acl.rights = (Rights)this.rights.clone();
-	return acl;
+        ACL acl = (ACL) super.clone();
+        acl.rights = (Rights) this.rights.clone();
+        return acl;
     }
 }

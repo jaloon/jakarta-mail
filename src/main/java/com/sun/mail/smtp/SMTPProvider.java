@@ -48,7 +48,7 @@ import javax.mail.Provider;
  */
 public class SMTPProvider extends Provider {
     public SMTPProvider() {
-	super(Provider.Type.TRANSPORT, "smtp", SMTPTransport.class.getName(),
-	    "Oracle", null);
+        super(Provider.Type.TRANSPORT, "smtp", SMTPTransport.class.getName(),
+                "Oracle", null);
     }
 }

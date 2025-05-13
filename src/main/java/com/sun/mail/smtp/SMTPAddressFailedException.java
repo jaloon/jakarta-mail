@@ -45,7 +45,7 @@ import javax.mail.internet.InternetAddress;
 
 /**
  * This exception is thrown when the message cannot be sent. <p>
- * 
+ * <p>
  * The exception includes the address to which the message could not be
  * sent.  This will usually appear in a chained list of exceptions,
  * one per address, attached to a top level SendFailedException that
@@ -55,45 +55,44 @@ import javax.mail.internet.InternetAddress;
  */
 
 public class SMTPAddressFailedException extends SendFailedException {
-    protected InternetAddress addr;	// address that failed
-    protected String cmd;		// command issued to server
-    protected int rc;			// return code from SMTP server
-
     private static final long serialVersionUID = 804831199768630097L;
+    protected InternetAddress addr;    // address that failed
+    protected String cmd;        // command issued to server
+    protected int rc;            // return code from SMTP server
 
     /**
-     * Constructs an SMTPAddressFailedException with the specified 
+     * Constructs an SMTPAddressFailedException with the specified
      * address, return code, and error string.
      *
-     * @param addr	the address that failed
-     * @param cmd	the command that was sent to the SMTP server
-     * @param rc	the SMTP return code indicating the failure
-     * @param err	the error string from the SMTP server
+     * @param addr the address that failed
+     * @param cmd  the command that was sent to the SMTP server
+     * @param rc   the SMTP return code indicating the failure
+     * @param err  the error string from the SMTP server
      */
     public SMTPAddressFailedException(InternetAddress addr, String cmd, int rc,
-				String err) {
-	super(err);
-	this.addr = addr;
-	this.cmd = cmd;
-	this.rc = rc;
+                                      String err) {
+        super(err);
+        this.addr = addr;
+        this.cmd = cmd;
+        this.rc = rc;
     }
 
     /**
      * Return the address that failed.
      *
-     * @return	the address
+     * @return the address
      */
     public InternetAddress getAddress() {
-	return addr;
+        return addr;
     }
 
     /**
      * Return the command that failed.
      *
-     * @return	the command
+     * @return the command
      */
     public String getCommand() {
-	return cmd;
+        return cmd;
     }
 
 
@@ -103,9 +102,9 @@ public class SMTPAddressFailedException extends SendFailedException {
      * <A HREF="http://www.ietf.org/rfc/rfc821.txt">RFC 821</A>
      * for interpretation of the return code.
      *
-     * @return	the return code
+     * @return the return code
      */
     public int getReturnCode() {
-	return rc;
+        return rc;
     }
 }

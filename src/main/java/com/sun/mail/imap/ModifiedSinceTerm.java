@@ -48,54 +48,53 @@ import javax.mail.search.SearchTerm;
  * Relies on the server implementing the CONDSTORE extension
  * (<A HREF="http://www.ietf.org/rfc/rfc4551.txt">RFC 4551</A>).
  *
- * @since	JavaMail 1.5.1
- * @author	Bill Shannon
+ * @author Bill Shannon
+ * @since JavaMail 1.5.1
  */
 public final class ModifiedSinceTerm extends SearchTerm {
 
-    private long modseq;
-
     private static final long serialVersionUID = 5151457469634727992L;
+    private final long modseq;
 
     /**
      * Constructor.
      *
-     * @param modseq	modification sequence number
+     * @param modseq modification sequence number
      */
     public ModifiedSinceTerm(long modseq) {
-	this.modseq = modseq;
+        this.modseq = modseq;
     }
 
     /**
      * Return the modseq.
      *
-     * @return	the modseq
+     * @return the modseq
      */
     public long getModSeq() {
-	return modseq;
+        return modseq;
     }
 
     /**
      * The match method.
      *
-     * @param msg	the date comparator is applied to this Message's
-     *			MODSEQ
-     * @return		true if the comparison succeeds, otherwise false
+     * @param msg the date comparator is applied to this Message's
+     *            MODSEQ
+     * @return true if the comparison succeeds, otherwise false
      */
     @Override
     public boolean match(Message msg) {
-	long m;
+        long m;
 
-	try {
-	    if (msg instanceof IMAPMessage)
-		m = ((IMAPMessage)msg).getModSeq();
-	    else
-		return false;
-	} catch (Exception e) {
-	    return false;
-	}
+        try {
+            if (msg instanceof IMAPMessage)
+                m = ((IMAPMessage) msg).getModSeq();
+            else
+                return false;
+        } catch (Exception e) {
+            return false;
+        }
 
-	return m >= modseq;
+        return m >= modseq;
     }
 
     /**
@@ -103,9 +102,9 @@ public final class ModifiedSinceTerm extends SearchTerm {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof ModifiedSinceTerm))
-	    return false;
-	return modseq == ((ModifiedSinceTerm)obj).modseq;
+        if (!(obj instanceof ModifiedSinceTerm))
+            return false;
+        return modseq == ((ModifiedSinceTerm) obj).modseq;
     }
 
     /**
@@ -113,6 +112,6 @@ public final class ModifiedSinceTerm extends SearchTerm {
      */
     @Override
     public int hashCode() {
-	return (int)modseq;
+        return (int) modseq;
     }
 }

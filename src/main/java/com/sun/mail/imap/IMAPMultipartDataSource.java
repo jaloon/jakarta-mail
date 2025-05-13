@@ -41,45 +41,48 @@
 package com.sun.mail.imap;
 
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import com.sun.mail.imap.protocol.BODYSTRUCTURE;
 
-import com.sun.mail.imap.protocol.*;
+import javax.mail.BodyPart;
+import javax.mail.MessagingException;
+import javax.mail.MultipartDataSource;
+import javax.mail.internet.MimePart;
+import javax.mail.internet.MimePartDataSource;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class 
+ * This class
  *
- * @author  John Mani
+ * @author John Mani
  */
 
 public class IMAPMultipartDataSource extends MimePartDataSource
-				     implements MultipartDataSource {
-    private List<IMAPBodyPart> parts;
+        implements MultipartDataSource {
+    private final List<IMAPBodyPart> parts;
 
-    protected IMAPMultipartDataSource(MimePart part, BODYSTRUCTURE[] bs, 
-				      String sectionId, IMAPMessage msg) {
-	super(part);
+    protected IMAPMultipartDataSource(MimePart part, BODYSTRUCTURE[] bs,
+                                      String sectionId, IMAPMessage msg) {
+        super(part);
 
-	parts = new ArrayList<>(bs.length);
-	for (int i = 0; i < bs.length; i++)
-	    parts.add(
-		new IMAPBodyPart(bs[i], 
-				 sectionId == null ? 
-				   Integer.toString(i+1) : 
-				   sectionId + "." + Integer.toString(i+1),
-				 msg)
-	    );
+        parts = new ArrayList<>(bs.length);
+        for (int i = 0; i < bs.length; i++)
+            parts.add(
+                    new IMAPBodyPart(bs[i],
+                            sectionId == null ?
+                                    Integer.toString(i + 1) :
+                                    sectionId + "." + (i + 1),
+                            msg)
+            );
     }
 
     @Override
     public int getCount() {
-	return parts.size();
+        return parts.size();
     }
 
     @Override
     public BodyPart getBodyPart(int index) throws MessagingException {
-	return parts.get(index);
+        return parts.get(index);
     }
 }

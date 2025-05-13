@@ -52,38 +52,37 @@ import javax.mail.AuthenticationFailedException;
 
 public class ReferralException extends AuthenticationFailedException {
 
-    private String url;
-    private String text;
-
     private static final long serialVersionUID = -3414063558596287683L;
+    private final String url;
+    private final String text;
 
     /**
      * Constructs an ReferralException with the specified URL and text.
      *
-     * @param text	the detail message
-     * @param url	the URL
+     * @param text the detail message
+     * @param url  the URL
      */
     public ReferralException(String url, String text) {
-	super("[REFERRAL " + url + "] " + text);
-	this.url = url;
-	this.text = text;
+        super("[REFERRAL " + url + "] " + text);
+        this.url = url;
+        this.text = text;
     }
 
     /**
      * Return the IMAP URL in the referral.
      *
-     * @return	the IMAP URL
+     * @return the IMAP URL
      */
     public String getUrl() {
-	return url;
+        return url;
     }
 
     /**
      * Return the text sent by the server along with the referral.
      *
-     * @return	the text
+     * @return the text
      */
     public String getText() {
-	return text;
+        return text;
     }
 }

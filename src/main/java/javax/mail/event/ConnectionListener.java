@@ -40,8 +40,6 @@
 
 package javax.mail.event;
 
-import java.util.*;
-
 /**
  * This is the Listener interface for Connection events.
  *
@@ -53,7 +51,7 @@ public interface ConnectionListener extends java.util.EventListener {
     /**
      * Invoked when a Store/Folder/Transport is opened.
      *
-     * @param	e	the ConnectionEvent
+     * @param e the ConnectionEvent
      */
     public void opened(ConnectionEvent e);
 
@@ -61,14 +59,14 @@ public interface ConnectionListener extends java.util.EventListener {
      * Invoked when a Store is disconnected. Note that a folder
      * cannot be disconnected, so a folder will not fire this event
      *
-     * @param	e	the ConnectionEvent
+     * @param e the ConnectionEvent
      */
     public void disconnected(ConnectionEvent e);
 
     /**
      * Invoked when a Store/Folder/Transport is closed.
      *
-     * @param	e	the ConnectionEvent
+     * @param e the ConnectionEvent
      */
     public void closed(ConnectionEvent e);
 }

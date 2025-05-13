@@ -40,10 +40,10 @@
 
 package com.sun.mail.pop3;
 
+import javax.mail.util.SharedFileInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import javax.mail.util.SharedFileInputStream;
 
 /**
  * A subclass of SharedFileInputStream that also allows writing.
@@ -54,21 +54,21 @@ class WritableSharedFile extends SharedFileInputStream {
     private AppendStream af;
 
     public WritableSharedFile(File file) throws IOException {
-	super(file);
-	try {
-	    raf = new RandomAccessFile(file, "rw");
-	} catch (IOException ex) {
-	    // if anything goes wrong opening the writable file,
-	    // close the readable file too
-	    super.close();
-	}
+        super(file);
+        try {
+            raf = new RandomAccessFile(file, "rw");
+        } catch (IOException ex) {
+            // if anything goes wrong opening the writable file,
+            // close the readable file too
+            super.close();
+        }
     }
 
     /**
      * Return the writable version of this file.
      */
     public RandomAccessFile getWritableFile() {
-	return raf;
+        return raf;
     }
 
     /**
@@ -76,11 +76,11 @@ class WritableSharedFile extends SharedFileInputStream {
      */
     @Override
     public void close() throws IOException {
-	try {
-	    super.close();
-	} finally {
-	    raf.close();
-	}
+        try {
+            super.close();
+        } finally {
+            raf.close();
+        }
     }
 
     /**
@@ -88,20 +88,20 @@ class WritableSharedFile extends SharedFileInputStream {
      * the length to be the current size of the file.
      */
     synchronized long updateLength() throws IOException {
-	datalen = in.length();
-	af = null;
-	return datalen;
+        datalen = in.length();
+        af = null;
+        return datalen;
     }
 
     /**
      * Return a new AppendStream, but only if one isn't in active use.
      */
     public synchronized AppendStream getAppendStream() throws IOException {
-	if (af != null) {
-	    throw new IOException(
-		    "POP3 file cache only supports single threaded access");
-	}
-	af = new AppendStream(this);
-	return af;
+        if (af != null) {
+            throw new IOException(
+                    "POP3 file cache only supports single threaded access");
+        }
+        af = new AppendStream(this);
+        return af;
     }
 }

@@ -40,8 +40,8 @@
 
 package com.sun.mail.util;
 
-import java.util.*;
 import javax.mail.Session;
+import java.util.Properties;
 
 /**
  * Utilities to make it easier to get property values.
@@ -58,85 +58,85 @@ public class PropUtil {
     /**
      * Get an integer valued property.
      *
-     * @param	props	the properties
-     * @param	name	the property name
-     * @param	def	default value if property not found
-     * @return		the property value
+     * @param props the properties
+     * @param name  the property name
+     * @param def   default value if property not found
+     * @return the property value
      */
     public static int getIntProperty(Properties props, String name, int def) {
-	return getInt(getProp(props, name), def);
+        return getInt(getProp(props, name), def);
     }
 
     /**
      * Get a boolean valued property.
      *
-     * @param	props	the properties
-     * @param	name	the property name
-     * @param	def	default value if property not found
-     * @return		the property value
+     * @param props the properties
+     * @param name  the property name
+     * @param def   default value if property not found
+     * @return the property value
      */
     public static boolean getBooleanProperty(Properties props,
-				String name, boolean def) {
-	return getBoolean(getProp(props, name), def);
+                                             String name, boolean def) {
+        return getBoolean(getProp(props, name), def);
     }
 
     /**
      * Get an integer valued property.
      *
-     * @param	session	the Session
-     * @param	name	the property name
-     * @param	def	default value if property not found
-     * @return		the property value
+     * @param session the Session
+     * @param name    the property name
+     * @param def     default value if property not found
+     * @return the property value
      */
     @Deprecated
     public static int getIntSessionProperty(Session session,
-				String name, int def) {
-	return getInt(getProp(session.getProperties(), name), def);
+                                            String name, int def) {
+        return getInt(getProp(session.getProperties(), name), def);
     }
 
     /**
      * Get a boolean valued property.
      *
-     * @param	session	the Session
-     * @param	name	the property name
-     * @param	def	default value if property not found
-     * @return		the property value
+     * @param session the Session
+     * @param name    the property name
+     * @param def     default value if property not found
+     * @return the property value
      */
     @Deprecated
     public static boolean getBooleanSessionProperty(Session session,
-				String name, boolean def) {
-	return getBoolean(getProp(session.getProperties(), name), def);
+                                                    String name, boolean def) {
+        return getBoolean(getProp(session.getProperties(), name), def);
     }
 
     /**
      * Get a boolean valued System property.
      *
-     * @param	name	the property name
-     * @param	def	default value if property not found
-     * @return		the property value
+     * @param name the property name
+     * @param def  default value if property not found
+     * @return the property value
      */
     public static boolean getBooleanSystemProperty(String name, boolean def) {
-	try {
-	    return getBoolean(getProp(System.getProperties(), name), def);
-	} catch (SecurityException sex) {
-	    // fall through...
-	}
+        try {
+            return getBoolean(getProp(System.getProperties(), name), def);
+        } catch (SecurityException sex) {
+            // fall through...
+        }
 
-	/*
-	 * If we can't get the entire System Properties object because
-	 * of a SecurityException, just ask for the specific property.
-	 */
-	try {
-	    String value = System.getProperty(name);
-	    if (value == null)
-		return def;
-	    if (def)
-		return !value.equalsIgnoreCase("false");
-	    else
-		return value.equalsIgnoreCase("true");
-	} catch (SecurityException sex) {
-	    return def;
-	}
+        /*
+         * If we can't get the entire System Properties object because
+         * of a SecurityException, just ask for the specific property.
+         */
+        try {
+            String value = System.getProperty(name);
+            if (value == null)
+                return def;
+            if (def)
+                return !value.equalsIgnoreCase("false");
+            else
+                return value.equalsIgnoreCase("true");
+        } catch (SecurityException sex) {
+            return def;
+        }
     }
 
     /**
@@ -145,11 +145,11 @@ public class PropUtil {
      * which might cascade to a default Properties object.
      */
     private static Object getProp(Properties props, String name) {
-	Object val = props.get(name);
-	if (val != null)
-	    return val;
-	else
-	    return props.getProperty(name);
+        Object val = props.get(name);
+        if (val != null)
+            return val;
+        else
+            return props.getProperty(name);
     }
 
     /**
@@ -157,16 +157,16 @@ public class PropUtil {
      * returning def if unable.
      */
     private static int getInt(Object value, int def) {
-	if (value == null)
-	    return def;
-	if (value instanceof String) {
-	    try {
-		return Integer.parseInt((String)value);
-	    } catch (NumberFormatException nfex) { }
-	}
-	if (value instanceof Integer)
-	    return ((Integer)value).intValue();
-	return def;
+        if (value == null)
+            return def;
+        if (value instanceof String) {
+            try {
+                return Integer.parseInt((String) value);
+            } catch (NumberFormatException nfex) {}
+        }
+        if (value instanceof Integer)
+            return ((Integer) value).intValue();
+        return def;
     }
 
     /**
@@ -174,20 +174,20 @@ public class PropUtil {
      * returning def if unable.
      */
     private static boolean getBoolean(Object value, boolean def) {
-	if (value == null)
-	    return def;
-	if (value instanceof String) {
-	    /*
-	     * If the default is true, only "false" turns it off.
-	     * If the default is false, only "true" turns it on.
-	     */
-	    if (def)
-		return !((String)value).equalsIgnoreCase("false");
-	    else
-		return ((String)value).equalsIgnoreCase("true");
-	}
-	if (value instanceof Boolean)
-	    return ((Boolean)value).booleanValue();
-	return def;
+        if (value == null)
+            return def;
+        if (value instanceof String) {
+            /*
+             * If the default is true, only "false" turns it off.
+             * If the default is false, only "true" turns it on.
+             */
+            if (def)
+                return !((String) value).equalsIgnoreCase("false");
+            else
+                return ((String) value).equalsIgnoreCase("true");
+        }
+        if (value instanceof Boolean)
+            return ((Boolean) value).booleanValue();
+        return def;
     }
 }

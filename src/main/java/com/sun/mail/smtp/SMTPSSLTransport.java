@@ -40,7 +40,8 @@
 
 package com.sun.mail.smtp;
 
-import javax.mail.*;
+import javax.mail.Session;
+import javax.mail.URLName;
 
 /**
  * This class implements the Transport abstract class using SMTP
@@ -54,10 +55,10 @@ public class SMTPSSLTransport extends SMTPTransport {
     /**
      * Constructor.
      *
-     * @param	session	the Session
-     * @param	urlname	the URLName of this transport
+     * @param session the Session
+     * @param urlname the URLName of this transport
      */
     public SMTPSSLTransport(Session session, URLName urlname) {
-	super(session, urlname, "smtps", true);
+        super(session, urlname, "smtps", true);
     }
 }

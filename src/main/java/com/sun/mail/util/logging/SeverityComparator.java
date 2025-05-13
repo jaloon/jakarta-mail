@@ -47,7 +47,7 @@ import java.util.logging.LogRecord;
 
 /**
  * Orders log records by level, thrown, sequence, and time.
- *
+ * <p>
  * This comparator orders LogRecords by how severely each is attributed to
  * failures in a program. The primary ordering is determined by the use of the
  * logging API throughout a program by specifying a level to each log message.
@@ -116,6 +116,17 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
     }
 
     /**
+     * Outline the message create string.
+     *
+     * @param o1 argument one.
+     * @param o2 argument two.
+     * @return the message string.
+     */
+    private static String toString(final Object o1, final Object o2) {
+        return o1 + ", " + o2;
+    }
+
+    /**
      * Identifies a single throwable that best describes the given throwable and
      * the entire {@linkplain Throwable#getCause() cause} chain. This method can
      * be overridden to change the behavior of
@@ -127,27 +138,27 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
      * @see #isNormal(java.lang.Throwable)
      */
     public Throwable apply(final Throwable chain) {
-        //Matches the j.u.f.UnaryOperator<Throwable> interface.
+        // Matches the j.u.f.UnaryOperator<Throwable> interface.
         int limit = 0;
         Throwable root = chain;
         Throwable high = null;
         Throwable normal = null;
         for (Throwable cause = chain; cause != null; cause = cause.getCause()) {
-            root = cause;  //Find the deepest cause.
+            root = cause;  // Find the deepest cause.
 
-            //Find the deepest nomral occurrance.
+            // Find the deepest nomral occurrance.
             if (isNormal(cause)) {
                 normal = cause;
             }
 
-            //Find the deepest error that happened before a normal occurance.
+            // Find the deepest error that happened before a normal occurance.
             if (normal == null && cause instanceof Error) {
                 high = cause;
             }
 
-            //Deal with excessive cause chains and cyclic throwables.
+            // Deal with excessive cause chains and cyclic throwables.
             if (++limit == (1 << 16)) {
-                break; //Give up.
+                break; // Give up.
             }
         }
         return high != null ? high : normal != null ? normal : root;
@@ -181,11 +192,11 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
      * @see #isNormal(java.lang.Throwable)
      */
     public int compareThrowable(final Throwable t1, final Throwable t2) {
-        if (t1 == t2) { //Reflexive test including null.
+        if (t1 == t2) { // Reflexive test including null.
             return 0;
         } else {
-            //Only one or the other is null at this point.
-            //Force normal occurrence to be lower than null.
+            // Only one or the other is null at this point.
+            // Force normal occurrence to be lower than null.
             if (t1 == null) {
                 return isNormal(t2) ? 1 : -1;
             } else {
@@ -194,13 +205,13 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
                 }
             }
 
-            //From this point on neither are null.
-            //Follow the shortcut if we can.
+            // From this point on neither are null.
+            // Follow the shortcut if we can.
             if (t1.getClass() == t2.getClass()) {
                 return 0;
             }
 
-            //Ensure normal occurrence flow control is ordered low.
+            // Ensure normal occurrence flow control is ordered low.
             if (isNormal(t1)) {
                 return isNormal(t2) ? 0 : -1;
             } else {
@@ -209,9 +220,9 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
                 }
             }
 
-            //Rank the two unidenticial throwables using the rules from
-            //JLS 11.1.1. The Kinds of Exceptions and
-            //JLS 11.5 The Exception Hierarchy.
+            // Rank the two unidenticial throwables using the rules from
+            // JLS 11.1.1. The Kinds of Exceptions and
+            // JLS 11.5 The Exception Hierarchy.
             if (t1 instanceof Error) {
                 return t2 instanceof Error ? 0 : 1;
             } else if (t1 instanceof RuntimeException) {
@@ -233,9 +244,9 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
      * argument is less than, equal to, or greater than the second.
      * @throws NullPointerException if either argument is null.
      */
-    @SuppressWarnings("override") //JDK-6954234
+    @SuppressWarnings("override") // JDK-6954234
     public int compare(final LogRecord o1, final LogRecord o2) {
-        if (o1 == null || o2 == null) { //Don't allow null.
+        if (o1 == null || o2 == null) { // Don't allow null.
             throw new NullPointerException(toString(o1, o2));
         }
 
@@ -287,7 +298,7 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
      * is any checked or unchecked exception with 'Interrupt' in the class name
      * or ancestral class name. Any {@code java.lang.ThreadDeath} object or
      * subclasses.
-     *
+     * <p>
      * This method can be overridden to change the behavior of the
      * {@linkplain #apply(java.lang.Throwable)} method.
      *
@@ -295,7 +306,7 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
      * @return true the given throwable is a "normal occurrence".
      */
     public boolean isNormal(final Throwable t) {
-        if (t == null) { //This is only needed when called directly.
+        if (t == null) { // This is only needed when called directly.
             return false;
         }
 
@@ -310,7 +321,7 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
                     return true;
                 }
             } else {
-                //Interrupt, Interrupted or Interruption.
+                // Interrupt, Interrupted or Interruption.
                 if (c.getName().contains("Interrupt")) {
                     return true;
                 }
@@ -329,17 +340,6 @@ public class SeverityComparator implements Comparator<LogRecord>, Serializable {
      */
     private int compare(final Level a, final Level b) {
         return a == b ? 0 : compare(a.intValue(), b.intValue());
-    }
-
-    /**
-     * Outline the message create string.
-     *
-     * @param o1 argument one.
-     * @param o2 argument two.
-     * @return the message string.
-     */
-    private static String toString(final Object o1, final Object o2) {
-        return o1 + ", " + o2;
     }
 
     /**

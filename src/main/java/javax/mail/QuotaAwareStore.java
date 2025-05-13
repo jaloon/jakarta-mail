@@ -61,10 +61,10 @@ public interface QuotaAwareStore {
      * quota roots, perhaps controlling quotas for different
      * resources.
      *
-     * @param	folder	the name of the folder
-     * @return		array of Quota objects
-     * @exception MessagingException	if the server doesn't support the
-     *					QUOTA extension
+     * @throws MessagingException if the server doesn't support the
+     *                            QUOTA extension
+     * @param    folder    the name of the folder
+     * @return array of Quota objects
      */
     Quota[] getQuota(String folder) throws MessagingException;
 
@@ -73,9 +73,9 @@ public interface QuotaAwareStore {
      * Typically this will be one of the quota roots obtained from the
      * <code>getQuota</code> method, but it need not be.
      *
-     * @param	quota	the quota to set
-     * @exception MessagingException	if the server doesn't support the
-     *					QUOTA extension
+     * @throws MessagingException if the server doesn't support the
+     *                            QUOTA extension
+     * @param    quota    the quota to set
      */
     void setQuota(Quota quota) throws MessagingException;
 }

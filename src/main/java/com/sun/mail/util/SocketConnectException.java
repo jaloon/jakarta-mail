@@ -47,12 +47,16 @@ import java.io.IOException;
  * Unlike java.net.ConnectException, it includes details of what we
  * were trying to connect to.
  *
- * @see		java.net.ConnectException
- * @author	Bill Shannon
- * @since 	JavaMail 1.5.0
+ * @author Bill Shannon
+ * @see java.net.ConnectException
+ * @since JavaMail 1.5.0
  */
 
 public class SocketConnectException extends IOException {
+    /**
+     * The generated serial id.
+     */
+    private static final long serialVersionUID = 3997871560538755463L;
     /**
      * The socket host name.
      */
@@ -65,65 +69,61 @@ public class SocketConnectException extends IOException {
      * The connection timeout.
      */
     private int cto;
-    /**
-     * The generated serial id.
-     */
-    private static final long serialVersionUID = 3997871560538755463L;
 
     /**
      * Constructs a SocketConnectException.
      *
-     * @param	msg	error message detail
-     * @param	cause	the underlying exception that indicates the failure
-     * @param	host	the host we were trying to connect to
-     * @param	port	the port we were trying to connect to
-     * @param	cto	the timeout for the connection attempt
+     * @param msg   error message detail
+     * @param cause the underlying exception that indicates the failure
+     * @param host  the host we were trying to connect to
+     * @param port  the port we were trying to connect to
+     * @param cto   the timeout for the connection attempt
      */
     public SocketConnectException(String msg, Exception cause,
-				    String host, int port, int cto) {
-	super(msg);
-	initCause(cause);
-	this.host = host;
-	this.port = port;
-	this.cto = cto;
+                                  String host, int port, int cto) {
+        super(msg);
+        initCause(cause);
+        this.host = host;
+        this.port = port;
+        this.cto = cto;
     }
 
     /**
      * The exception that caused the failure.
      *
-     * @return	the exception
+     * @return the exception
      */
     public Exception getException() {
-	// the "cause" is always an Exception; see constructor above
-	Throwable t = getCause();
-	assert t == null || t instanceof Exception;
-	return (Exception) t;
+        // the "cause" is always an Exception; see constructor above
+        Throwable t = getCause();
+        assert t == null || t instanceof Exception;
+        return (Exception) t;
     }
 
     /**
      * The host we were trying to connect to.
      *
-     * @return	the host
+     * @return the host
      */
     public String getHost() {
-	return host;
+        return host;
     }
 
     /**
      * The port we were trying to connect to.
      *
-     * @return	the port
+     * @return the port
      */
     public int getPort() {
-	return port;
+        return port;
     }
 
     /**
      * The timeout used for the connection attempt.
      *
-     * @return	the connection timeout
+     * @return the connection timeout
      */
     public int getConnectionTimeout() {
-	return cto;
+        return cto;
     }
 }

@@ -40,64 +40,63 @@
 
 package com.sun.mail.imap;
 
-import java.util.Date;
 import javax.mail.Message;
 import javax.mail.search.SearchTerm;
+import java.util.Date;
 
 /**
  * Find messages that are older than a given interval (in seconds).
  * Relies on the server implementing the WITHIN search extension
  * (<A HREF="http://www.ietf.org/rfc/rfc5032.txt">RFC 5032</A>).
  *
- * @since	JavaMail 1.5.1
- * @author	Bill Shannon
+ * @author Bill Shannon
+ * @since JavaMail 1.5.1
  */
 public final class OlderTerm extends SearchTerm {
 
-    private int interval;
-
     private static final long serialVersionUID = 3951078948727995682L;
+    private final int interval;
 
     /**
      * Constructor.
      *
-     * @param interval	number of seconds older
+     * @param interval number of seconds older
      */
     public OlderTerm(int interval) {
-	this.interval = interval;
+        this.interval = interval;
     }
 
     /**
      * Return the interval.
      *
-     * @return	the interval
+     * @return the interval
      */
     public int getInterval() {
-	return interval;
+        return interval;
     }
 
     /**
      * The match method.
      *
-     * @param msg	the date comparator is applied to this Message's
-     *			received date
-     * @return		true if the comparison succeeds, otherwise false
+     * @param msg the date comparator is applied to this Message's
+     *            received date
+     * @return true if the comparison succeeds, otherwise false
      */
     @Override
     public boolean match(Message msg) {
-	Date d;
+        Date d;
 
-	try {
-	    d = msg.getReceivedDate();
-	} catch (Exception e) {
-	    return false;
-	}
+        try {
+            d = msg.getReceivedDate();
+        } catch (Exception e) {
+            return false;
+        }
 
-	if (d == null)
-	    return false;
+        if (d == null)
+            return false;
 
-	return d.getTime() <=
-		    System.currentTimeMillis() - ((long)interval * 1000);
+        return d.getTime() <=
+                System.currentTimeMillis() - ((long) interval * 1000);
     }
 
     /**
@@ -105,9 +104,9 @@ public final class OlderTerm extends SearchTerm {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof OlderTerm))
-	    return false;
-	return interval == ((OlderTerm)obj).interval;
+        if (!(obj instanceof OlderTerm))
+            return false;
+        return interval == ((OlderTerm) obj).interval;
     }
 
     /**
@@ -115,6 +114,6 @@ public final class OlderTerm extends SearchTerm {
      */
     @Override
     public int hashCode() {
-	return interval;
+        return interval;
     }
 }

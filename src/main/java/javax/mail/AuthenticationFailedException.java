@@ -56,17 +56,17 @@ public class AuthenticationFailedException extends MessagingException {
      * Constructs an AuthenticationFailedException.
      */
     public AuthenticationFailedException() {
-	super();
+        super();
     }
 
     /**
      * Constructs an AuthenticationFailedException with the specified
      * detail message.
      *
-     * @param message	The detailed error message
+     * @param message The detailed error message
      */
     public AuthenticationFailedException(String message) {
-	super(message);
+        super(message);
     }
 
     /**
@@ -74,11 +74,11 @@ public class AuthenticationFailedException extends MessagingException {
      * detail message and embedded exception.  The exception is chained
      * to this exception.
      *
-     * @param message	The detailed error message
-     * @param e		The embedded exception
-     * @since		JavaMail 1.5
+     * @param message The detailed error message
+     * @param e       The embedded exception
+     * @since JavaMail 1.5
      */
     public AuthenticationFailedException(String message, Exception e) {
-	super(message, e);
+        super(message, e);
     }
 }

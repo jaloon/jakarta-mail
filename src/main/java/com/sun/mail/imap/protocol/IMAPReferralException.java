@@ -50,28 +50,27 @@ import com.sun.mail.iap.ProtocolException;
 
 public class IMAPReferralException extends ProtocolException {
 
-    private String url;
-
     private static final long serialVersionUID = 2578770669364251968L;
+    private final String url;
 
     /**
      * Constructs an IMAPReferralException with the specified detail message.
      * and URL.
      *
-     * @param s		the detail message
-     * @param url	the URL
+     * @param s   the detail message
+     * @param url the URL
      */
     public IMAPReferralException(String s, String url) {
-	super(s);
-	this.url = url;
+        super(s);
+        this.url = url;
     }
 
     /**
      * Return the IMAP URL in the referral.
      *
-     * @return	the IMAP URL
+     * @return the IMAP URL
      */
     public String getUrl() {
-	return url;
+        return url;
     }
 }

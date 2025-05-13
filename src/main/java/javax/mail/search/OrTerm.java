@@ -50,6 +50,7 @@ import javax.mail.Message;
  */
 public final class OrTerm extends SearchTerm {
 
+    private static final long serialVersionUID = 5380534067523646936L;
     /**
      * The array of terms on which the OR operator should
      * be applied.
@@ -58,8 +59,6 @@ public final class OrTerm extends SearchTerm {
      */
     private SearchTerm[] terms;
 
-    private static final long serialVersionUID = 5380534067523646936L;
-
     /**
      * Constructor that takes two operands.
      *
@@ -67,9 +66,9 @@ public final class OrTerm extends SearchTerm {
      * @param t2 second term
      */
     public OrTerm(SearchTerm t1, SearchTerm t2) {
-	terms = new SearchTerm[2];
-	terms[0] = t1;
-	terms[1] = t2;
+        terms = new SearchTerm[2];
+        terms[0] = t1;
+        terms[1] = t2;
     }
 
     /**
@@ -78,37 +77,37 @@ public final class OrTerm extends SearchTerm {
      * @param t array of search terms
      */
     public OrTerm(SearchTerm[] t) {
-	terms = new SearchTerm[t.length];
-	for (int i = 0; i < t.length; i++)
-	    terms[i] = t[i];
+        terms = new SearchTerm[t.length];
+        for (int i = 0; i < t.length; i++)
+            terms[i] = t[i];
     }
 
     /**
      * Return the search terms.
      *
-     * @return	the search terms
+     * @return the search terms
      */
     public SearchTerm[] getTerms() {
-	return terms.clone();
+        return terms.clone();
     }
 
     /**
      * The OR operation. <p>
-     *
+     * <p>
      * The terms specified in the constructor are applied to
      * the given object and the OR operator is applied to their results.
      *
-     * @param msg	The specified SearchTerms are applied to this Message
-     *			and the OR operator is applied to their results.
-     * @return		true if the OR succeds, otherwise false
+     * @param msg The specified SearchTerms are applied to this Message
+     *            and the OR operator is applied to their results.
+     * @return true if the OR succeds, otherwise false
      */
 
     @Override
     public boolean match(Message msg) {
-	for (int i=0; i < terms.length; i++)
-	    if (terms[i].match(msg))
-		return true;
-	return false;
+        for (int i = 0; i < terms.length; i++)
+            if (terms[i].match(msg))
+                return true;
+        return false;
     }
 
     /**
@@ -116,15 +115,15 @@ public final class OrTerm extends SearchTerm {
      */
     @Override
     public boolean equals(Object obj) {
-	if (!(obj instanceof OrTerm))
-	    return false;
-	OrTerm ot = (OrTerm)obj;
-	if (ot.terms.length != terms.length)
-	    return false;
-	for (int i=0; i < terms.length; i++)
-	    if (!terms[i].equals(ot.terms[i]))
-		return false;
-	return true;
+        if (!(obj instanceof OrTerm))
+            return false;
+        OrTerm ot = (OrTerm) obj;
+        if (ot.terms.length != terms.length)
+            return false;
+        for (int i = 0; i < terms.length; i++)
+            if (!terms[i].equals(ot.terms[i]))
+                return false;
+        return true;
     }
 
     /**
@@ -132,9 +131,9 @@ public final class OrTerm extends SearchTerm {
      */
     @Override
     public int hashCode() {
-	int hash = 0;
-	for (int i=0; i < terms.length; i++)
-	    hash += terms[i].hashCode();
-	return hash;
+        int hash = 0;
+        for (int i = 0; i < terms.length; i++)
+            hash += terms[i].hashCode();
+        return hash;
     }
 }

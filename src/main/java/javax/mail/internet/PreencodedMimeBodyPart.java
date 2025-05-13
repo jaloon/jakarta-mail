@@ -40,11 +40,12 @@
 
 package javax.mail.internet;
 
-import java.io.*;
-import java.util.Enumeration;
-import javax.mail.*;
-
 import com.sun.mail.util.LineOutputStream;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Enumeration;
 
 /**
  * A MimeBodyPart that handles data that has already been encoded.
@@ -57,7 +58,7 @@ import com.sun.mail.util.LineOutputStream;
  * <code>setText</code>, <code>setContent</code>, or
  * <code>setDataHandler</code> methods.
  *
- * @since	JavaMail 1.4
+ * @since JavaMail 1.4
  */
 
 public class PreencodedMimeBodyPart extends MimeBodyPart {
@@ -68,10 +69,10 @@ public class PreencodedMimeBodyPart extends MimeBodyPart {
      * encoded using the specified encoding.  The encoding must
      * be a MIME supported Content-Transfer-Encoding.
      *
-     * @param	encoding	the Content-Transfer-Encoding
+     * @param    encoding    the Content-Transfer-Encoding
      */
     public PreencodedMimeBodyPart(String encoding) {
-	this.encoding = encoding;
+        this.encoding = encoding;
     }
 
     /**
@@ -80,41 +81,41 @@ public class PreencodedMimeBodyPart extends MimeBodyPart {
      */
     @Override
     public String getEncoding() throws MessagingException {
-	return encoding;
+        return encoding;
     }
 
     /**
      * Output the body part as an RFC 822 format stream.
      *
-     * @exception IOException	if an error occurs writing to the
-     *				stream or if an error is generated
-     *				by the javax.activation layer.
-     * @exception MessagingException for other failures
+     * @throws IOException        if an error occurs writing to the
+     *                            stream or if an error is generated
+     *                            by the javax.activation layer.
+     * @throws MessagingException for other failures
      * @see javax.activation.DataHandler#writeTo
      */
     @Override
     public void writeTo(OutputStream os)
-			throws IOException, MessagingException {
+            throws IOException, MessagingException {
 
-	// see if we already have a LOS
-	LineOutputStream los = null;
-	if (os instanceof LineOutputStream) {
-	    los = (LineOutputStream) os;
-	} else {
-	    los = new LineOutputStream(os);
-	}
+        // see if we already have a LOS
+        LineOutputStream los = null;
+        if (os instanceof LineOutputStream) {
+            los = (LineOutputStream) os;
+        } else {
+            los = new LineOutputStream(os);
+        }
 
-	// First, write out the header
-	Enumeration<String> hdrLines = getAllHeaderLines();
-	while (hdrLines.hasMoreElements())
-	    los.writeln(hdrLines.nextElement());
+        // First, write out the header
+        Enumeration<String> hdrLines = getAllHeaderLines();
+        while (hdrLines.hasMoreElements())
+            los.writeln(hdrLines.nextElement());
 
-	// The CRLF separator between header and content
-	los.writeln();
+        // The CRLF separator between header and content
+        los.writeln();
 
-	// Finally, the content, already encoded.
-	getDataHandler().writeTo(os);
-	os.flush();
+        // Finally, the content, already encoded.
+        getDataHandler().writeTo(os);
+        os.flush();
     }
 
     /**
@@ -123,7 +124,7 @@ public class PreencodedMimeBodyPart extends MimeBodyPart {
      */
     @Override
     protected void updateHeaders() throws MessagingException {
-	super.updateHeaders();
-	MimeBodyPart.setEncoding(this, encoding);
+        super.updateHeaders();
+        MimeBodyPart.setEncoding(this, encoding);
     }
 }

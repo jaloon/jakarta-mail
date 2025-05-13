@@ -57,9 +57,9 @@ public class DecodingException extends IOException {
     /**
      * Constructor.
      *
-     * @param	s	the exception message
+     * @param s the exception message
      */
     public DecodingException(String s) {
-	super(s);
+        super(s);
     }
 }

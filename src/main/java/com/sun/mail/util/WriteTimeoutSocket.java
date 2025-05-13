@@ -40,20 +40,23 @@
 
 package com.sun.mail.util;
 
-import java.io.*;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.net.*;
-import java.util.concurrent.*;
+import java.nio.channels.SocketChannel;
 import java.util.Collections;
 import java.util.Set;
-import java.nio.channels.SocketChannel;
-import java.lang.reflect.*;
+import java.util.concurrent.*;
 
 /**
  * A special Socket that uses a ScheduledExecutorService to
  * implement timeouts for writes.  The write timeout is specified
  * (in milliseconds) when the WriteTimeoutSocket is created.
  *
- * @author	Bill Shannon
+ * @author Bill Shannon
  */
 public class WriteTimeoutSocket extends Socket {
 
@@ -65,42 +68,42 @@ public class WriteTimeoutSocket extends Socket {
     private final int timeout;
 
     public WriteTimeoutSocket(Socket socket, int timeout) throws IOException {
-	this.socket = socket;
-	// XXX - could share executor with all instances?
+        this.socket = socket;
+        // XXX - could share executor with all instances?
         this.ses = Executors.newScheduledThreadPool(1);
-	this.timeout = timeout;
+        this.timeout = timeout;
     }
 
     public WriteTimeoutSocket(int timeout) throws IOException {
-	this(new Socket(), timeout);
+        this(new Socket(), timeout);
     }
 
     public WriteTimeoutSocket(InetAddress address, int port, int timeout)
-				throws IOException {
-	this(timeout);
-	socket.connect(new InetSocketAddress(address, port));
+            throws IOException {
+        this(timeout);
+        socket.connect(new InetSocketAddress(address, port));
     }
 
     public WriteTimeoutSocket(InetAddress address, int port,
-			InetAddress localAddress, int localPort, int timeout)
-			throws IOException {
-	this(timeout);
-	socket.bind(new InetSocketAddress(localAddress, localPort));
-	socket.connect(new InetSocketAddress(address, port));
+                              InetAddress localAddress, int localPort, int timeout)
+            throws IOException {
+        this(timeout);
+        socket.bind(new InetSocketAddress(localAddress, localPort));
+        socket.connect(new InetSocketAddress(address, port));
     }
 
     public WriteTimeoutSocket(String host, int port, int timeout)
-				throws IOException {
-	this(timeout);
-	socket.connect(new InetSocketAddress(host, port));
+            throws IOException {
+        this(timeout);
+        socket.connect(new InetSocketAddress(host, port));
     }
 
     public WriteTimeoutSocket(String host, int port,
-			InetAddress localAddress, int localPort, int timeout)
-			throws IOException {
-	this(timeout);
-	socket.bind(new InetSocketAddress(localAddress, localPort));
-	socket.connect(new InetSocketAddress(host, port));
+                              InetAddress localAddress, int localPort, int timeout)
+            throws IOException {
+        this(timeout);
+        socket.bind(new InetSocketAddress(localAddress, localPort));
+        socket.connect(new InetSocketAddress(host, port));
     }
 
     // override all Socket methods and delegate to underlying Socket
@@ -112,22 +115,22 @@ public class WriteTimeoutSocket extends Socket {
 
     @Override
     public void connect(SocketAddress remote, int timeout) throws IOException {
-	socket.connect(remote, timeout);
+        socket.connect(remote, timeout);
     }
 
     @Override
     public void bind(SocketAddress local) throws IOException {
-	socket.bind(local);
+        socket.bind(local);
     }
 
     @Override
     public SocketAddress getRemoteSocketAddress() {
-	return socket.getRemoteSocketAddress();
+        return socket.getRemoteSocketAddress();
     }
 
     @Override
     public SocketAddress getLocalSocketAddress() {
-	return socket.getLocalSocketAddress();
+        return socket.getLocalSocketAddress();
     }
 
     @Override
@@ -138,48 +141,48 @@ public class WriteTimeoutSocket extends Socket {
 
     @Override
     public SocketChannel getChannel() {
-	return socket.getChannel();
+        return socket.getChannel();
     }
 
     @Override
     public InetAddress getInetAddress() {
-	return socket.getInetAddress();
+        return socket.getInetAddress();
     }
 
     @Override
     public InetAddress getLocalAddress() {
-	return socket.getLocalAddress();
+        return socket.getLocalAddress();
     }
 
     @Override
     public int getPort() {
-	return socket.getPort();
+        return socket.getPort();
     }
 
     @Override
     public int getLocalPort() {
-	return socket.getLocalPort();
+        return socket.getLocalPort();
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-	return socket.getInputStream();
+        return socket.getInputStream();
     }
 
     @Override
     public synchronized OutputStream getOutputStream() throws IOException {
-	// wrap the returned stream to implement write timeout
+        // wrap the returned stream to implement write timeout
         return new TimeoutOutputStream(socket.getOutputStream(), ses, timeout);
-    }
-
-    @Override
-    public void setTcpNoDelay(boolean on) throws SocketException {
-        socket.setTcpNoDelay(on);
     }
 
     @Override
     public boolean getTcpNoDelay() throws SocketException {
         return socket.getTcpNoDelay();
+    }
+
+    @Override
+    public void setTcpNoDelay(boolean on) throws SocketException {
+        socket.setTcpNoDelay(on);
     }
 
     @Override
@@ -198,18 +201,13 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
-    public void setOOBInline(boolean on) throws SocketException {
-        socket.setOOBInline(on);
-    }
-
-    @Override
     public boolean getOOBInline() throws SocketException {
         return socket.getOOBInline();
     }
 
     @Override
-    public void setSoTimeout(int timeout) throws SocketException {
-	socket.setSoTimeout(timeout);
+    public void setOOBInline(boolean on) throws SocketException {
+        socket.setOOBInline(on);
     }
 
     @Override
@@ -218,8 +216,8 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
-    public void setSendBufferSize(int size) throws SocketException {
-        socket.setSendBufferSize(size);
+    public void setSoTimeout(int timeout) throws SocketException {
+        socket.setSoTimeout(timeout);
     }
 
     @Override
@@ -228,8 +226,8 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
-    public void setReceiveBufferSize(int size) throws SocketException {
-        socket.setReceiveBufferSize(size);
+    public void setSendBufferSize(int size) throws SocketException {
+        socket.setSendBufferSize(size);
     }
 
     @Override
@@ -238,8 +236,8 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
-    public void setKeepAlive(boolean on) throws SocketException {
-        socket.setKeepAlive(on);
+    public void setReceiveBufferSize(int size) throws SocketException {
+        socket.setReceiveBufferSize(size);
     }
 
     @Override
@@ -248,8 +246,8 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
-    public void setTrafficClass(int tc) throws SocketException {
-        socket.setTrafficClass(tc);
+    public void setKeepAlive(boolean on) throws SocketException {
+        socket.setKeepAlive(on);
     }
 
     @Override
@@ -258,8 +256,8 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
-    public void setReuseAddress(boolean on) throws SocketException {
-        socket.setReuseAddress(on);
+    public void setTrafficClass(int tc) throws SocketException {
+        socket.setTrafficClass(tc);
     }
 
     @Override
@@ -268,27 +266,32 @@ public class WriteTimeoutSocket extends Socket {
     }
 
     @Override
+    public void setReuseAddress(boolean on) throws SocketException {
+        socket.setReuseAddress(on);
+    }
+
+    @Override
     public void close() throws IOException {
-	try {
-	    socket.close();
-	} finally {
-	    ses.shutdownNow();
-	}
+        try {
+            socket.close();
+        } finally {
+            ses.shutdownNow();
+        }
     }
 
     @Override
     public void shutdownInput() throws IOException {
-	socket.shutdownInput();
+        socket.shutdownInput();
     }
 
     @Override
     public void shutdownOutput() throws IOException {
-	socket.shutdownOutput();
+        socket.shutdownOutput();
     }
 
     @Override
     public String toString() {
-	return socket.toString();
+        return socket.toString();
     }
 
     @Override
@@ -323,35 +326,35 @@ public class WriteTimeoutSocket extends Socket {
      */
     //@Override
     public <T> Socket setOption(SocketOption<T> so, T val) throws IOException {
-	// socket.setOption(so, val);
-	// return this;
-	throw new UnsupportedOperationException("WriteTimeoutSocket.setOption");
+        // socket.setOption(so, val);
+        // return this;
+        throw new UnsupportedOperationException("WriteTimeoutSocket.setOption");
     }
 
     //@Override
     public <T> T getOption(SocketOption<T> so) throws IOException {
-	// return socket.getOption(so);
-	throw new UnsupportedOperationException("WriteTimeoutSocket.getOption");
+        // return socket.getOption(so);
+        throw new UnsupportedOperationException("WriteTimeoutSocket.getOption");
     }
 
     //@Override
     public Set<SocketOption<?>> supportedOptions() {
-	// return socket.supportedOptions();
-	return Collections.emptySet();
+        // return socket.supportedOptions();
+        return Collections.emptySet();
     }
 
     /**
      * KLUDGE for Android, which has this illegal non-Java Compatible method.
      *
-     * @return	the FileDescriptor object
+     * @return the FileDescriptor object
      */
     public FileDescriptor getFileDescriptor$() {
-	try {
-	    Method m = Socket.class.getDeclaredMethod("getFileDescriptor$");
-	    return (FileDescriptor)m.invoke(socket);
-	} catch (Exception ex) {
-	    return null;
-	}
+        try {
+            Method m = Socket.class.getDeclaredMethod("getFileDescriptor$");
+            return (FileDescriptor) m.invoke(socket);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }
 
@@ -369,57 +372,57 @@ class TimeoutOutputStream extends OutputStream {
     private byte[] b1;
 
     public TimeoutOutputStream(OutputStream os0, ScheduledExecutorService ses,
-				int timeout) throws IOException {
-	this.os = os0;
-	this.ses = ses;
-	this.timeout = timeout;
-	timeoutTask = new Callable<Object>() {
-	    @Override
-	    public Object call() throws Exception {
-		os.close();	// close the stream to abort the write
-		return null;
-	    }
-	};
+                               int timeout) throws IOException {
+        this.os = os0;
+        this.ses = ses;
+        this.timeout = timeout;
+        timeoutTask = new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                os.close();    // close the stream to abort the write
+                return null;
+            }
+        };
     }
 
     @Override
     public synchronized void write(int b) throws IOException {
-	if (b1 == null)
-	    b1 = new byte[1];
-	b1[0] = (byte)b;
-	this.write(b1);
+        if (b1 == null)
+            b1 = new byte[1];
+        b1[0] = (byte) b;
+        this.write(b1);
     }
 
     @Override
     public synchronized void write(byte[] bs, int off, int len)
-				throws IOException {
-	if ((off < 0) || (off > bs.length) || (len < 0) ||
-	    ((off + len) > bs.length) || ((off + len) < 0)) {
-	    throw new IndexOutOfBoundsException();
-	} else if (len == 0) {
-	    return;
-	}
+            throws IOException {
+        if ((off < 0) || (off > bs.length) || (len < 0) ||
+                ((off + len) > bs.length) || ((off + len) < 0)) {
+            throw new IndexOutOfBoundsException();
+        } else if (len == 0) {
+            return;
+        }
 
-	// Implement timeout with a scheduled task
-	ScheduledFuture<Object> sf = null;
-	try {
-	    try {
-		if (timeout > 0)
-		    sf = ses.schedule(timeoutTask,
-					timeout, TimeUnit.MILLISECONDS);
-	    } catch (RejectedExecutionException ex) {
-		// ignore it; Executor was shut down by another thread,
-		// the following write should fail with IOException
-	    }
-	    os.write(bs, off, len);
-	} finally {
-	    if (sf != null)
-		sf.cancel(true);
-	}
+        // Implement timeout with a scheduled task
+        ScheduledFuture<Object> sf = null;
+        try {
+            try {
+                if (timeout > 0)
+                    sf = ses.schedule(timeoutTask,
+                            timeout, TimeUnit.MILLISECONDS);
+            } catch (RejectedExecutionException ex) {
+                // ignore it; Executor was shut down by another thread,
+                // the following write should fail with IOException
+            }
+            os.write(bs, off, len);
+        } finally {
+            if (sf != null)
+                sf.cancel(true);
+        }
     }
 
     @Override
     public void close() throws IOException {
-	os.close();
+        os.close();
     }
 }

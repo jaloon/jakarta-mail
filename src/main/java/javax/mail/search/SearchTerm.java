@@ -40,17 +40,16 @@
 
 package javax.mail.search;
 
-import java.io.Serializable;
-
 import javax.mail.Message;
+import java.io.Serializable;
 
 /**
  * Search criteria are expressed as a tree of search-terms, forming
  * a parse-tree for the search expression. <p>
- *
+ * <p>
  * Search-terms are represented by this class. This is an abstract
  * class; subclasses implement specific match methods. <p>
- *
+ * <p>
  * Search terms are serializable, which allows storing a search term
  * between sessions.
  *
@@ -70,8 +69,8 @@ public abstract class SearchTerm implements Serializable {
      * This method applies a specific match criterion to the given
      * message and returns the result.
      *
-     * @param msg	The match criterion is applied on this message
-     * @return		true, it the match succeeds, false if the match fails
+     * @param msg The match criterion is applied on this message
+     * @return true, it the match succeeds, false if the match fails
      */
 
     public abstract boolean match(Message msg);

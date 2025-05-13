@@ -40,7 +40,6 @@
  */
 package com.sun.mail.util.logging;
 
-import static com.sun.mail.util.logging.LogManagerProperties.fromLogManager;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.text.MessageFormat;
 import java.util.Comparator;
@@ -49,6 +48,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
+
+import static com.sun.mail.util.logging.LogManagerProperties.fromLogManager;
 
 /**
  * A LogRecord formatter that takes a sequence of LogRecords and combines them
@@ -136,10 +137,10 @@ public class CollectorFormatter extends Formatter {
     /**
      * Creates the formatter using the LogManager defaults.
      *
-     * @throws SecurityException if a security manager exists and the caller
-     * does not have <tt>LoggingPermission("control")</tt>.
+     * @throws SecurityException            if a security manager exists and the caller
+     *                                      does not have <tt>LoggingPermission("control")</tt>.
      * @throws UndeclaredThrowableException if there are problems loading from
-     * the LogManager.
+     *                                      the LogManager.
      */
     public CollectorFormatter() {
         final String p = getClass().getName();
@@ -152,10 +153,10 @@ public class CollectorFormatter extends Formatter {
      * Creates the formatter using the given format.
      *
      * @param format the message format or null to use the LogManager default.
-     * @throws SecurityException if a security manager exists and the caller
-     * does not have <tt>LoggingPermission("control")</tt>.
+     * @throws SecurityException            if a security manager exists and the caller
+     *                                      does not have <tt>LoggingPermission("control")</tt>.
      * @throws UndeclaredThrowableException if there are problems loading from
-     * the LogManager.
+     *                                      the LogManager.
      */
     public CollectorFormatter(String format) {
         final String p = getClass().getName();
@@ -168,17 +169,17 @@ public class CollectorFormatter extends Formatter {
      * Creates the formatter using the given values.
      *
      * @param format the format string or null to use the LogManager default.
-     * @param f the formatter used on the collected log record or null to
-     * specify no formatter.
-     * @param c the comparator used to determine which log record to format or
-     * null to specify no comparator.
-     * @throws SecurityException if a security manager exists and the caller
-     * does not have <tt>LoggingPermission("control")</tt>.
+     * @param f      the formatter used on the collected log record or null to
+     *               specify no formatter.
+     * @param c      the comparator used to determine which log record to format or
+     *               null to specify no comparator.
+     * @throws SecurityException            if a security manager exists and the caller
+     *                                      does not have <tt>LoggingPermission("control")</tt>.
      * @throws UndeclaredThrowableException if there are problems loading from
-     * the LogManager.
+     *                                      the LogManager.
      */
     public CollectorFormatter(String format, Formatter f,
-            Comparator<? super LogRecord> c) {
+                              Comparator<? super LogRecord> c) {
         final String p = getClass().getName();
         this.fmt = format == null ? initFormat(p) : format;
         this.formatter = f;
@@ -203,10 +204,10 @@ public class CollectorFormatter extends Formatter {
         boolean accepted;
         do {
             final LogRecord peek = peek();
-            //The self compare of the first record acts like a type check.
+            // The self compare of the first record acts like a type check.
             LogRecord update = apply(peek != null ? peek : record, record);
-            if (peek != update) { //Not identical.
-                update.getSourceMethodName(); //Infer caller, null check.
+            if (peek != update) { // Not identical.
+                update.getSourceMethodName(); // Infer caller, null check.
                 accepted = acceptAndUpdate(peek, update);
             } else {
                 accepted = accept(peek, record);
@@ -323,7 +324,7 @@ public class CollectorFormatter extends Formatter {
      */
     @Override
     public String getTail(final Handler h) {
-        super.getTail(h);  //Be forward compatible with super.getHead.
+        super.getTail(h);  // Be forward compatible with super.getHead.
         return formatRecord(h, true);
     }
 
@@ -381,12 +382,12 @@ public class CollectorFormatter extends Formatter {
          * record to guard against subclasses of LogRecord that might attempt to
          * reset the state by triggering a call to getTail.
          */
-        final long millis = u.getMillis(); //Null check.
+        final long millis = u.getMillis(); // Null check.
         final Throwable ex = u.getThrown();
-        if (last == e) {  //Only if the exact same reference.
+        if (last == e) {  // Only if the exact same reference.
             if (++count != 1L) {
                 minMillis = Math.min(minMillis, millis);
-            } else { //Show single records as instant and not a time period.
+            } else { // Show single records as instant and not a time period.
                 minMillis = millis;
             }
             maxMillis = Math.max(maxMillis, millis);
@@ -402,6 +403,7 @@ public class CollectorFormatter extends Formatter {
 
     /**
      * Resets all of the collected summary statistics including the LogRecord.
+     *
      * @param min the current min milliseconds.
      */
     private synchronized void reset(final long min) {
@@ -419,9 +421,9 @@ public class CollectorFormatter extends Formatter {
     /**
      * Formats the given record with the head and tail.
      *
-     * @param h the Handler or null.
+     * @param h     the Handler or null.
      * @param reset true if the summary statistics and LogRecord should be reset
-     * back to initial values.
+     *              back to initial values.
      * @return the formatted string.
      * @see #getTail(java.util.logging.Handler)
      */
@@ -445,7 +447,7 @@ public class CollectorFormatter extends Formatter {
                 msh = now;
             }
 
-            if (reset) { //BUG ID 6351685
+            if (reset) { // BUG ID 6351685
                 reset(msh);
             }
         }
@@ -473,7 +475,7 @@ public class CollectorFormatter extends Formatter {
         }
 
         final MessageFormat mf;
-        if (l == null) { //BUG ID 8039165
+        if (l == null) { // BUG ID 8039165
             mf = new MessageFormat(fmt);
         } else {
             mf = new MessageFormat(fmt, l);
@@ -483,8 +485,8 @@ public class CollectorFormatter extends Formatter {
          * These arguments are described in the getTail documentation.
          */
         return mf.format(new Object[]{finish(head), finish(msg), finish(tail),
-            c, (c - 1L), t, (c - t), msl, msh, (msh - msl), INIT_TIME, now,
-            (now - INIT_TIME), g});
+                c, (c - 1L), t, (c - t), msl, msh, (msh - msl), INIT_TIME, now,
+                (now - INIT_TIME), g});
     }
 
     /**
@@ -548,7 +550,7 @@ public class CollectorFormatter extends Formatter {
      *
      * @param p the class name prefix.
      * @return the formatter.
-     * @throws NullPointerException if the given argument is null.
+     * @throws NullPointerException         if the given argument is null.
      * @throws UndeclaredThrowableException if the formatter can not be created.
      */
     private Formatter initFormatter(final String p) {
@@ -567,7 +569,7 @@ public class CollectorFormatter extends Formatter {
                 f = null;
             }
         } else {
-            //Don't force the byte code verifier to load the formatter.
+            // Don't force the byte code verifier to load the formatter.
             f = Formatter.class.cast(new CompactFormatter());
         }
         return f;
@@ -579,11 +581,11 @@ public class CollectorFormatter extends Formatter {
      *
      * @param p the class name prefix.
      * @return the comparator or null.
-     * @throws IllegalArgumentException if it was specified that the comparator
-     * should be reversed but no initial comparator was specified.
-     * @throws NullPointerException if the given argument is null.
+     * @throws IllegalArgumentException     if it was specified that the comparator
+     *                                      should be reversed but no initial comparator was specified.
+     * @throws NullPointerException         if the given argument is null.
      * @throws UndeclaredThrowableException if the comparator can not be
-     * created.
+     *                                      created.
      */
     @SuppressWarnings("unchecked")
     private Comparator<? super LogRecord> initComparator(final String p) {
@@ -603,7 +605,7 @@ public class CollectorFormatter extends Formatter {
                         throw new IllegalArgumentException(
                                 "No comparator to reverse.");
                     } else {
-                        c = null; //No ordering.
+                        c = null; // No ordering.
                     }
                 }
             } else {
@@ -611,12 +613,12 @@ public class CollectorFormatter extends Formatter {
                     throw new IllegalArgumentException(
                             "No comparator to reverse.");
                 } else {
-                    //Don't force the byte code verifier to load the comparator.
+                    // Don't force the byte code verifier to load the comparator.
                     c = Comparator.class.cast(SeverityComparator.getInstance());
                 }
             }
         } catch (final RuntimeException re) {
-            throw re; //Avoid catch all.
+            throw re; // Avoid catch all.
         } catch (final Exception e) {
             throw new UndeclaredThrowableException(e);
         }

@@ -40,12 +40,14 @@
  */
 package com.sun.mail.util.logging;
 
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
+
 import static com.sun.mail.util.logging.LogManagerProperties.fromLogManager;
-import java.util.logging.*;
 
 /**
  * A filter used to limit log records based on a maximum generation rate.
- *
+ * <p>
  * The duration specified is used to compute the record rate and the amount of
  * time the filter will reject records once the rate has been exceeded. Once the
  * rate is exceeded records are not allowed until the duration has elapsed.
@@ -83,7 +85,6 @@ import java.util.logging.*;
  *  com.sun.mail.util.logging.DurationFilter.duration = PT6M
  * }
  * </pre>
- *
  *
  * @author Jason Mehrens
  * @since JavaMail 1.5.5
@@ -127,13 +128,80 @@ public class DurationFilter implements Filter {
      * Creates the filter using the given properties. Default values are used if
      * any of the given values are outside the allowed range.
      *
-     * @param records the number of records per duration.
+     * @param records  the number of records per duration.
      * @param duration the number of milliseconds to suppress log records from
-     * being published.
+     *                 being published.
      */
     public DurationFilter(final long records, final long duration) {
         this.records = checkRecords(records);
         this.duration = checkDuration(duration);
+    }
+
+    /**
+     * Parse any long value or multiplication expressions into tokens.
+     *
+     * @param value the expression or value.
+     * @return an array of long tokens, never empty.
+     * @throws NullPointerException  if the given value is null.
+     * @throws NumberFormatException if the expression is invalid.
+     */
+    private static String[] tokenizeLongs(final String value) {
+        String[] e;
+        final int i = value.indexOf('*');
+        if (i > -1 && (e = value.split("\\s*\\*\\s*")).length != 0) {
+            if (i == 0 || value.charAt(value.length() - 1) == '*') {
+                throw new NumberFormatException(value);
+            }
+
+            if (e.length == 1) {
+                throw new NumberFormatException(e[0]);
+            }
+        } else {
+            e = new String[]{value};
+        }
+        return e;
+    }
+
+    /**
+     * Multiply and check for overflow. This can be replaced with
+     * {@code java.lang.Math.multiplyExact} when JavaMail requires JDK 8.
+     *
+     * @param x the first value.
+     * @param y the second value.
+     * @return x times y.
+     * @throws ArithmeticException if overflow is detected.
+     */
+    private static long multiplyExact(final long x, final long y) {
+        long r = x * y;
+        if (((Math.abs(x) | Math.abs(y)) >>> 31L != 0L)) {
+            if (((y != 0L) && (r / y != x))
+                    || (x == Long.MIN_VALUE && y == -1L)) {
+                throw new ArithmeticException();
+            }
+        }
+        return r;
+    }
+
+    /**
+     * Converts record count to a valid record count. If the value is out of
+     * bounds then the default record count is used.
+     *
+     * @param records the record count.
+     * @return a valid number of record count.
+     */
+    private static long checkRecords(final long records) {
+        return records > 0L ? records : 1000L;
+    }
+
+    /**
+     * Converts the duration to a valid duration. If the value is out of bounds
+     * then the default duration is used.
+     *
+     * @param duration the duration to check.
+     * @return a valid duration.
+     */
+    private static long checkDuration(final long duration) {
+        return duration > 0L ? duration : 15L * 60L * 1000L;
     }
 
     /**
@@ -144,7 +212,7 @@ public class DurationFilter implements Filter {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) { //Avoid locks and deal with rapid state changes.
+        if (this == obj) { // Avoid locks and deal with rapid state changes.
             return true;
         }
 
@@ -211,7 +279,7 @@ public class DurationFilter implements Filter {
      * @return true if allowed; false otherwise.
      * @throws NullPointerException if given record is null.
      */
-    @SuppressWarnings("override") //JDK-6954234
+    @SuppressWarnings("override") // JDK-6954234
     public boolean isLoggable(final LogRecord record) {
         return accept(record.getMillis());
     }
@@ -258,12 +326,12 @@ public class DurationFilter implements Filter {
      *
      * @return a copy of this filter.
      * @throws CloneNotSupportedException if this filter is not allowed to be
-     * cloned.
+     *                                    cloned.
      */
     @Override
     protected DurationFilter clone() throws CloneNotSupportedException {
         final DurationFilter clone = (DurationFilter) super.clone();
-        clone.count = 0L; //Reset the filter state.
+        clone.count = 0L; // Reset the filter state.
         clone.peak = 0L;
         clone.start = 0L;
         return clone;
@@ -272,7 +340,7 @@ public class DurationFilter implements Filter {
     /**
      * Checks if this filter is not saturated or bellow a maximum rate.
      *
-     * @param limit the number of records allowed to be under the rate.
+     * @param limit  the number of records allowed to be under the rate.
      * @param millis the current time in milliseconds.
      * @return true if not saturated or bellow the rate.
      */
@@ -285,11 +353,11 @@ public class DurationFilter implements Filter {
             s = start;
         }
 
-        if (c > 0L) { //If not saturated.
+        if (c > 0L) { // If not saturated.
             if ((millis - s) >= duration || c < limit) {
                 return true;
             }
-        } else {  //Subtraction is used to deal with numeric overflow.
+        } else {  // Subtraction is used to deal with numeric overflow.
             if ((millis - s) >= 0L || c == 0L) {
                 return true;
             }
@@ -304,38 +372,38 @@ public class DurationFilter implements Filter {
      * @return true if accepted false otherwise.
      */
     private synchronized boolean accept(final long millis) {
-        //Subtraction is used to deal with numeric overflow of millis.
+        // Subtraction is used to deal with numeric overflow of millis.
         boolean allow;
-        if (count > 0L) { //If not saturated.
+        if (count > 0L) { // If not saturated.
             if ((millis - peak) > 0L) {
-                peak = millis; //Record the new peak.
+                peak = millis; // Record the new peak.
             }
 
-            //Under the rate if the count has not been reached.
+            // Under the rate if the count has not been reached.
             if (count != records) {
                 ++count;
                 allow = true;
             } else {
                 if ((peak - start) >= duration) {
-                    count = 1L;  //Start a new duration.
+                    count = 1L;  // Start a new duration.
                     start = peak;
                     allow = true;
                 } else {
-                    count = -1L; //Saturate for the duration.
+                    count = -1L; // Saturate for the duration.
                     start = peak + duration;
                     allow = false;
                 }
             }
         } else {
-            //If the saturation period has expired or this is the first record
-            //then start a new duration and allow records.
+            // If the saturation period has expired or this is the first record
+            // then start a new duration and allow records.
             if ((millis - start) >= 0L || count == 0L) {
                 count = 1L;
                 start = millis;
                 peak = millis;
                 allow = true;
             } else {
-                allow = false; //Remain in a saturated state.
+                allow = false; // Remain in a saturated state.
             }
         }
         return allow;
@@ -365,7 +433,7 @@ public class DurationFilter implements Filter {
                 }
             }
 
-            if (result == 0L) { //Zero is invalid.
+            if (result == 0L) { // Zero is invalid.
                 try {
                     result = 1L;
                     for (String s : tokenizeLongs(value)) {
@@ -389,80 +457,13 @@ public class DurationFilter implements Filter {
      * encoded as an ISO ISO-8601 duration format.
      *
      * @param suffix the suffix property.
-     * @param value the value of the property.
+     * @param value  the value of the property.
      * @return true if the entry is a time entry.
      * @throws IndexOutOfBoundsException if value is empty.
-     * @throws NullPointerException if either argument is null.
+     * @throws NullPointerException      if either argument is null.
      */
     private boolean isTimeEntry(final String suffix, final String value) {
         return (value.charAt(0) == 'P' || value.charAt(0) == 'p')
                 && suffix.equals(".duration");
-    }
-
-    /**
-     * Parse any long value or multiplication expressions into tokens.
-     *
-     * @param value the expression or value.
-     * @return an array of long tokens, never empty.
-     * @throws NullPointerException if the given value is null.
-     * @throws NumberFormatException if the expression is invalid.
-     */
-    private static String[] tokenizeLongs(final String value) {
-        String[] e;
-        final int i = value.indexOf('*');
-        if (i > -1 && (e = value.split("\\s*\\*\\s*")).length != 0) {
-            if (i == 0 || value.charAt(value.length() - 1) == '*') {
-                throw new NumberFormatException(value);
-            }
-
-            if (e.length == 1) {
-                throw new NumberFormatException(e[0]);
-            }
-        } else {
-            e = new String[]{value};
-        }
-        return e;
-    }
-
-    /**
-     * Multiply and check for overflow. This can be replaced with
-     * {@code java.lang.Math.multiplyExact} when JavaMail requires JDK 8.
-     *
-     * @param x the first value.
-     * @param y the second value.
-     * @return x times y.
-     * @throws ArithmeticException if overflow is detected.
-     */
-    private static long multiplyExact(final long x, final long y) {
-        long r = x * y;
-        if (((Math.abs(x) | Math.abs(y)) >>> 31L != 0L)) {
-            if (((y != 0L) && (r / y != x))
-                    || (x == Long.MIN_VALUE && y == -1L)) {
-                throw new ArithmeticException();
-            }
-        }
-        return r;
-    }
-
-    /**
-     * Converts record count to a valid record count. If the value is out of
-     * bounds then the default record count is used.
-     *
-     * @param records the record count.
-     * @return a valid number of record count.
-     */
-    private static long checkRecords(final long records) {
-        return records > 0L ? records : 1000L;
-    }
-
-    /**
-     * Converts the duration to a valid duration. If the value is out of bounds
-     * then the default duration is used.
-     *
-     * @param duration the duration to check.
-     * @return a valid duration.
-     */
-    private static long checkDuration(final long duration) {
-        return duration > 0L ? duration : 15L * 60L * 1000L;
     }
 }

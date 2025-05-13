@@ -40,27 +40,29 @@
 
 package com.sun.mail.handlers;
 
-import java.io.*;
-import java.util.Properties;
-import javax.activation.*;
+import javax.activation.ActivationDataFlavor;
+import javax.activation.DataSource;
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 
 
 /**
- * @author	Christopher Cotton
+ * @author Christopher Cotton
  */
 
 
 public class message_rfc822 extends handler_base {
 
     private static ActivationDataFlavor[] ourDataFlavor = {
-	new ActivationDataFlavor(Message.class, "message/rfc822", "Message")
+            new ActivationDataFlavor(Message.class, "message/rfc822", "Message")
     };
 
     @Override
     protected ActivationDataFlavor[] getDataFlavors() {
-	return ourDataFlavor;
+        return ourDataFlavor;
     }
 
     /**
@@ -68,47 +70,47 @@ public class message_rfc822 extends handler_base {
      */
     @Override
     public Object getContent(DataSource ds) throws IOException {
-	// create a new MimeMessage
-	try {
-	    Session session;
-	    if (ds instanceof MessageAware) {
-		MessageContext mc = ((MessageAware)ds).getMessageContext();
-		session = mc.getSession();
-	    } else {
-		// Hopefully a rare case.  Also hopefully the application
-		// has created a default Session that can just be returned
-		// here.  If not, the one we create here is better than
-		// nothing, but overall not a really good answer.
-		session = Session.getDefaultInstance(new Properties(), null);
-	    }
-	    return new MimeMessage(session, ds.getInputStream());
-	} catch (MessagingException me) {
-	    IOException ioex =
-		new IOException("Exception creating MimeMessage in " +
-		    "message/rfc822 DataContentHandler");
-	    ioex.initCause(me);
-	    throw ioex;
-	}
+        // create a new MimeMessage
+        try {
+            Session session;
+            if (ds instanceof MessageAware) {
+                MessageContext mc = ((MessageAware) ds).getMessageContext();
+                session = mc.getSession();
+            } else {
+                // Hopefully a rare case.  Also hopefully the application
+                // has created a default Session that can just be returned
+                // here.  If not, the one we create here is better than
+                // nothing, but overall not a really good answer.
+                session = Session.getDefaultInstance(new Properties(), null);
+            }
+            return new MimeMessage(session, ds.getInputStream());
+        } catch (MessagingException me) {
+            IOException ioex =
+                    new IOException("Exception creating MimeMessage in " +
+                            "message/rfc822 DataContentHandler");
+            ioex.initCause(me);
+            throw ioex;
+        }
     }
-    
+
     /**
      * Write the object as a byte stream.
      */
     @Override
-    public void writeTo(Object obj, String mimeType, OutputStream os) 
-			throws IOException {
-	// if the object is a message, we know how to write that out
-	if (obj instanceof Message) {
-	    Message m = (Message)obj;
-	    try {
-		m.writeTo(os);
-	    } catch (MessagingException me) {
-		IOException ioex = new IOException("Exception writing message");
-		ioex.initCause(me);
-		throw ioex;
-	    }
-	} else {
-	    throw new IOException("unsupported object");
-	}
+    public void writeTo(Object obj, String mimeType, OutputStream os)
+            throws IOException {
+        // if the object is a message, we know how to write that out
+        if (obj instanceof Message) {
+            Message m = (Message) obj;
+            try {
+                m.writeTo(os);
+            } catch (MessagingException me) {
+                IOException ioex = new IOException("Exception writing message");
+                ioex.initCause(me);
+                throw ioex;
+            }
+        } else {
+            throw new IOException("unsupported object");
+        }
     }
 }

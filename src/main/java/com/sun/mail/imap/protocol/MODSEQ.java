@@ -40,18 +40,18 @@
 
 package com.sun.mail.imap.protocol;
 
-import com.sun.mail.iap.*; 
+import com.sun.mail.iap.ParsingException;
 
 /**
  * This class represents the MODSEQ data item.
  *
- * @since	JavaMail 1.5.1
- * @author	Bill Shannon
+ * @author Bill Shannon
+ * @since JavaMail 1.5.1
  */
 
 public class MODSEQ implements Item {
-    
-    static final char[] name = {'M','O','D','S','E','Q'};
+
+    static final char[] name = {'M', 'O', 'D', 'S', 'E', 'Q'};
     public int seqnum;
 
     public long modseq;
@@ -59,19 +59,19 @@ public class MODSEQ implements Item {
     /**
      * Constructor.
      *
-     * @param	r	the FetchResponse
-     * @exception	ParsingException	for parsing failures
+     * @param r the FetchResponse
+     * @throws ParsingException for parsing failures
      */
     public MODSEQ(FetchResponse r) throws ParsingException {
-	seqnum = r.getNumber();
-	r.skipSpaces();
+        seqnum = r.getNumber();
+        r.skipSpaces();
 
-	if (r.readByte() != '(')
-	    throw new ParsingException("MODSEQ parse error");
+        if (r.readByte() != '(')
+            throw new ParsingException("MODSEQ parse error");
 
-	modseq = r.readLong();
+        modseq = r.readLong();
 
-	if (!r.isNextNonSpace(')'))
-	    throw new ParsingException("MODSEQ parse error");
+        if (!r.isNextNonSpace(')'))
+            throw new ParsingException("MODSEQ parse error");
     }
 }

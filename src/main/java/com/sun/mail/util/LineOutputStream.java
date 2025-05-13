@@ -40,14 +40,16 @@
 
 package com.sun.mail.util;
 
-import java.io.*;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
  * This class is to support writing out Strings as a sequence of bytes
  * terminated by a CRLF sequence. The String must contain only US-ASCII
  * characters.<p>
- *
+ * <p>
  * The expected use is to write out RFC822 style headers to an output
  * stream. <p>
  *
@@ -56,41 +58,41 @@ import java.nio.charset.StandardCharsets;
  */
 
 public class LineOutputStream extends FilterOutputStream {
-    private boolean allowutf8;
-
     private static byte[] newline;
 
     static {
-	newline = new byte[2];
-	newline[0] = (byte)'\r';
-	newline[1] = (byte)'\n';
+        newline = new byte[2];
+        newline[0] = (byte) '\r';
+        newline[1] = (byte) '\n';
     }
 
+    private boolean allowutf8;
+
     public LineOutputStream(OutputStream out) {
-	this(out, false);
+        this(out, false);
     }
 
     /**
-     * @param	out	the OutputStream
-     * @param	allowutf8	allow UTF-8 characters?
-     * @since	JavaMail 1.6
+     * @param out       the OutputStream
+     * @param allowutf8 allow UTF-8 characters?
+     * @since JavaMail 1.6
      */
     public LineOutputStream(OutputStream out, boolean allowutf8) {
-	super(out);
-	this.allowutf8 = allowutf8;
+        super(out);
+        this.allowutf8 = allowutf8;
     }
 
     public void writeln(String s) throws IOException {
-	byte[] bytes;
-	if (allowutf8)
-	    bytes = s.getBytes(StandardCharsets.UTF_8);
-	else
-	    bytes = ASCIIUtility.getBytes(s);
-	out.write(bytes);
-	out.write(newline);
+        byte[] bytes;
+        if (allowutf8)
+            bytes = s.getBytes(StandardCharsets.UTF_8);
+        else
+            bytes = ASCIIUtility.getBytes(s);
+        out.write(bytes);
+        out.write(newline);
     }
 
     public void writeln() throws IOException {
-	out.write(newline);
+        out.write(newline);
     }
 }

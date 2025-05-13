@@ -41,7 +41,7 @@
 package javax.mail;
 
 /**
- * The Provider is a class that describes a protocol 
+ * The Provider is a class that describes a protocol
  * implementation.  The values typically come from the
  * javamail.providers and javamail.default.providers
  * resource files.  An application may also create and
@@ -53,31 +53,8 @@ package javax.mail;
  */
 public class Provider {
 
-    /**
-     * This inner class defines the Provider type.
-     * Currently, STORE and TRANSPORT are the only two provider types 
-     * supported.
-     */
-
-    public static class Type {
-	public static final Type STORE     = new Type("STORE");
-	public static final Type TRANSPORT = new Type("TRANSPORT");
-
-	private String type;
-
-	private Type(String type) {
-	    this.type = type;
-	}
-
-	@Override
-	public String toString() {
-	    return type;
-	}
-    }
-
     private Type type;
     private String protocol, className, vendor, version;
-
     /**
      * Create a new provider of the specified type for the specified
      * protocol.  The specified class implements the provider.
@@ -89,74 +66,96 @@ public class Provider {
      * @param version   optional implementation version string (may be null)
      * @since JavaMail 1.4
      */
-    public Provider(Type type, String protocol, String classname, 
-	     String vendor, String version) {
-	this.type = type;
-	this.protocol = protocol;
-	this.className = classname;
-	this.vendor = vendor;
-	this.version = version;
+    public Provider(Type type, String protocol, String classname,
+                    String vendor, String version) {
+        this.type = type;
+        this.protocol = protocol;
+        this.className = classname;
+        this.vendor = vendor;
+        this.version = version;
     }
 
     /**
      * Returns the type of this Provider.
      *
-     * @return	the provider type
+     * @return the provider type
      */
     public Type getType() {
-	return type;
+        return type;
     }
 
     /**
      * Returns the protocol supported by this Provider.
      *
-     * @return	the protocol
+     * @return the protocol
      */
     public String getProtocol() {
-	return protocol;
+        return protocol;
     }
 
     /**
      * Returns the name of the class that implements the protocol.
      *
-     * @return	the class name
+     * @return the class name
      */
     public String getClassName() {
-	return className;
+        return className;
     }
 
     /**
      * Returns the name of the vendor associated with this implementation
      * or null.
      *
-     * @return	the vendor
+     * @return the vendor
      */
     public String getVendor() {
-	return vendor;
+        return vendor;
     }
 
     /**
      * Returns the version of this implementation or null if no version.
      *
-     * @return	the version
+     * @return the version
      */
     public String getVersion() {
-	return version;
+        return version;
     }
 
     /** Overrides Object.toString() */
     @Override
     public String toString() {
-	String s = "javax.mail.Provider[" + type + "," +
-		    protocol + "," + className;
+        String s = "javax.mail.Provider[" + type + "," +
+                protocol + "," + className;
 
-	if (vendor != null)
-	    s += "," + vendor;
+        if (vendor != null)
+            s += "," + vendor;
 
-	if (version != null)
-	    s += "," + version;
+        if (version != null)
+            s += "," + version;
 
-	s += "]";
-	return s;
+        s += "]";
+        return s;
+    }
+
+    /**
+     * This inner class defines the Provider type.
+     * Currently, STORE and TRANSPORT are the only two provider types
+     * supported.
+     */
+
+    public static class Type {
+        public static final Type STORE = new Type("STORE");
+        public static final Type TRANSPORT = new Type("TRANSPORT");
+
+        private String type;
+
+        private Type(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            return type;
+        }
     }
 }

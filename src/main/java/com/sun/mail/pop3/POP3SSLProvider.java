@@ -48,7 +48,7 @@ import javax.mail.Provider;
  */
 public class POP3SSLProvider extends Provider {
     public POP3SSLProvider() {
-	super(Provider.Type.STORE, "pop3s", POP3SSLStore.class.getName(),
-	    "Oracle", null);
+        super(Provider.Type.STORE, "pop3s", POP3SSLStore.class.getName(),
+                "Oracle", null);
     }
 }

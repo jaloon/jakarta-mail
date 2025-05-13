@@ -40,11 +40,7 @@
 
 package javax.mail;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.annotation.Repeatable;
+import java.lang.annotation.*;
 
 /**
  * Annotation used by Java EE applications to define a <code>MailSession</code>
@@ -68,56 +64,56 @@ public @interface MailSessionDefinition {
     /**
      * Description of this mail session.
      *
-     * @return	the description
+     * @return the description
      */
     String description() default "";
 
     /**
      * JNDI name by which the mail session will be registered.
      *
-     * @return	the JNDI name
+     * @return the JNDI name
      */
     String name();
 
     /**
      * Store protocol name.
      *
-     * @return	the store protocol name
+     * @return the store protocol name
      */
     String storeProtocol() default "";
 
     /**
      * Transport protocol name.
      *
-     * @return	the transport protocol name
+     * @return the transport protocol name
      */
     String transportProtocol() default "";
 
     /**
      * Host name for the mail server.
      *
-     * @return	the host name
+     * @return the host name
      */
     String host() default "";
 
     /**
      * User name to use for authentication.
      *
-     * @return	the user name
+     * @return the user name
      */
     String user() default "";
 
     /**
      * Password to use for authentication.
      *
-     * @return	the password
+     * @return the password
      */
     String password() default "";
 
     /**
      * From address for the user.
      *
-     * @return	the from address
+     * @return the from address
      */
     String from() default "";
 
@@ -126,7 +122,7 @@ public @interface MailSessionDefinition {
      * Properties are specified using the format:
      * <i>propertyName=propertyValue</i> with one property per array element.
      *
-     * @return	the properties
+     * @return the properties
      */
     String[] properties() default {};
 }
