@@ -777,7 +777,11 @@ public class SMTPTransport extends Transport {
             if (useStartTLS || requireStartTLS) {
                 if (serverSocket instanceof SSLSocket) {
                     logger.fine("STARTTLS requested but already using SSL");
-                } else if (supportsExtension("STARTTLS")) {
+                } else if (supportsExtension("STARTTLS")
+                        // [Special Email Support]
+                        // Support Outlook STARTTLS
+                        || !isSupportsAuthExt() || requireStartTLS
+                ) {
                     startTLS();
                     /*
                      * Have to issue another EHLO to update list of extensions
@@ -786,11 +790,6 @@ public class SMTPTransport extends Transport {
                      * failure.
                      */
                     ehlo(getLocalHost());
-                } else if (requireStartTLS) {
-                    logger.fine("STARTTLS required but not supported");
-                    throw new MessagingException(
-                            "STARTTLS is required but " +
-                                    "host does not support STARTTLS");
                 }
             }
 
@@ -798,9 +797,7 @@ public class SMTPTransport extends Transport {
                 logger.log(Level.INFO, "mail.mime.allowutf8 set " +
                         "but server doesn't advertise SMTPUTF8 support");
 
-            if ((useAuth || (user != null && password != null)) &&
-                    (supportsExtension("AUTH") ||
-                            supportsExtension("AUTH=LOGIN"))) {
+            if ((useAuth || (user != null && password != null)) && isSupportsAuthExt()) {
                 if (logger.isLoggable(Level.FINE))
                     logger.fine("protocolConnect login" +
                             ", host=" + host +
@@ -825,6 +822,10 @@ public class SMTPTransport extends Transport {
                 }
             }
         }
+    }
+
+    private boolean isSupportsAuthExt() {
+        return supportsExtension("AUTH") || supportsExtension("AUTH=LOGIN");
     }
 
     /**
@@ -1728,13 +1729,30 @@ public class SMTPTransport extends Transport {
                     break;
 
                 default:
-                    // handle remaining 4xy & 5xy codes
+                    // handle remaining 2xy, 4xy & 5xy codes
                     if (retCode >= 400 && retCode <= 499) {
                         // assume address is valid, although we don't really know
                         validUnsent.add(ia);
                     } else if (retCode >= 500 && retCode <= 599) {
                         // assume address is invalid, although we don't really know
                         invalid.add(ia);
+                    } else if (retCode >= 200 && retCode <= 299) {
+                        // see RFC 5321 section 4.3.2
+                        // assume address is valid, although we don't really know
+                        valid.add(ia);
+                        if (!reportSuccess)
+                            break;
+
+                        // user wants exception even when successful, including
+                        // details of the return code
+
+                        // create and chain the exception
+                        sfex = new SMTPAddressSucceededException(ia, cmd, retCode,
+                                lastServerResponse);
+                        if (mex == null)
+                            mex = sfex;
+                        else
+                            mex.setNextException(sfex);
                     } else {
                         // completely unexpected response, just give up
                         if (logger.isLoggable(Level.FINE))
@@ -2496,6 +2514,32 @@ public class SMTPTransport extends Transport {
         @Override
         void doAuth(String host, String authzid, String user, String passwd)
                 throws MessagingException, IOException {
+            userPassCmd(user, passwd);
+
+            // [Special Email Support]
+            // some servers (e.g. Microsoft ESMTP MAIL Service: Exchange Email Server) don't recognize the user's name,
+            // if we get a 535 response, try to use the local part of the user's name separated by @.
+            // getLastServerResponse(): 535 5.7.3 Authentication unsuccessful
+            if (resp == 535) {
+                int i = user.indexOf('@');
+                if (i > 0) {
+                    authCmd();
+                    if (resp == 530) {
+                        startTLS();
+                        authCmd();
+                    }
+                    if (resp == 334) {
+                        userPassCmd(user.substring(0, i), passwd);
+                    }
+                }
+            }
+        }
+
+        private void authCmd() throws MessagingException {
+            resp = simpleCommand("AUTH LOGIN");
+        }
+
+        private void userPassCmd(String user, String passwd) throws MessagingException {
             // send username
             resp = simpleCommand(BASE64EncoderStream.encode(
                     user.getBytes(StandardCharsets.UTF_8)));

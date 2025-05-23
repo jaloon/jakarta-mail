@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -51,6 +51,7 @@
     <packaging>jar</packaging>
     <name>JavaMail API</name>
     <description>JavaMail API (outlook supported)</description>
+    <url>https://github.com/jaloon/javax-mail</url>
     <organization>
         <name>Oracle</name>
         <url>http://www.oracle.com</url>
@@ -88,6 +89,10 @@
         <system>GitHub</system>
         <url>https://github.com/jaloon/javax-mail/issues</url>
     </issueManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
