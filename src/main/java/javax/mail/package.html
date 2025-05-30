@@ -4,43 +4,19 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <!--
 
-        DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+        Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
 
-        Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+        This program and the accompanying materials are made available under the
+        terms of the Eclipse Public License v. 2.0, which is available at
+        http://www.eclipse.org/legal/epl-2.0.
 
-        The contents of this file are subject to the terms of either the GNU
-        General Public License Version 2 only ("GPL") or the Common Development
-        and Distribution License("CDDL") (collectively, the "License").  You
-        may not use this file except in compliance with the License.  You can
-        obtain a copy of the License at
-        https://oss.oracle.com/licenses/CDDL+GPL-1.1
-        or LICENSE.txt.  See the License for the specific
-        language governing permissions and limitations under the License.
+        This Source Code may also be made available under the following Secondary
+        Licenses when the conditions for such availability set forth in the
+        Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+        version 2 with the GNU Classpath Exception, which is available at
+        https://www.gnu.org/software/classpath/license.html.
 
-        When distributing the software, include this License Header Notice in each
-        file and include the License file at LICENSE.txt.
-
-        GPL Classpath Exception:
-        Oracle designates this particular file as subject to the "Classpath"
-        exception as provided by Oracle in the GPL Version 2 section of the License
-        file that accompanied this code.
-
-        Modifications:
-        If applicable, add the following below the License Header, with the fields
-        enclosed by brackets [] replaced by your own identifying information:
-        "Portions Copyright [year] [name of copyright owner]"
-
-        Contributor(s):
-        If you wish your version of this file to be governed by only the CDDL or
-        only the GPL Version 2, indicate your decision by adding "[Contributor]
-        elects to include this software in this distribution under the [CDDL or GPL
-        Version 2] license."  If you don't indicate a single choice of license, a
-        recipient has the option to distribute your version of this file under
-        either the CDDL, the GPL Version 2 or to extend the choice of license to
-        its licensees as provided above.  However, if you add GPL Version 2 code
-        and therefore, elected the GPL Version 2 license, then the option applies
-        only if the new code is made subject to such option by the copyright
-        holder.
+        SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
     -->
 
@@ -49,18 +25,18 @@
 <BODY BGCOLOR="white">
 
 <P>
-    The JavaMail&trade; API
+    The Jakarta Mail API
     provides classes that model a mail system.
     The <code>javax.mail</code> package defines classes that are common to
     all mail systems.
     The <code>javax.mail.internet</code> package defines classes that are specific
     to mail systems based on internet standards such as MIME, SMTP, POP3, and IMAP.
-    The JavaMail API includes the <code>javax.mail</code> package and subpackages.
+    The Jakarta Mail API includes the <code>javax.mail</code> package and subpackages.
 </P>
 <P>
-    For an overview of the JavaMail API, read the
-    <A HREF="https://javaee.github.io/javamail/docs/JavaMail-1.6.pdf" TARGET="_top">
-        JavaMail specification</A>.
+    For an overview of the Jakarta Mail API, read the
+    <A HREF="https://javaee.github.io/jakartamail/docs/JakartaMail-1.6.pdf" TARGET="_top">
+        Jakarta Mail specification</A>.
 </P>
 <P>
     The code to send a plain text message can be as simple as the following:
@@ -75,7 +51,7 @@
 	msg.setFrom("me@example.com");
 	msg.setRecipients(Message.RecipientType.TO,
 			  "you@example.com");
-	msg.setSubject("JavaMail hello world example");
+	msg.setSubject("Jakarta Mail hello world example");
 	msg.setSentDate(new Date());
 	msg.setText("Hello, world!\n");
 	Transport.send(msg, "me@example.com", "my-password");
@@ -84,21 +60,21 @@
     }
 </PRE>
 <P>
-    The JavaMail download bundle contains many more complete examples
+    The Jakarta Mail download bundle contains many more complete examples
     in the "demo" directory.
 </P>
 <P>
     Don't forget to see the
-    <A HREF="https://javaee.github.io/javamail/FAQ.html" TARGET="_top">
-        JavaMail API FAQ</A>
+    <A HREF="https://javaee.github.io/jakartamail/FAQ.html" TARGET="_top">
+        Jakarta Mail API FAQ</A>
     for answers to the most common questions.
-    The <A HREF="https://javaee.github.io/javamail/" TARGET="_top">
-    JavaMail web site</A>
+    The <A HREF="https://javaee.github.io/jakartamail/" TARGET="_top">
+    Jakarta Mail web site</A>
     contains many additional resources.
 </P>
-<A NAME="properties"><STRONG>Properties</STRONG></A>
+<A ID="properties"><STRONG>Properties</STRONG></A>
 <P>
-    The JavaMail API supports the following standard properties,
+    The Jakarta Mail API supports the following standard properties,
     which may be set in the <code>Session</code> object, or in the
     <code>Properties</code> object used to create the <code>Session</code> object.
     The properties are always set as strings; the Type column describes
@@ -110,7 +86,8 @@
 <P>
     to set the <code>mail.debug</code> property, which is of type boolean.
 </P>
-<TABLE BORDER SUMMARY="JavaMail properties">
+<TABLE BORDER="1">
+    <CAPTION>Jakarta Mail properties</CAPTION>
     <TR>
         <TH>Name</TH>
         <TH>Type</TH>
@@ -118,7 +95,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.debug">mail.debug</A></TD>
+        <TD><A ID="mail.debug">mail.debug</A></TD>
         <TD>boolean</TD>
         <TD>
             The initial debug mode.
@@ -127,7 +104,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.from">mail.from</A></TD>
+        <TD><A ID="mail.from">mail.from</A></TD>
         <TD>String</TD>
         <TD>
             The return email address of the current user, used by the
@@ -136,7 +113,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.mime.address.strict">mail.mime.address.strict</A></TD>
+        <TD><A ID="mail.mime.address.strict">mail.mime.address.strict</A></TD>
         <TD>boolean</TD>
         <TD>
             The MimeMessage class uses the <code>InternetAddress</code> method
@@ -147,7 +124,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.host">mail.host</A></TD>
+        <TD><A ID="mail.host">mail.host</A></TD>
         <TD>String</TD>
         <TD>
             The default host name of the mail server for both Stores and Transports.
@@ -156,7 +133,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.store.protocol">mail.store.protocol</A></TD>
+        <TD><A ID="mail.store.protocol">mail.store.protocol</A></TD>
         <TD>String</TD>
         <TD>
             Specifies the default message access protocol. The
@@ -167,7 +144,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.transport.protocol">mail.transport.protocol</A></TD>
+        <TD><A ID="mail.transport.protocol">mail.transport.protocol</A></TD>
         <TD>String</TD>
         <TD>
             Specifies the default message transport protocol. The
@@ -178,7 +155,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.user">mail.user</A></TD>
+        <TD><A ID="mail.user">mail.user</A></TD>
         <TD>String</TD>
         <TD>
             The default user name to use when connecting to the mail server.
@@ -187,7 +164,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.protocol.class">mail.<i>protocol</i>.class</A></TD>
+        <TD><A ID="mail.protocol.class">mail.<i>protocol</i>.class</A></TD>
         <TD>String</TD>
         <TD>
             Specifies the fully qualified class name of the provider for the
@@ -199,7 +176,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.protocol.host">mail.<i>protocol</i>.host</A></TD>
+        <TD><A ID="mail.protocol.host">mail.<i>protocol</i>.host</A></TD>
         <TD>String</TD>
         <TD>
             The host name of the mail server for the specified protocol.
@@ -208,7 +185,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.protocol.port">mail.<i>protocol</i>.port</A></TD>
+        <TD><A ID="mail.protocol.port">mail.<i>protocol</i>.port</A></TD>
         <TD>int</TD>
         <TD>
             The port number of the mail server for the specified protocol.
@@ -217,7 +194,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.protocol.user">mail.<i>protocol</i>.user</A></TD>
+        <TD><A ID="mail.protocol.user">mail.<i>protocol</i>.user</A></TD>
         <TD>String</TD>
         <TD>
             The user name to use when connecting to mail servers
@@ -229,12 +206,13 @@
 </TABLE>
 
 <P>
-    The following properties are supported by the reference implementation (RI) of
-    JavaMail, but are not currently a required part of the specification.
+    The following properties are supported by the EE4J implementation of
+    Jakarta Mail, but are not currently a required part of the specification.
     The names, types, defaults, and semantics of these properties may
     change in future releases.
 </P>
-<TABLE BORDER SUMMARY="JavaMail RI properties">
+<TABLE BORDER="1">
+    <CAPTION>Jakarta Mail implementation properties</CAPTION>
     <TR>
         <TH>Name</TH>
         <TH>Type</TH>
@@ -242,7 +220,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.debug.auth">mail.debug.auth</A></TD>
+        <TD><A ID="mail.debug.auth">mail.debug.auth</A></TD>
         <TD>boolean</TD>
         <TD>
             Include protocol authentication commands (including usernames and passwords)
@@ -252,7 +230,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.debug.auth.username">mail.debug.auth.username</A></TD>
+        <TD><A ID="mail.debug.auth.username">mail.debug.auth.username</A></TD>
         <TD>boolean</TD>
         <TD>
             Include the user name in non-protocol debug output.
@@ -261,7 +239,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.debug.auth.password">mail.debug.auth.password</A></TD>
+        <TD><A ID="mail.debug.auth.password">mail.debug.auth.password</A></TD>
         <TD>boolean</TD>
         <TD>
             Include the password in non-protocol debug output.
@@ -270,7 +248,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.transport.protocol.address-type">mail.transport.protocol.<i>address-type</i></A></TD>
+        <TD><A ID="mail.transport.protocol.address-type">mail.transport.protocol.<i>address-type</i></A></TD>
         <TD>String</TD>
         <TD>
             Specifies the default message transport protocol for the specified address type.
@@ -287,7 +265,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.event.scope">mail.event.scope</A></TD>
+        <TD><A ID="mail.event.scope">mail.event.scope</A></TD>
         <TD>String</TD>
         <TD>
             Controls the scope of events. (See the javax.mail.event package.)
@@ -302,7 +280,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.event.executor">mail.event.executor</A></TD>
+        <TD><A ID="mail.event.executor">mail.event.executor</A></TD>
         <TD>java.util.concurrent.Executor</TD>
         <TD>
             By default, a new Thread is created for each event queue.
@@ -317,15 +295,15 @@
 </TABLE>
 
 <P>
-    The JavaMail API also supports several System properties;
+    The Jakarta Mail API also supports several System properties;
     see the {@link javax.mail.internet} package documentation
     for details.
 </P>
 <P>
-    The JavaMail reference
+    The Jakarta Mail reference
     implementation includes protocol providers in subpackages of
     <code>com.sun.mail</code>. Note that the APIs to these protocol
-    providers are not part of the standard JavaMail API. Portable
+    providers are not part of the standard Jakarta Mail API. Portable
     programs will not use these APIs.
 </P>
 <P>
@@ -333,7 +311,7 @@
     by (for example) casting a returned <code>Folder</code> object to a
     <code>com.sun.mail.imap.IMAPFolder</code> object. Similarly for
     <code>Store</code> and <code>Message</code> objects returned from the
-    standard JavaMail APIs.
+    standard Jakarta Mail APIs.
 </P>
 <P>
     The protocol providers also support properties that are specific to
@@ -347,7 +325,8 @@
     implementation of classes in this package log the same information using
     {@link java.util.logging.Logger} as described in the following table:
 </P>
-<TABLE BORDER SUMMARY="JavaMail Loggers">
+<TABLE BORDER="1">
+    <CAPTION>Jakarta Mail Loggers</CAPTION>
     <TR>
         <TH>Logger Name</TH>
         <TH>Logging Level</TH>

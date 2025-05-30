@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2017 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail.internet;
@@ -68,8 +44,8 @@ import java.util.Enumeration;
  * responsible for folding and unfolding headers as appropriate. <p>
  *
  * @author John Mani
- * @see        MimeUtility
- * @see        javax.mail.Part
+ * @see MimeUtility
+ * @see javax.mail.Part
  */
 
 public interface MimePart extends Part {
@@ -86,20 +62,19 @@ public interface MimePart extends Part {
      * this name
      * @throws MessagingException for failures
      */
-    public String getHeader(String name, String delimiter)
-            throws MessagingException;
+    String getHeader(String name, String delimiter) throws MessagingException;
 
     /**
      * Add a raw RFC822 header-line.
      *
-     * @throws MessagingException for other failures
-     * @param    line    the line to add
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this Part is
-     * obtained from a READ_ONLY folder
+     * @param line the line to add
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this Part is
+     *                               obtained from a READ_ONLY folder
      */
-    public void addHeaderLine(String line) throws MessagingException;
+    void addHeaderLine(String line) throws MessagingException;
 
     /**
      * Get all header lines as an Enumeration of Strings. A Header
@@ -107,20 +82,20 @@ public interface MimePart extends Part {
      * and "value" field.
      *
      * @return an Enumeration of Strings
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public Enumeration<String> getAllHeaderLines() throws MessagingException;
+    Enumeration<String> getAllHeaderLines() throws MessagingException;
 
     /**
      * Get matching header lines as an Enumeration of Strings.
      * A Header line is a raw RFC822 header-line, containing both
      * the "name" and "value" field.
      *
-     * @param    names    the headers to return
+     * @param names the headers to return
      * @return an Enumeration of Strings
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public Enumeration<String> getMatchingHeaderLines(String[] names)
+    Enumeration<String> getMatchingHeaderLines(String[] names)
             throws MessagingException;
 
     /**
@@ -128,48 +103,47 @@ public interface MimePart extends Part {
      * A Header line is a raw RFC822 header-line, containing both
      * the "name"  and "value" field.
      *
-     * @param    names    the headers to not return
+     * @param names the headers to not return
      * @return an Enumeration of Strings
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public Enumeration<String> getNonMatchingHeaderLines(String[] names)
-            throws MessagingException;
+    Enumeration<String> getNonMatchingHeaderLines(String[] names) throws MessagingException;
 
     /**
      * Get the transfer encoding of this part.
      *
      * @return content-transfer-encoding
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public String getEncoding() throws MessagingException;
+    String getEncoding() throws MessagingException;
 
     /**
      * Get the Content-ID of this part. Returns null if none present.
      *
      * @return content-ID
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public String getContentID() throws MessagingException;
+    String getContentID() throws MessagingException;
 
     /**
      * Get the Content-MD5 digest of this part. Returns null if
      * none present.
      *
      * @return content-MD5
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public String getContentMD5() throws MessagingException;
+    String getContentMD5() throws MessagingException;
 
     /**
      * Set the Content-MD5 of this part.
      *
      * @param md5 the MD5 value
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this Part is
-     * obtained from a READ_ONLY folder
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this Part is
+     *                               obtained from a READ_ONLY folder
      */
-    public void setContentMD5(String md5) throws MessagingException;
+    void setContentMD5(String md5) throws MessagingException;
 
     /**
      * Get the language tags specified in the Content-Language header
@@ -178,22 +152,21 @@ public interface MimePart extends Part {
      * available.
      *
      * @return array of content language strings
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public String[] getContentLanguage() throws MessagingException;
+    String[] getContentLanguage() throws MessagingException;
 
     /**
      * Set the Content-Language header of this MimePart. The
      * Content-Language header is defined by RFC1766.
      *
      * @param languages array of language tags
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this Part is
-     * obtained from a READ_ONLY folder
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this Part is
+     *                               obtained from a READ_ONLY folder
      */
-    public void setContentLanguage(String[] languages)
-            throws MessagingException;
+    void setContentLanguage(String[] languages) throws MessagingException;
 
     /**
      * Convenience method that sets the given String as this
@@ -210,12 +183,12 @@ public interface MimePart extends Part {
      * If the charset is already known, use the
      * <code>setText</code> method that takes the charset parameter.
      *
-     * @param    text    the text content to set
-     * @exception MessagingException    if an error occurs
-     * @see    #setText(String text, String charset)
+     * @param text the text content to set
+     * @throws MessagingException if an error occurs
+     * @see #setText(String text, String charset)
      */
     @Override
-    public void setText(String text) throws MessagingException;
+    void setText(String text) throws MessagingException;
 
     /**
      * Convenience method that sets the given String as this part's
@@ -224,12 +197,11 @@ public interface MimePart extends Part {
      * using the specified charset. The charset is also used to set
      * "charset" parameter.
      *
-     * @param    text    the text content to set
-     * @param    charset    the charset to use for the text
-     * @exception MessagingException    if an error occurs
+     * @param text    the text content to set
+     * @param charset the charset to use for the text
+     * @throws MessagingException if an error occurs
      */
-    public void setText(String text, String charset)
-            throws MessagingException;
+    void setText(String text, String charset) throws MessagingException;
 
     /**
      * Convenience method that sets the given String as this part's
@@ -238,12 +210,11 @@ public interface MimePart extends Part {
      * using the specified charset. The charset is also used to set
      * the "charset" parameter.
      *
-     * @param    text    the text content to set
-     * @param    charset    the charset to use for the text
-     * @param    subtype    the MIME subtype to use (e.g., "html")
-     * @exception MessagingException    if an error occurs
+     * @param text    the text content to set
+     * @param charset the charset to use for the text
+     * @param subtype the MIME subtype to use (e.g., "html")
+     * @throws MessagingException if an error occurs
      * @since JavaMail 1.4
      */
-    public void setText(String text, String charset, String subtype)
-            throws MessagingException;
+    void setText(String text, String charset, String subtype) throws MessagingException;
 }

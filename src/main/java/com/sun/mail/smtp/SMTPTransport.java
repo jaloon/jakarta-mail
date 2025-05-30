@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2020 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package com.sun.mail.smtp;
@@ -119,6 +95,7 @@ public class SMTPTransport extends Transport {
             = new HashMap<>();
     private String defaultAuthenticationMechanisms;    // set in constructor
     private boolean quitWait = false;    // true if we should wait
+    private boolean quitOnSessionReject = false;   // true if we should send quit when session initiation is rejected
     private String saslRealm = UNKNOWN;
     private String authorizationID = UNKNOWN;
     private boolean enableSASL = false;    // enable SASL authentication
@@ -199,6 +176,11 @@ public class SMTPTransport extends Transport {
         // response from the QUIT command
         quitWait = PropUtil.getBooleanProperty(props,
                 "mail." + name + ".quitwait", true);
+
+        // setting mail.smtp.quitonsessionreject to false causes us to directly
+        // close the socket without sending a QUIT command
+        quitOnSessionReject = PropUtil.getBooleanProperty(props,
+                "mail." + name + ".quitonsessionreject", false);
 
         // mail.smtp.reportsuccess causes us to throw an exception on success
         reportSuccess = PropUtil.getBooleanProperty(props,
@@ -1035,14 +1017,15 @@ public class SMTPTransport extends Transport {
             logger.fine("Can only send RFC822 msgs");
             throw new MessagingException("SMTP can only send RFC822 messages");
         }
+        if (addresses == null || addresses.length == 0) {
+            throw new SendFailedException("No recipient addresses");
+        }
         for (int i = 0; i < addresses.length; i++) {
             if (!(addresses[i] instanceof InternetAddress)) {
                 throw new MessagingException(addresses[i] +
                         " is not an InternetAddress");
             }
         }
-        if (addresses.length == 0)
-            throw new SendFailedException("No recipient addresses");
 
         this.message = (MimeMessage) message;
         this.addresses = addresses;
@@ -1977,19 +1960,35 @@ public class SMTPTransport extends Transport {
 
             int r = -1;
             if ((r = readServerResponse()) != 220) {
-                serverSocket.close();
-                serverSocket = null;
-                serverOutput = null;
-                serverInput = null;
-                lineInputStream = null;
+                String failResponse = lastServerResponse;
+                try {
+                    if (quitOnSessionReject) {
+                        sendCommand("QUIT");
+                        if (quitWait) {
+                            int resp = readServerResponse();
+                            if (resp != 221 && resp != -1 &&
+                                    logger.isLoggable(Level.FINE))
+                                logger.fine("QUIT failed with " + resp);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (logger.isLoggable(Level.FINE))
+                        logger.log(Level.FINE, "QUIT failed", e);
+                } finally {
+                    serverSocket.close();
+                    serverSocket = null;
+                    serverOutput = null;
+                    serverInput = null;
+                    lineInputStream = null;
+                }
                 if (logger.isLoggable(Level.FINE))
-                    logger.fine("could not connect to host \"" +
+                    logger.fine("got bad greeting from host \"" +
                             host + "\", port: " + port +
-                            ", response: " + r);
+                            ", response: " + failResponse);
                 throw new MessagingException(
-                        "Could not connect to SMTP host: " + host +
+                        "Got bad greeting from SMTP host: " + host +
                                 ", port: " + port +
-                                ", response: " + r);
+                                ", response: " + failResponse);
             } else {
                 if (logger.isLoggable(Level.FINE))
                     logger.fine("connected to host \"" +
@@ -2023,11 +2022,26 @@ public class SMTPTransport extends Transport {
 
             int r = -1;
             if ((r = readServerResponse()) != 220) {
-                serverSocket.close();
-                serverSocket = null;
-                serverOutput = null;
-                serverInput = null;
-                lineInputStream = null;
+                try {
+                    if (quitOnSessionReject) {
+                        sendCommand("QUIT");
+                        if (quitWait) {
+                            int resp = readServerResponse();
+                            if (resp != 221 && resp != -1 &&
+                                    logger.isLoggable(Level.FINE))
+                                logger.fine("QUIT failed with " + resp);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (logger.isLoggable(Level.FINE))
+                        logger.log(Level.FINE, "QUIT failed", e);
+                } finally {
+                    serverSocket.close();
+                    serverSocket = null;
+                    serverOutput = null;
+                    serverInput = null;
+                    lineInputStream = null;
+                }
                 if (logger.isLoggable(Level.FINE))
                     logger.fine("got bad greeting from host \"" +
                             host + "\", port: " + port +
@@ -2627,7 +2641,6 @@ public class SMTPTransport extends Transport {
      */
     private class NtlmAuthenticator extends Authenticator {
         private Ntlm ntlm;
-        private int flags;
 
         NtlmAuthenticator() {
             super("NTLM");
@@ -2639,11 +2652,14 @@ public class SMTPTransport extends Transport {
             ntlm = new Ntlm(getNTLMDomain(), getLocalHost(),
                     user, passwd, logger);
 
-            flags = PropUtil.getIntProperty(
+            int flags = PropUtil.getIntProperty(
                     session.getProperties(),
                     "mail." + name + ".auth.ntlm.flags", 0);
+            boolean v2 = PropUtil.getBooleanProperty(
+                    session.getProperties(),
+                    "mail." + name + ".auth.ntlm.v2", true);
 
-            String type1 = ntlm.generateType1Msg(flags);
+            String type1 = ntlm.generateType1Msg(flags, v2);
             return type1;
         }
 

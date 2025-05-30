@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -14,23 +14,21 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package com.sun.mail.iap;
+package com.sun.mail.util;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * Annotation to mark the default providers that are part of Jakarta Mail.
+ * DO NOT use this on any provider made available independently.
+ *
  * @author Bill Shannon
+ * @since Jakarta Mail 1.6.4
  */
-
-public class LiteralException extends ProtocolException {
-
-    private static final long serialVersionUID = -6919179828339609913L;
-
-    /**
-     * Constructs a LiteralException with the specified Response object.
-     *
-     * @param r the response object
-     */
-    public LiteralException(Response r) {
-        super(r.toString());
-        response = r;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface DefaultProvider {
 }

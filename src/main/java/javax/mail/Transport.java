@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2017 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail;
@@ -68,8 +44,8 @@ public abstract class Transport extends Service {
     /**
      * Constructor.
      *
-     * @param    session Session object for this Transport.
-     * @param    urlname    URLName object to be used for this Transport
+     * @param session Session object for this Transport.
+     * @param urlname URLName object to be used for this Transport
      */
     public Transport(Session session, URLName urlname) {
         super(session, urlname);
@@ -109,14 +85,14 @@ public abstract class Transport extends Service {
      * <code>Transport.send(msg);</code>, and should never be invoked
      * using an instance variable.
      *
-     * @param    msg    the message to send
-     * @exception SendFailedException if the message could not
-     * be sent to some or any of the recipients.
-     * @exception MessagingException for other failures
-     * @see        Message#saveChanges
-     * @see        Message#getAllRecipients
-     * @see        #send(Message, Address[])
-     * @see        javax.mail.SendFailedException
+     * @param msg the message to send
+     * @throws SendFailedException if the message could not
+     *                             be sent to some or any of the recipients.
+     * @throws MessagingException  for other failures
+     * @see Message#saveChanges
+     * @see Message#getAllRecipients
+     * @see #send(Message, Address[])
+     * @see javax.mail.SendFailedException
      */
     public static void send(Message msg) throws MessagingException {
         msg.saveChanges(); // do this first
@@ -129,13 +105,13 @@ public abstract class Transport extends Service {
      * <code>send</code> method calls the <code>saveChanges</code>
      * method on the message before sending it. <p>
      *
-     * @param    msg    the message to send
-     * @param    addresses the addresses to which to send the message
-     * @exception SendFailedException if the message could not
-     * be sent to some or any of the recipients.
-     * @exception MessagingException for other failures
-     * @see        Message#saveChanges
-     * @see        javax.mail.SendFailedException
+     * @param msg       the message to send
+     * @param addresses the addresses to which to send the message
+     * @throws SendFailedException if the message could not
+     *                             be sent to some or any of the recipients.
+     * @throws MessagingException  for other failures
+     * @see Message#saveChanges
+     * @see javax.mail.SendFailedException
      * @see #send(Message)
      */
     public static void send(Message msg, Address[] addresses)
@@ -155,16 +131,16 @@ public abstract class Transport extends Service {
      * Use the specified user name and password to authenticate to
      * the mail server.
      *
-     * @param    msg    the message to send
-     * @param    user    the user name
-     * @param    password this user's password
-     * @exception SendFailedException if the message could not
-     * be sent to some or any of the recipients.
-     * @exception MessagingException for other failures
-     * @see        Message#saveChanges
-     * @see        javax.mail.SendFailedException
-     * @since JavaMail 1.5
+     * @param msg      the message to send
+     * @param user     the user name
+     * @param password this user's password
+     * @throws SendFailedException if the message could not
+     *                             be sent to some or any of the recipients.
+     * @throws MessagingException  for other failures
+     * @see Message#saveChanges
+     * @see javax.mail.SendFailedException
      * @see #send(Message)
+     * @since JavaMail 1.5
      */
     public static void send(Message msg,
                             String user, String password) throws MessagingException {
@@ -182,17 +158,17 @@ public abstract class Transport extends Service {
      * Use the specified user name and password to authenticate to
      * the mail server.
      *
-     * @param    msg    the message to send
-     * @param    addresses the addresses to which to send the message
-     * @param    user    the user name
-     * @param    password this user's password
-     * @exception SendFailedException if the message could not
-     * be sent to some or any of the recipients.
-     * @exception MessagingException for other failures
-     * @see        Message#saveChanges
-     * @see        javax.mail.SendFailedException
-     * @since JavaMail 1.5
+     * @param msg       the message to send
+     * @param addresses the addresses to which to send the message
+     * @param user      the user name
+     * @param password  this user's password
+     * @throws SendFailedException if the message could not
+     *                             be sent to some or any of the recipients.
+     * @throws MessagingException  for other failures
+     * @see Message#saveChanges
+     * @see javax.mail.SendFailedException
      * @see #send(Message)
+     * @since JavaMail 1.5
      */
     public static void send(Message msg, Address[] addresses,
                             String user, String password) throws MessagingException {
@@ -401,11 +377,11 @@ public abstract class Transport extends Service {
      * TransportListeners. Note that the event dispatching occurs
      * in a separate thread, thus avoiding potential deadlock problems.
      *
-     * @param    type    the TransportEvent type
-     * @param    validSent valid addresses to which message was sent
-     * @param    validUnsent valid addresses to which message was not sent
-     * @param    invalid the invalid addresses
-     * @param    msg    the message
+     * @param type        the TransportEvent type
+     * @param validSent   valid addresses to which message was sent
+     * @param validUnsent valid addresses to which message was not sent
+     * @param invalid     the invalid addresses
+     * @param msg         the message
      */
     protected void notifyTransportListeners(int type, Address[] validSent,
                                             Address[] validUnsent,

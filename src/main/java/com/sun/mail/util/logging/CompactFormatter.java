@@ -1,46 +1,21 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 2013, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2021 Jason Mehrens. All rights reserved.
  *
- * Copyright (c) 2013-2017 Oracle and/or its affiliates. All rights reserved.
- * Copyright (c) 2013-2017 Jason Mehrens. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 package com.sun.mail.util.logging;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -48,20 +23,23 @@ import java.util.logging.LogRecord;
 
 /**
  * A plain text formatter that can produce fixed width output. By default this
- * formatter will produce output no greater than 160 characters wide plus the
- * separator and newline characters. Only specified fields support an
+ * formatter will produce output no greater than 160 characters
+ * (Unicode code points) wide plus the separator and newline characters. Only
+ * specified fields support an
  * {@linkplain #toAlternate(java.lang.String) alternate} fixed width format.
  * <p>
- * By default each <tt>CompactFormatter</tt> is initialized using the following
- * LogManager configuration properties where
- * <tt>&lt;formatter-name&gt;</tt> refers to the fully qualified class name or
- * the fully qualified derived class name of the formatter. If properties are
+ * By default each <code>CompactFormatter</code> is initialized using the
+ * following LogManager configuration properties where
+ * <code>&lt;formatter-name&gt;</code> refers to the fully qualified class name
+ * or the fully qualified derived class name of the formatter. If properties are
  * not defined, or contain invalid values, then the specified default values are
  * used.
  * <ul>
  * <li>&lt;formatter-name&gt;.format - the {@linkplain java.util.Formatter
- *     format} string used to transform the output. The format string can be
- * used to fix the output size. (defaults to <tt>%7$#.160s%n</tt>)</li>
+ *     format} string used to transform the output. The arguments are explained
+ * in detail in the {@linkplain #format(java.util.logging.LogRecord) format}
+ * documentation. The format string can be used to fix the output size.
+ * (defaults to <code>%7$#.160s%n</code>)</li>
  * </ul>
  *
  * @author Jason Mehrens
@@ -239,7 +217,7 @@ public class CompactFormatter extends java.util.logging.Formatter {
      * @return true if null or spaces.
      */
     private static boolean isNullOrSpaces(final String s) {
-        return s == null || s.trim().length() == 0;
+        return s == null || s.trim().isEmpty();
     }
 
     /**
@@ -270,10 +248,12 @@ public class CompactFormatter extends java.util.logging.Formatter {
      * and a relevant stack trace element if available; otherwise, an empty
      * string is used.</li>
      * <li>{@code message|thrown} The message and the thrown properties joined
-     * as one parameter. This parameter supports
+     * as one parameter. Width and precision are by Unicode code points. This
+     * parameter supports
      * {@linkplain #toAlternate(java.lang.String) alternate} form.</li>
      * <li>{@code thrown|message} The thrown and message properties joined as
-     * one parameter. This parameter supports
+     * one parameter. Width and precision are by Unicode code points. This
+     * parameter supports
      * {@linkplain #toAlternate(java.lang.String) alternate} form.</li>
      * <li>{@code sequence} the
      * {@linkplain LogRecord#getSequenceNumber() sequence number} if the given
@@ -286,10 +266,12 @@ public class CompactFormatter extends java.util.logging.Formatter {
      * {@linkplain #formatError(LogRecord) error message} without any stack
      * trace.</li>
      * <li>{@code message|error} The message and error properties joined as one
-     * parameter. This parameter supports
+     * parameter. Width and precision are by Unicode code points. This parameter
+     * supports
      * {@linkplain #toAlternate(java.lang.String) alternate} form.</li>
      * <li>{@code error|message} The error and message properties joined as one
-     * parameter. This parameter supports
+     * parameter. Width and precision are by Unicode code points. This parameter
+     * supports
      * {@linkplain #toAlternate(java.lang.String) alternate} form.</li>
      * <li>{@code backtrace} only the
      * {@linkplain #formatBackTrace(LogRecord) stack trace} of the given
@@ -306,17 +288,19 @@ public class CompactFormatter extends java.util.logging.Formatter {
      * <ul>
      * <li>{@code com.sun.mail.util.logging.CompactFormatter.format=%7$#.160s%n}
      * <p>
-     * This prints only 160 characters of the message|thrown ({@code 7$}) using
-     * the {@linkplain #toAlternate(java.lang.String) alternate} form. The
-     * separator is not included as part of the total width.
+     * This prints only 160 characters (Unicode code points) of the
+     * message|thrown ({@code 7$}) using the
+     * {@linkplain #toAlternate(java.lang.String) alternate} form. The separator
+     * is not included as part of the total width.
      * <pre>
      * Encoding failed.|NullPointerException: null String.getBytes(:913)
      * </pre>
      *
      * <li>{@code com.sun.mail.util.logging.CompactFormatter.format=%7$#.20s%n}
      * <p>
-     * This prints only 20 characters of the message|thrown ({@code 7$}) using
-     * the {@linkplain #toAlternate(java.lang.String) alternate} form. This will
+     * This prints only 20 characters (Unicode code points) of the
+     * message|thrown ({@code 7$}) using the
+     * {@linkplain #toAlternate(java.lang.String) alternate} form. This will
      * perform a weighted truncation of both the message and thrown properties
      * of the log record. The separator is not included as part of the total
      * width.
@@ -337,8 +321,9 @@ public class CompactFormatter extends java.util.logging.Formatter {
      *
      * <li>{@code com.sun.mail.util.logging.CompactFormatter.format=%4$s: %12$#.160s%n}
      * <p>
-     * This prints the log level ({@code 4$}) and only 160 characters of the
-     * message|error ({@code 12$}) using the alternate form.
+     * This prints the log level ({@code 4$}) and only 160 characters
+     * (Unicode code points) of the message|error ({@code 12$}) using the
+     * alternate form.
      * <pre>
      * SEVERE: Unable to send notification.|SocketException: Permission denied: connect
      * </pre>
@@ -493,21 +478,22 @@ public class CompactFormatter extends java.util.logging.Formatter {
     }
 
     /**
-     * Formats the thread id property of the given log record. By default this
-     * is formatted as a {@code long} by an unsigned conversion.
+     * Formats the thread id property of the given log record.  Long thread ids
+     * are preferred if supported.  Otherwise, the integer thread id is
+     * formatted as a {@code long} by an unsigned conversion.
      *
      * @param record the record.
      * @return the formatted thread id as a number.
      * @throws NullPointerException if the given record is null.
      * @since JavaMail 1.5.4
      */
+    @SuppressWarnings("deprecation") // See JDK-8245302
     public Number formatThreadID(final LogRecord record) {
-        /**
-         * Thread.getID is defined as long and LogRecord.getThreadID is defined
-         * as int. Convert to unsigned as a means to better map the two types of
-         * thread identifiers.
-         */
-        return (((long) record.getThreadID()) & 0xffffffffL);
+        Long id = LogManagerProperties.getLongThreadID(record);
+        if (id == null) {
+            id = (((long) record.getThreadID()) & 0xffffffffL);
+        }
+        return id;
     }
 
     /**
@@ -826,54 +812,72 @@ public class CompactFormatter extends java.util.logging.Formatter {
                 r = toAlternate(r);
             }
 
-            if (precision <= 0) {
-                precision = Integer.MAX_VALUE;
-            }
+            int lc = 0;
+            int rc = 0;
+            if (precision >= 0) {
+                lc = minCodePointCount(l, precision);
+                rc = minCodePointCount(r, precision);
 
-            int fence = Math.min(l.length(), precision);
-            if (fence > (precision >> 1)) {
-                fence = Math.max(fence - r.length(), fence >> 1);
-            }
-
-            if (fence > 0) {
-                if (fence > l.length()
-                        && Character.isHighSurrogate(l.charAt(fence - 1))) {
-                    --fence;
+                if (lc > (precision >> 1)) {
+                    lc = Math.max(lc - rc, lc >> 1);
                 }
-                l = l.substring(0, fence);
+                rc = Math.min(precision - lc, rc);
+
+                l = l.substring(0, l.offsetByCodePoints(0, lc));
+                r = r.substring(0, r.offsetByCodePoints(0, rc));
             }
-            r = r.substring(0, Math.min(precision - fence, r.length()));
 
             if (width > 0) {
+                if (precision < 0) {
+                    lc = minCodePointCount(l, width);
+                    rc = minCodePointCount(r, width);
+                }
+
                 final int half = width >> 1;
-                if (l.length() < half) {
-                    l = pad(flags, l, half);
+                if (lc < half) {
+                    l = pad(flags, l, half - lc);
                 }
 
-                if (r.length() < half) {
-                    r = pad(flags, r, half);
+                if (rc < half) {
+                    r = pad(flags, r, half - rc);
                 }
             }
 
-            Object[] empty = Collections.emptySet().toArray();
-            formatter.format(l, empty);
-            if (l.length() != 0 && r.length() != 0) {
-                formatter.format("|", empty);
+            formatter.format(l);
+            if (!l.isEmpty() && !r.isEmpty()) {
+                formatter.format("|");
             }
-            formatter.format(r, empty);
+            formatter.format(r);
+        }
+
+        /**
+         * Counts the number code points with an upper bound.
+         *
+         * @param s     the string to count, never null.
+         * @param limit the max number of code points needed.
+         * @return the number of code points, never greater than the limit.
+         */
+        private int minCodePointCount(String s, final int limit) {
+            // assert limit >= 0 : limit;
+            final int len = s.length();
+            if ((len - limit) >= limit) {
+                return limit;
+            }
+            return Math.min(s.codePointCount(0, len), limit);
         }
 
         /**
          * Pad the given input string.
          *
-         * @param flags  the formatter flags.
-         * @param s      the string to pad.
-         * @param length the final string length.
+         * @param flags   the formatter flags.
+         * @param s       the string to pad.
+         * @param padding the number of spaces to add.
          * @return the padded string.
          */
-        private String pad(int flags, String s, int length) {
-            final int padding = length - s.length();
-            final StringBuilder b = new StringBuilder(length);
+        private String pad(int flags, String s, int padding) {
+            // assert padding >= 0 : padding;
+            final StringBuilder b = new StringBuilder(
+                    Math.max(s.length() + padding, padding));
             if ((flags & java.util.FormattableFlags.LEFT_JUSTIFY)
                     == java.util.FormattableFlags.LEFT_JUSTIFY) {
                 for (int i = 0; i < padding; ++i) {

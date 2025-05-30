@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail.internet;
@@ -57,7 +33,7 @@ import java.util.*;
  * There are a set of methods to encode and decode MIME headers as
  * per RFC 2047.  Note that, in general, these methods are
  * <strong>not</strong> needed when using methods such as
- * <code>setSubject</code> and <code>setRecipients</code>; JavaMail
+ * <code>setSubject</code> and <code>setRecipients</code>; Jakarta Mail
  * will automatically encode and decode data when using these "higher
  * level" methods.  The methods below are only needed when maniuplating
  * raw MIME headers using <code>setHeader</code> and <code>getHeader</code>
@@ -300,7 +276,7 @@ public class MimeUtility {
      * encoding is "base64".
      * </ul>
      *
-     * @param    ds    the DataSource
+     * @param ds the DataSource
      * @return the encoding. This is either "7bit",
      * "quoted-printable" or "base64"
      */
@@ -395,7 +371,7 @@ public class MimeUtility {
      * <code>DataHandler</code> uses a thread, a pair of pipe streams,
      * and the <code>writeTo</code> method to produce the data. <p>
      *
-     * @param    dh    the DataHandler
+     * @param dh the DataHandler
      * @return the Content-Transfer-Encoding
      * @since JavaMail 1.2
      */
@@ -473,10 +449,10 @@ public class MimeUtility {
      * <code>"true"</code>, unknown encoding values are ignored and the
      * original InputStream is returned.
      *
-     * @throws MessagingException if the encoding is unknown
-     * @param    is        input stream
-     * @param    encoding    the encoding of the stream.
+     * @param is       input stream
+     * @param encoding the encoding of the stream.
      * @return decoded input stream.
+     * @throws MessagingException if the encoding is unknown
      */
     public static InputStream decode(InputStream is, String encoding)
             throws MessagingException {
@@ -505,11 +481,11 @@ public class MimeUtility {
      * They include "base64", "quoted-printable", "7bit", "8bit" and
      * "binary". In addition, "uuencode" is also supported.
      *
-     * @throws MessagingException if the encoding is unknown
-     * @param    os        output stream
-     * @param    encoding    the encoding of the stream.
+     * @param os       output stream
+     * @param encoding the encoding of the stream.
      * @return output stream that applies the
      * specified encoding.
+     * @throws MessagingException if the encoding is unknown
      */
     public static OutputStream encode(OutputStream os, String encoding)
             throws MessagingException {
@@ -545,7 +521,7 @@ public class MimeUtility {
      *                 with uuencode)
      * @return output stream that applies the
      * specified encoding.
-     * @exception MessagingException for unknown encodings
+     * @throws MessagingException for unknown encodings
      * @since JavaMail 1.2
      */
     public static OutputStream encode(OutputStream os, String encoding,
@@ -601,9 +577,9 @@ public class MimeUtility {
      *
      * </pre></blockquote><p>
      *
-     * @throws UnsupportedEncodingException if the encoding fails
-     * @param    text    Unicode string
+     * @param text Unicode string
      * @return Unicode string containing only US-ASCII characters
+     * @throws UnsupportedEncodingException if the encoding fails
      */
     public static String encodeText(String text)
             throws UnsupportedEncodingException {
@@ -625,17 +601,17 @@ public class MimeUtility {
      * Note that this method should be used to encode only
      * "unstructured" RFC 822 headers.
      *
+     * @param text     the header value
+     * @param charset  the charset. If this parameter is null, the
+     *                 platform's default chatset is used.
+     * @param encoding the encoding to be used. Currently supported
+     *                 values are "B" and "Q". If this parameter is null, then
+     *                 the "Q" encoding is used if most of characters to be
+     *                 encoded are in the ASCII charset, otherwise "B" encoding
+     *                 is used.
+     * @return Unicode string containing only US-ASCII characters
      * @throws UnsupportedEncodingException if the charset
      *                                      conversion failed.
-     * @param    text    the header value
-     * @param    charset    the charset. If this parameter is null, the
-     * platform's default chatset is used.
-     * @param    encoding the encoding to be used. Currently supported
-     * values are "B" and "Q". If this parameter is null, then
-     * the "Q" encoding is used if most of characters to be
-     * encoded are in the ASCII charset, otherwise "B" encoding
-     * is used.
-     * @return Unicode string containing only US-ASCII characters
      */
     public static String encodeText(String text, String charset,
                                     String encoding)
@@ -671,10 +647,10 @@ public class MimeUtility {
      *
      * </pre></blockquote><p>
      *
+     * @param etext the possibly encoded value
+     * @return the decoded text
      * @throws UnsupportedEncodingException if the charset
      *                                      conversion failed.
-     * @param    etext    the possibly encoded value
-     * @return the decoded text
      */
     public static String decodeText(String etext)
             throws UnsupportedEncodingException {
@@ -782,10 +758,10 @@ public class MimeUtility {
      * The InternetAddress class, for example, uses this to encode
      * it's 'phrase' component.
      *
-     * @throws UnsupportedEncodingException if the encoding fails
-     * @param    word    Unicode string
+     * @param word Unicode string
      * @return Array of Unicode strings containing only US-ASCII
      * characters.
+     * @throws UnsupportedEncodingException if the encoding fails
      */
     public static String encodeWord(String word)
             throws UnsupportedEncodingException {
@@ -804,15 +780,15 @@ public class MimeUtility {
      * The resulting bytes are then returned as a Unicode string
      * containing only ASCII characters. <p>
      *
-     * @throws UnsupportedEncodingException if the encoding fails
-     * @param    word    Unicode string
-     * @param    charset    the MIME charset
-     * @param    encoding the encoding to be used. Currently supported
-     * values are "B" and "Q". If this parameter is null, then
-     * the "Q" encoding is used if most of characters to be
-     * encoded are in the ASCII charset, otherwise "B" encoding
-     * is used.
+     * @param word     Unicode string
+     * @param charset  the MIME charset
+     * @param encoding the encoding to be used. Currently supported
+     *                 values are "B" and "Q". If this parameter is null, then
+     *                 the "Q" encoding is used if most of characters to be
+     *                 encoded are in the ASCII charset, otherwise "B" encoding
+     *                 is used.
      * @return Unicode string containing only US-ASCII characters
+     * @throws UnsupportedEncodingException if the encoding fails
      */
     public static String encodeWord(String word, String charset,
                                     String encoding)
@@ -938,12 +914,12 @@ public class MimeUtility {
      * charset-converted into Unicode. If the charset-conversion
      * fails, an UnsupportedEncodingException is thrown.<p>
      *
+     * @param eword the encoded value
+     * @return the decoded word
      * @throws ParseException               if the string is not an
      *                                      encoded-word as per RFC 2047 and RFC 2231.
      * @throws UnsupportedEncodingException if the charset
      *                                      conversion failed.
-     * @param    eword    the encoded value
-     * @return the decoded word
      */
     public static String decodeWord(String eword)
             throws ParseException, UnsupportedEncodingException {
@@ -1096,11 +1072,11 @@ public class MimeUtility {
      * This method is typically used during the generation of
      * RFC 822 and MIME header fields.
      *
-     * @param    word    word to be quoted
-     * @param    specials the set of special characters
+     * @param word     word to be quoted
+     * @param specials the set of special characters
      * @return the possibly quoted word
-     * @see    javax.mail.internet.HeaderTokenizer#MIME
-     * @see    javax.mail.internet.HeaderTokenizer#RFC822
+     * @see javax.mail.internet.HeaderTokenizer#MIME
+     * @see javax.mail.internet.HeaderTokenizer#RFC822
      */
     public static String quote(String word, String specials) {
         int len = word == null ? 0 : word.length();
@@ -1158,8 +1134,8 @@ public class MimeUtility {
      * Note that line breaks in the string aren't escaped; they probably
      * should be.
      *
-     * @param    used    characters used in line so far
-     * @param    s    the string to fold
+     * @param used characters used in line so far
+     * @param s    the string to fold
      * @return the folded string
      * @since JavaMail 1.4
      */
@@ -1258,7 +1234,7 @@ public class MimeUtility {
      * Unfold a folded header.  Any line breaks that aren't escaped and
      * are followed by whitespace are removed.
      *
-     * @param    s    the string to unfold
+     * @param s the string to unfold
      * @return the unfolded string
      * @since JavaMail 1.4
      */
@@ -1473,7 +1449,7 @@ public class MimeUtility {
     /**
      * Check if the given string contains non US-ASCII characters.
      *
-     * @param    s    string
+     * @param s string
      * @return ALL_ASCII if all characters in the string
      * belong to the US-ASCII charset. MOSTLY_ASCII
      * if more than half of the available characters
@@ -1501,7 +1477,7 @@ public class MimeUtility {
     /**
      * Check if the given byte array contains non US-ASCII characters.
      *
-     * @param    b    byte array
+     * @param b byte array
      * @return ALL_ASCII if all characters in the string
      * belong to the US-ASCII charset. MOSTLY_ASCII
      * if more than half of the available characters
@@ -1539,13 +1515,13 @@ public class MimeUtility {
      * found and MOSTLY_NONASCII is returned. Else, the check continues
      * till <code>max</code> bytes or till the end of stream.
      *
-     * @param    is    the input stream
-     * @param    max    maximum bytes to check for. The special value
-     * ALL indicates that all the bytes in this input
-     * stream must be checked.
-     * @param    breakOnNonAscii if <code>true</code>, then terminate the
-     * the check when the first non-US-ASCII character
-     * is found.
+     * @param is              the input stream
+     * @param max             maximum bytes to check for. The special value
+     *                        ALL indicates that all the bytes in this input
+     *                        stream must be checked.
+     * @param breakOnNonAscii if <code>true</code>, then terminate the
+     *                        the check when the first non-US-ASCII character
+     *                        is found.
      * @return ALL_ASCII if all characters in the string
      * belong to the US-ASCII charset. MOSTLY_ASCII
      * if more than half of the available characters

@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2017 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail;
@@ -54,7 +30,7 @@ import java.util.Enumeration;
  *
  * <strong> Attributes: </strong> <p>
  * <p>
- * The JavaMail API defines a set of standard Part attributes that are
+ * The Jakarta Mail API defines a set of standard Part attributes that are
  * considered to be common to most existing Mail systems. These
  * attributes have their own settor and gettor methods. Mail systems
  * may support other Part attributes as well, these are represented as
@@ -105,14 +81,14 @@ public interface Part {
      * @see #getDisposition
      * @see #setDisposition
      */
-    public static final String ATTACHMENT = "attachment";
+    String ATTACHMENT = "attachment";
     /**
      * This part should be presented inline.
      *
      * @see #getDisposition
      * @see #setDisposition
      */
-    public static final String INLINE = "inline";
+    String INLINE = "inline";
 
     /**
      * Return the size of the content of this part in bytes.
@@ -125,9 +101,9 @@ public interface Part {
      * of this part.
      *
      * @return size of content in bytes
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public int getSize() throws MessagingException;
+    int getSize() throws MessagingException;
 
     /**
      * Return the number of lines in the content of this part.
@@ -138,9 +114,9 @@ public interface Part {
      * encoding of the content.
      *
      * @return number of lines in the content.
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public int getLineCount() throws MessagingException;
+    int getLineCount() throws MessagingException;
 
     /**
      * Returns the Content-Type of the content of this part.
@@ -149,10 +125,10 @@ public interface Part {
      * The MIME typing system is used to name Content-types.
      *
      * @return The ContentType of this part
-     * @exception MessagingException for failures
-     * @see        javax.activation.DataHandler
+     * @throws MessagingException for failures
+     * @see javax.activation.DataHandler
      */
-    public String getContentType() throws MessagingException;
+    String getContentType() throws MessagingException;
 
     /**
      * Is this Part of the specified MIME type?  This method
@@ -168,11 +144,11 @@ public interface Part {
      * special character '*', then the subtype is ignored during the
      * comparison.
      *
-     * @param    mimeType    the MIME type to test
+     * @param mimeType the MIME type to test
      * @return true if this part is of the specified type
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public boolean isMimeType(String mimeType) throws MessagingException;
+    boolean isMimeType(String mimeType) throws MessagingException;
 
     /**
      * Return the disposition of this part.  The disposition
@@ -186,27 +162,27 @@ public interface Part {
      * </pre></blockquote>
      *
      * @return disposition of this part, or null if unknown
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      * @see #ATTACHMENT
      * @see #INLINE
      * @see #getFileName
      */
-    public String getDisposition() throws MessagingException;
+    String getDisposition() throws MessagingException;
 
     /**
      * Set the disposition of this part.
      *
-     * @param    disposition    disposition of this part
-     * @exception IllegalWriteException if the underlying implementation
-     * does not support modification of this header
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
-     * @exception MessagingException for other failures
+     * @param disposition disposition of this part
+     * @throws IllegalWriteException if the underlying implementation
+     *                               does not support modification of this header
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
+     * @throws MessagingException    for other failures
      * @see #ATTACHMENT
      * @see #INLINE
      * @see #setFileName
      */
-    public void setDisposition(String disposition) throws MessagingException;
+    void setDisposition(String disposition) throws MessagingException;
 
     /**
      * Return a description String for this part. This typically
@@ -214,22 +190,22 @@ public interface Part {
      * Returns null if none is available.
      *
      * @return description of this part
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public String getDescription() throws MessagingException;
+    String getDescription() throws MessagingException;
 
     /**
      * Set a description String for this part. This typically
      * associates some descriptive information with this part.
      *
-     * @param    description    description of this part
-     * @exception IllegalWriteException if the underlying implementation
-     * does not support modification of this header
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
-     * @exception MessagingException for other failures
+     * @param description description of this part
+     * @throws IllegalWriteException if the underlying implementation
+     *                               does not support modification of this header
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
+     * @throws MessagingException    for other failures
      */
-    public void setDescription(String description) throws MessagingException;
+    void setDescription(String description) throws MessagingException;
 
     /**
      * Get the filename associated with this part, if possible.
@@ -238,9 +214,9 @@ public interface Part {
      * name, not including directory components.
      *
      * @return Filename to associate with this part
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
-    public String getFileName() throws MessagingException;
+    String getFileName() throws MessagingException;
 
     /**
      * Set the filename associated with this part, if possible.
@@ -248,14 +224,14 @@ public interface Part {
      * loaded from a file.  The filename will usually be a simple
      * name, not including directory components.
      *
-     * @param    filename    Filename to associate with this part
-     * @exception IllegalWriteException if the underlying implementation
-     * does not support modification of this header
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
-     * @exception MessagingException for other failures
+     * @param filename Filename to associate with this part
+     * @throws IllegalWriteException if the underlying implementation
+     *                               does not support modification of this header
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
+     * @throws MessagingException    for other failures
      */
-    public void setFileName(String filename) throws MessagingException;
+    void setFileName(String filename) throws MessagingException;
 
     /**
      * Return an input stream for this part's "content". Any
@@ -266,14 +242,14 @@ public interface Part {
      * the DataHandler's <code>getInputStream()</code> method.
      *
      * @return an InputStream
-     * @exception IOException this is typically thrown by the
-     * DataHandler. Refer to the documentation for
-     * javax.activation.DataHandler for more details.
-     * @exception MessagingException for other failures
+     * @throws IOException        this is typically thrown by the
+     *                            DataHandler. Refer to the documentation for
+     *                            javax.activation.DataHandler for more details.
+     * @throws MessagingException for other failures
      * @see #getDataHandler
      * @see javax.activation.DataHandler#getInputStream
      */
-    public InputStream getInputStream()
+    InputStream getInputStream()
             throws IOException, MessagingException;
 
     /**
@@ -281,23 +257,23 @@ public interface Part {
      * DataHandler allows clients to operate on as well as retrieve
      * the content.
      *
-     * @throws MessagingException for failures
      * @return DataHandler for the content
+     * @throws MessagingException for failures
      */
-    public DataHandler getDataHandler() throws MessagingException;
+    DataHandler getDataHandler() throws MessagingException;
 
     /**
      * This method provides the mechanism to set this part's content.
      * The DataHandler wraps around the actual content.
      *
-     * @throws MessagingException for other failures
-     * @param    dh    The DataHandler for the content.
-     * @exception IllegalWriteException if the underlying implementation
-     * does not support modification of existing values
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
+     * @param dh The DataHandler for the content.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying implementation
+     *                               does not support modification of existing values
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
      */
-    public void setDataHandler(DataHandler dh) throws MessagingException;
+    void setDataHandler(DataHandler dh) throws MessagingException;
 
     /**
      * Return the content as a Java object. The type of the returned
@@ -310,48 +286,48 @@ public interface Part {
      * This is a convenience method that just invokes the DataHandler's
      * getContent() method
      *
-     * @throws MessagingException for other failures
      * @return Object
-     * @exception IOException this is typically thrown by the
-     * DataHandler. Refer to the documentation for
-     * javax.activation.DataHandler for more details.
+     * @throws MessagingException for other failures
+     * @throws IOException        this is typically thrown by the
+     *                            DataHandler. Refer to the documentation for
+     *                            javax.activation.DataHandler for more details.
      * @see javax.activation.DataHandler#getContent
      */
-    public Object getContent() throws IOException, MessagingException;
+    Object getContent() throws IOException, MessagingException;
 
     /**
      * This method sets the given Multipart object as this message's
      * content.
      *
      * @param mp The multipart object that is the Message's content
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation	does not support modification of
-     * existing values
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation	does not support modification of
+     *                               existing values
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
      */
-    public void setContent(Multipart mp) throws MessagingException;
+    void setContent(Multipart mp) throws MessagingException;
 
     /**
      * A convenience method for setting this part's content.  The part
      * internally wraps the content in a DataHandler. <p>
      * <p>
      * Note that a DataContentHandler class for the specified type should
-     * be available to the JavaMail implementation for this to work right.
+     * be available to the Jakarta Mail implementation for this to work right.
      * i.e., to do <code>setContent(foobar, "application/x-foobar")</code>,
      * a DataContentHandler for "application/x-foobar" should be installed.
      * Refer to the Java Activation Framework for more information.
      *
-     * @throws MessagingException for other failures
-     * @param    obj    A java object.
-     * @param    type    MIME type of this object.
-     * @exception IllegalWriteException if the underlying implementation
-     * does not support modification of existing values
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
+     * @param obj  A java object.
+     * @param type MIME type of this object.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying implementation
+     *                               does not support modification of existing values
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
      */
-    public void setContent(Object obj, String type)
+    void setContent(Object obj, String type)
             throws MessagingException;
 
     /**
@@ -359,14 +335,14 @@ public interface Part {
      * part's content with a MIME type of "text/plain".
      *
      * @param text The text that is the Message's content.
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification of
-     * existing values
-     * @exception IllegalStateException if this Part is obtained
-     * from a READ_ONLY folder
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification of
+     *                               existing values
+     * @throws IllegalStateException if this Part is obtained
+     *                               from a READ_ONLY folder
      */
-    public void setText(String text) throws MessagingException;
+    void setText(String text) throws MessagingException;
 
     /**
      * Output a bytestream for this Part. This bytestream is
@@ -378,15 +354,15 @@ public interface Part {
      * <p>
      * The bytestream is typically used for sending.
      *
+     * @param os the stream to write to
      * @throws IOException        if an error occurs writing to the
      *                            stream or if an error is generated
      *                            by the javax.activation layer.
      * @throws MessagingException if an error occurs fetching the
      *                            data to be written
-     * @param    os    the stream to write to
      * @see javax.activation.DataHandler#writeTo
      */
-    public void writeTo(OutputStream os) throws IOException, MessagingException;
+    void writeTo(OutputStream os) throws IOException, MessagingException;
 
     /**
      * Get all the headers for this header name. Returns <code>null</code>
@@ -397,7 +373,7 @@ public interface Part {
      * this name
      * @throws MessagingException for failures
      */
-    public String[] getHeader(String header_name)
+    String[] getHeader(String header_name)
             throws MessagingException;
 
     /**
@@ -406,14 +382,14 @@ public interface Part {
      *
      * @param header_name  the name of this header
      * @param header_value the value for this header
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this Part is
-     * obtained from a READ_ONLY folder
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this Part is
+     *                               obtained from a READ_ONLY folder
      */
-    public void setHeader(String header_name, String header_value)
+    void setHeader(String header_name, String header_value)
             throws MessagingException;
 
     /**
@@ -421,28 +397,28 @@ public interface Part {
      *
      * @param header_name  the name of this header
      * @param header_value the value for this header
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this Part is
-     * obtained from a READ_ONLY folder
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this Part is
+     *                               obtained from a READ_ONLY folder
      */
-    public void addHeader(String header_name, String header_value)
+    void addHeader(String header_name, String header_value)
             throws MessagingException;
 
     /**
      * Remove all headers with this name.
      *
      * @param header_name the name of this header
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this Part is
-     * obtained from a READ_ONLY folder
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this Part is
+     *                               obtained from a READ_ONLY folder
      */
-    public void removeHeader(String header_name)
+    void removeHeader(String header_name)
             throws MessagingException;
 
     /**
@@ -452,27 +428,27 @@ public interface Part {
      * @return enumeration of Header objects
      * @throws MessagingException for failures
      */
-    public Enumeration<Header> getAllHeaders() throws MessagingException;
+    Enumeration<Header> getAllHeaders() throws MessagingException;
 
     /**
      * Return matching headers from this part as an Enumeration of
      * Header objects.
      *
+     * @param header_names the headers to match
      * @return enumeration of Header objects
      * @throws MessagingException for failures
-     * @param    header_names    the headers to match
      */
-    public Enumeration<Header> getMatchingHeaders(String[] header_names)
+    Enumeration<Header> getMatchingHeaders(String[] header_names)
             throws MessagingException;
 
     /**
      * Return non-matching headers from this envelope as an Enumeration
      * of Header objects.
      *
+     * @param header_names the headers to not match
      * @return enumeration of Header objects
      * @throws MessagingException for failures
-     * @param    header_names    the headers to not match
      */
-    public Enumeration<Header> getNonMatchingHeaders(String[] header_names)
+    Enumeration<Header> getNonMatchingHeaders(String[] header_names)
             throws MessagingException;
 }

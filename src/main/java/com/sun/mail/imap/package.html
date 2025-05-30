@@ -4,43 +4,19 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <!--
 
-        DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+        Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
 
-        Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+        This program and the accompanying materials are made available under the
+        terms of the Eclipse Public License v. 2.0, which is available at
+        http://www.eclipse.org/legal/epl-2.0.
 
-        The contents of this file are subject to the terms of either the GNU
-        General Public License Version 2 only ("GPL") or the Common Development
-        and Distribution License("CDDL") (collectively, the "License").  You
-        may not use this file except in compliance with the License.  You can
-        obtain a copy of the License at
-        https://oss.oracle.com/licenses/CDDL+GPL-1.1
-        or LICENSE.txt.  See the License for the specific
-        language governing permissions and limitations under the License.
+        This Source Code may also be made available under the following Secondary
+        Licenses when the conditions for such availability set forth in the
+        Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+        version 2 with the GNU Classpath Exception, which is available at
+        https://www.gnu.org/software/classpath/license.html.
 
-        When distributing the software, include this License Header Notice in each
-        file and include the License file at LICENSE.txt.
-
-        GPL Classpath Exception:
-        Oracle designates this particular file as subject to the "Classpath"
-        exception as provided by Oracle in the GPL Version 2 section of the License
-        file that accompanied this code.
-
-        Modifications:
-        If applicable, add the following below the License Header, with the fields
-        enclosed by brackets [] replaced by your own identifying information:
-        "Portions Copyright [year] [name of copyright owner]"
-
-        Contributor(s):
-        If you wish your version of this file to be governed by only the CDDL or
-        only the GPL Version 2, indicate your decision by adding "[Contributor]
-        elects to include this software in this distribution under the [CDDL or GPL
-        Version 2] license."  If you don't indicate a single choice of license, a
-        recipient has the option to distribute your version of this file under
-        either the CDDL, the GPL Version 2 or to extend the choice of license to
-        its licensees as provided above.  However, if you add GPL Version 2 code
-        and therefore, elected the GPL Version 2 license, then the option applies
-        only if the new code is made subject to such option by the copyright
-        holder.
+        SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
     -->
 
@@ -49,7 +25,7 @@
 <BODY BGCOLOR="white">
 
 <P>
-    An IMAP protocol provider for the JavaMail API
+    An IMAP protocol provider for the Jakarta Mail API
     that provides access to an IMAP message store.
     Both the IMAP4 and IMAP4rev1 protocols are supported.
     Refer to <A HREF="http://www.ietf.org/rfc/rfc3501.txt" TARGET="_top">
@@ -106,7 +82,7 @@
     support described above or as a built-in authentication mechanism in the
     IMAP provider.
     The OAuth 2.0 Access Token should be passed as the password for this mechanism.
-    See <A HREF="https://java.net/projects/javamail/pages/OAuth2" TARGET="_top">
+    See <A HREF="https://eclipse-ee4j.github.io/jakartamail/OAuth2" TARGET="_top">
     OAuth2 Support</A> for details.
 </P>
 <STRONG>Connection Pool</STRONG>
@@ -254,10 +230,10 @@
     If the server supports the extension, the client will enable use of UTF-8,
     allowing use of UTF-8 in IMAP protocol strings such as folder names.
 </P>
-<A NAME="properties"><STRONG>Properties</STRONG></A>
+<A ID="properties"><STRONG>Properties</STRONG></A>
 <P>
     The IMAP protocol provider supports the following properties,
-    which may be set in the JavaMail <code>Session</code> object.
+    which may be set in the Jakarta Mail <code>Session</code> object.
     The properties are always set as strings; the Type column describes
     how the string is interpreted. For example, use
 </P>
@@ -271,7 +247,8 @@
     Note that if you're using the "imaps" protocol to access IMAP over SSL,
     all the properties would be named "mail.imaps.*".
 </P>
-<TABLE BORDER SUMMARY="IMAP properties">
+<TABLE BORDER="1">
+    <CAPTION>IMAP properties</CAPTION>
     <TR>
         <TH>Name</TH>
         <TH>Type</TH>
@@ -279,19 +256,19 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.user">mail.imap.user</A></TD>
+        <TD><A ID="mail.imap.user">mail.imap.user</A></TD>
         <TD>String</TD>
         <TD>Default user name for IMAP.</TD>
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.host">mail.imap.host</A></TD>
+        <TD><A ID="mail.imap.host">mail.imap.host</A></TD>
         <TD>String</TD>
         <TD>The IMAP server to connect to.</TD>
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.port">mail.imap.port</A></TD>
+        <TD><A ID="mail.imap.port">mail.imap.port</A></TD>
         <TD>int</TD>
         <TD>The IMAP server port to connect to, if the connect() method doesn't
             explicitly specify one. Defaults to 143.
@@ -299,7 +276,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.partialfetch">mail.imap.partialfetch</A></TD>
+        <TD><A ID="mail.imap.partialfetch">mail.imap.partialfetch</A></TD>
         <TD>boolean</TD>
         <TD>Controls whether the IMAP partial-fetch capability should be used.
             Defaults to true.
@@ -307,13 +284,13 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.fetchsize">mail.imap.fetchsize</A></TD>
+        <TD><A ID="mail.imap.fetchsize">mail.imap.fetchsize</A></TD>
         <TD>int</TD>
         <TD>Partial fetch size in bytes. Defaults to 16K.</TD>
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.peek">mail.imap.peek</A></TD>
+        <TD><A ID="mail.imap.peek">mail.imap.peek</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, use the IMAP PEEK option when fetching body parts,
@@ -326,7 +303,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ignorebodystructuresize">mail.imap.ignorebodystructuresize</A></TD>
+        <TD><A ID="mail.imap.ignorebodystructuresize">mail.imap.ignorebodystructuresize</A></TD>
         <TD>boolean</TD>
         <TD>The IMAP BODYSTRUCTURE response includes the exact size of each body part.
             Normally, this size is used to determine how much data to fetch for each
@@ -342,7 +319,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.connectiontimeout">mail.imap.connectiontimeout</A></TD>
+        <TD><A ID="mail.imap.connectiontimeout">mail.imap.connectiontimeout</A></TD>
         <TD>int</TD>
         <TD>Socket connection timeout value in milliseconds.
             This timeout is implemented by java.net.Socket.
@@ -351,7 +328,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.timeout">mail.imap.timeout</A></TD>
+        <TD><A ID="mail.imap.timeout">mail.imap.timeout</A></TD>
         <TD>int</TD>
         <TD>Socket read timeout value in milliseconds.
             This timeout is implemented by java.net.Socket.
@@ -360,7 +337,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.writetimeout">mail.imap.writetimeout</A></TD>
+        <TD><A ID="mail.imap.writetimeout">mail.imap.writetimeout</A></TD>
         <TD>int</TD>
         <TD>Socket write timeout value in milliseconds.
             This timeout is implemented by using a
@@ -372,7 +349,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.statuscachetimeout">mail.imap.statuscachetimeout</A></TD>
+        <TD><A ID="mail.imap.statuscachetimeout">mail.imap.statuscachetimeout</A></TD>
         <TD>int</TD>
         <TD>Timeout value in milliseconds for cache of STATUS command response.
             Default is 1000 (1 second). Zero disables cache.
@@ -380,7 +357,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.appendbuffersize">mail.imap.appendbuffersize</A></TD>
+        <TD><A ID="mail.imap.appendbuffersize">mail.imap.appendbuffersize</A></TD>
         <TD>int</TD>
         <TD>
             Maximum size of a message to buffer in memory when appending to an IMAP
@@ -394,7 +371,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.connectionpoolsize">mail.imap.connectionpoolsize</A></TD>
+        <TD><A ID="mail.imap.connectionpoolsize">mail.imap.connectionpoolsize</A></TD>
         <TD>int</TD>
         <TD>Maximum number of available connections in the connection pool.
             Default is 1.
@@ -402,7 +379,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.connectionpooltimeout">mail.imap.connectionpooltimeout</A></TD>
+        <TD><A ID="mail.imap.connectionpooltimeout">mail.imap.connectionpooltimeout</A></TD>
         <TD>int</TD>
         <TD>Timeout value in milliseconds for connection pool connections. Default
             is 45000 (45 seconds).
@@ -410,7 +387,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.separatestoreconnection">mail.imap.separatestoreconnection</A></TD>
+        <TD><A ID="mail.imap.separatestoreconnection">mail.imap.separatestoreconnection</A></TD>
         <TD>boolean</TD>
         <TD>Flag to indicate whether to use a dedicated store connection for store
             commands. Default is false.
@@ -418,7 +395,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.allowreadonlyselect">mail.imap.allowreadonlyselect</A></TD>
+        <TD><A ID="mail.imap.allowreadonlyselect">mail.imap.allowreadonlyselect</A></TD>
         <TD>boolean</TD>
         <TD>If false, attempts to open a folder read/write will fail
             if the SELECT command succeeds but indicates that the folder is READ-ONLY.
@@ -433,7 +410,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.mechanisms">mail.imap.auth.mechanisms</A></TD>
+        <TD><A ID="mail.imap.auth.mechanisms">mail.imap.auth.mechanisms</A></TD>
         <TD>String</TD>
         <TD>
             If set, lists the authentication mechanisms to consider, and the order
@@ -446,7 +423,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.login.disable">mail.imap.auth.login.disable</A></TD>
+        <TD><A ID="mail.imap.auth.login.disable">mail.imap.auth.login.disable</A></TD>
         <TD>boolean</TD>
         <TD>If true, prevents use of the non-standard <code>AUTHENTICATE LOGIN</code>
             command, instead using the plain <code>LOGIN</code> command.
@@ -455,7 +432,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.plain.disable">mail.imap.auth.plain.disable</A></TD>
+        <TD><A ID="mail.imap.auth.plain.disable">mail.imap.auth.plain.disable</A></TD>
         <TD>boolean</TD>
         <TD>If true, prevents use of the <code>AUTHENTICATE PLAIN</code> command.
             Default is false.
@@ -463,7 +440,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.ntlm.disable">mail.imap.auth.ntlm.disable</A></TD>
+        <TD><A ID="mail.imap.auth.ntlm.disable">mail.imap.auth.ntlm.disable</A></TD>
         <TD>boolean</TD>
         <TD>If true, prevents use of the <code>AUTHENTICATE NTLM</code> command.
             Default is false.
@@ -471,7 +448,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.ntlm.domain">mail.imap.auth.ntlm.domain</A></TD>
+        <TD><A ID="mail.imap.auth.ntlm.domain">mail.imap.auth.ntlm.domain</A></TD>
         <TD>String</TD>
         <TD>
             The NTLM authentication domain.
@@ -479,7 +456,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.ntlm.flags">mail.imap.auth.ntlm.flags</A></TD>
+        <TD><A ID="mail.imap.auth.ntlm.flags">mail.imap.auth.ntlm.flags</A></TD>
         <TD>int</TD>
         <TD>
             NTLM protocol-specific flags.
@@ -489,7 +466,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.auth.xoauth2.disable">mail.imap.auth.xoauth2.disable</A></TD>
+        <TD><A ID="mail.imap.auth.xoauth2.disable">mail.imap.auth.xoauth2.disable</A></TD>
         <TD>boolean</TD>
         <TD>If true, prevents use of the <code>AUTHENTICATE XOAUTH2</code> command.
             Because the OAuth 2.0 protocol requires a special access token instead of
@@ -500,7 +477,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.proxyauth.user">mail.imap.proxyauth.user</A></TD>
+        <TD><A ID="mail.imap.proxyauth.user">mail.imap.proxyauth.user</A></TD>
         <TD>String</TD>
         <TD>If the server supports the PROXYAUTH extension, this property
             specifies the name of the user to act as. Authenticate to the
@@ -511,7 +488,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.localaddress">mail.imap.localaddress</A></TD>
+        <TD><A ID="mail.imap.localaddress">mail.imap.localaddress</A></TD>
         <TD>String</TD>
         <TD>
             Local address (host name) to bind to when creating the IMAP socket.
@@ -522,7 +499,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.localport">mail.imap.localport</A></TD>
+        <TD><A ID="mail.imap.localport">mail.imap.localport</A></TD>
         <TD>int</TD>
         <TD>
             Local port number to bind to when creating the IMAP socket.
@@ -531,7 +508,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.sasl.enable">mail.imap.sasl.enable</A></TD>
+        <TD><A ID="mail.imap.sasl.enable">mail.imap.sasl.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, attempt to use the javax.security.sasl package to
@@ -541,7 +518,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.sasl.mechanisms">mail.imap.sasl.mechanisms</A></TD>
+        <TD><A ID="mail.imap.sasl.mechanisms">mail.imap.sasl.mechanisms</A></TD>
         <TD>String</TD>
         <TD>
             A space or comma separated list of SASL mechanism names to try
@@ -550,7 +527,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.sasl.authorizationid">mail.imap.sasl.authorizationid</A></TD>
+        <TD><A ID="mail.imap.sasl.authorizationid">mail.imap.sasl.authorizationid</A></TD>
         <TD>String</TD>
         <TD>
             The authorization ID to use in the SASL authentication.
@@ -559,7 +536,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.sasl.realm">mail.imap.sasl.realm</A></TD>
+        <TD><A ID="mail.imap.sasl.realm">mail.imap.sasl.realm</A></TD>
         <TD>String</TD>
         <TD>The realm to use with SASL authentication mechanisms that
             require a realm, such as DIGEST-MD5.
@@ -567,7 +544,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.sasl.usecanonicalhostname">mail.imap.sasl.usecanonicalhostname</A></TD>
+        <TD><A ID="mail.imap.sasl.usecanonicalhostname">mail.imap.sasl.usecanonicalhostname</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, the canonical host name returned by
@@ -578,7 +555,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.sasl.xgwtrustedapphack.enable">mail.imap.sasl. xgwtrustedapphack.enable</A></TD>
+        <TD><A ID="mail.imap.sasl.xgwtrustedapphack.enable">mail.imap.sasl. xgwtrustedapphack.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, enables a workaround for a bug in the Novell Groupwise
@@ -588,7 +565,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.socketFactory">mail.imap.socketFactory</A></TD>
+        <TD><A ID="mail.imap.socketFactory">mail.imap.socketFactory</A></TD>
         <TD>SocketFactory</TD>
         <TD>
             If set to a class that implements the
@@ -600,7 +577,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.socketFactory.class">mail.imap.socketFactory.class</A></TD>
+        <TD><A ID="mail.imap.socketFactory.class">mail.imap.socketFactory.class</A></TD>
         <TD>String</TD>
         <TD>
             If set, specifies the name of a class that implements the
@@ -610,7 +587,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.socketFactory.fallback">mail.imap.socketFactory.fallback</A></TD>
+        <TD><A ID="mail.imap.socketFactory.fallback">mail.imap.socketFactory.fallback</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, failure to create a socket using the specified
@@ -621,7 +598,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.socketFactory.port">mail.imap.socketFactory.port</A></TD>
+        <TD><A ID="mail.imap.socketFactory.port">mail.imap.socketFactory.port</A></TD>
         <TD>int</TD>
         <TD>
             Specifies the port to connect to when using the specified socket
@@ -631,7 +608,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.usesocketchannels">mail.imap.usesocketchannels</A></TD>
+        <TD><A ID="mail.imap.usesocketchannels">mail.imap.usesocketchannels</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, use SocketChannels instead of Sockets for connecting
@@ -642,7 +619,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.enable">mail.imap.ssl.enable</A></TD>
+        <TD><A ID="mail.imap.ssl.enable">mail.imap.ssl.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, use SSL to connect and use the SSL port by default.
@@ -651,7 +628,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.checkserveridentity">mail.imap.ssl.checkserveridentity</A></TD>
+        <TD><A ID="mail.imap.ssl.checkserveridentity">mail.imap.ssl.checkserveridentity</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, check the server identity as specified by
@@ -663,7 +640,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.trust">mail.imap.ssl.trust</A></TD>
+        <TD><A ID="mail.imap.ssl.trust">mail.imap.ssl.trust</A></TD>
         <TD>String</TD>
         <TD>
             If set, and a socket factory hasn't been specified, enables use of a
@@ -675,7 +652,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.socketFactory">mail.imap.ssl.socketFactory</A></TD>
+        <TD><A ID="mail.imap.ssl.socketFactory">mail.imap.ssl.socketFactory</A></TD>
         <TD>SSLSocketFactory</TD>
         <TD>
             If set to a class that extends the
@@ -687,7 +664,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.socketFactory.class">mail.imap.ssl.socketFactory.class</A></TD>
+        <TD><A ID="mail.imap.ssl.socketFactory.class">mail.imap.ssl.socketFactory.class</A></TD>
         <TD>String</TD>
         <TD>
             If set, specifies the name of a class that extends the
@@ -697,7 +674,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.socketFactory.port">mail.imap.ssl.socketFactory.port</A></TD>
+        <TD><A ID="mail.imap.ssl.socketFactory.port">mail.imap.ssl.socketFactory.port</A></TD>
         <TD>int</TD>
         <TD>
             Specifies the port to connect to when using the specified socket
@@ -707,7 +684,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.protocols">mail.imap.ssl.protocols</A></TD>
+        <TD><A ID="mail.imap.ssl.protocols">mail.imap.ssl.protocols</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the SSL protocols that will be enabled for SSL connections.
@@ -717,7 +694,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.ssl.ciphersuites">mail.imap.ssl.ciphersuites</A></TD>
+        <TD><A ID="mail.imap.ssl.ciphersuites">mail.imap.ssl.ciphersuites</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the SSL cipher suites that will be enabled for SSL connections.
@@ -727,7 +704,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.starttls.enable">mail.imap.starttls.enable</A></TD>
+        <TD><A ID="mail.imap.starttls.enable">mail.imap.starttls.enable</A></TD>
         <TD>boolean</TD>
         <TD>If true, enables the use of the <code>STARTTLS</code> command (if
             supported by the server) to switch the connection to a TLS-protected
@@ -743,7 +720,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.starttls.required">mail.imap.starttls.required</A></TD>
+        <TD><A ID="mail.imap.starttls.required">mail.imap.starttls.required</A></TD>
         <TD>boolean</TD>
         <TD>
             If true, requires the use of the <code>STARTTLS</code> command.
@@ -754,7 +731,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.proxy.host">mail.imap.proxy.host</A></TD>
+        <TD><A ID="mail.imap.proxy.host">mail.imap.proxy.host</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the host name of an HTTP web proxy server that will be used for
@@ -763,7 +740,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.proxy.port">mail.imap.proxy.port</A></TD>
+        <TD><A ID="mail.imap.proxy.port">mail.imap.proxy.port</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the port number for the HTTP web proxy server.
@@ -772,7 +749,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.proxy.user">mail.imap.proxy.user</A></TD>
+        <TD><A ID="mail.imap.proxy.user">mail.imap.proxy.user</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the user name to use to authenticate with the HTTP web proxy server.
@@ -781,7 +758,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.proxy.password">mail.imap.proxy.password</A></TD>
+        <TD><A ID="mail.imap.proxy.password">mail.imap.proxy.password</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the password to use to authenticate with the HTTP web proxy server.
@@ -790,7 +767,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.socks.host">mail.imap.socks.host</A></TD>
+        <TD><A ID="mail.imap.socks.host">mail.imap.socks.host</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the host name of a SOCKS5 proxy server that will be used for
@@ -799,7 +776,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.socks.port">mail.imap.socks.port</A></TD>
+        <TD><A ID="mail.imap.socks.port">mail.imap.socks.port</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the port number for the SOCKS5 proxy server.
@@ -809,7 +786,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.minidletime">mail.imap.minidletime</A></TD>
+        <TD><A ID="mail.imap.minidletime">mail.imap.minidletime</A></TD>
         <TD>int</TD>
         <TD>
             Applications typically call the idle method in a loop. If another
@@ -822,7 +799,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.enableresponseevents">mail.imap.enableresponseevents</A></TD>
+        <TD><A ID="mail.imap.enableresponseevents">mail.imap.enableresponseevents</A></TD>
         <TD>boolean</TD>
         <TD>
             Enable special IMAP-specific events to be delivered to the Store's
@@ -837,7 +814,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.enableimapevents">mail.imap.enableimapevents</A></TD>
+        <TD><A ID="mail.imap.enableimapevents">mail.imap.enableimapevents</A></TD>
         <TD>boolean</TD>
         <TD>
             Enable special IMAP-specific events to be delivered to the Store's
@@ -853,7 +830,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.throwsearchexception">mail.imap.throwsearchexception</A></TD>
+        <TD><A ID="mail.imap.throwsearchexception">mail.imap.throwsearchexception</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true and a {@link javax.mail.search.SearchTerm SearchTerm}
@@ -870,7 +847,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.folder.class">mail.imap.folder.class</A></TD>
+        <TD><A ID="mail.imap.folder.class">mail.imap.folder.class</A></TD>
         <TD>String</TD>
         <TD>
             Class name of a subclass of <code>com.sun.mail.imap.IMAPFolder</code>.
@@ -883,7 +860,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.closefoldersonstorefailure">mail.imap.closefoldersonstorefailure</A></TD>
+        <TD><A ID="mail.imap.closefoldersonstorefailure">mail.imap.closefoldersonstorefailure</A></TD>
         <TD>boolean</TD>
         <TD>
             In some cases, a failure of the Store connection indicates a failure of the
@@ -898,7 +875,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.finalizecleanclose">mail.imap.finalizecleanclose</A></TD>
+        <TD><A ID="mail.imap.finalizecleanclose">mail.imap.finalizecleanclose</A></TD>
         <TD>boolean</TD>
         <TD>
             When the finalizer for IMAPStore is called,
@@ -911,7 +888,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.referralexception">mail.imap.referralexception</A></TD>
+        <TD><A ID="mail.imap.referralexception">mail.imap.referralexception</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true and an IMAP login referral is returned when the authentication
@@ -922,7 +899,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.compress.enable">mail.imap.compress.enable</A></TD>
+        <TD><A ID="mail.imap.compress.enable">mail.imap.compress.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true and the IMAP server supports the COMPRESS=DEFLATE extension,
@@ -932,7 +909,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.compress.level">mail.imap.compress.level</A></TD>
+        <TD><A ID="mail.imap.compress.level">mail.imap.compress.level</A></TD>
         <TD>int</TD>
         <TD>
             The compression level to be used, in the range -1 to 9.
@@ -941,7 +918,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.compress.strategy">mail.imap.compress.strategy</A></TD>
+        <TD><A ID="mail.imap.compress.strategy">mail.imap.compress.strategy</A></TD>
         <TD>int</TD>
         <TD>
             The compression strategy to be used, in the range 0 to 2.
@@ -950,7 +927,7 @@
     </TR>
 
     <TR>
-        <TD><A NAME="mail.imap.reusetagprefix">mail.imap.compress.strategy</A></TD>
+        <TD><A ID="mail.imap.reusetagprefix">mail.imap.reusetagprefix</A></TD>
         <TD>boolean</TD>
         <TD>
             If true, always use "A" for the IMAP command tag prefix.
@@ -979,7 +956,8 @@
     the com.sun.mail.imap provider logs the same information using
     {@link java.util.logging.Logger} as described in the following table:
 </P>
-<TABLE BORDER SUMMARY="IMAP Loggers">
+<TABLE BORDER="1">
+    <CAPTION>IMAP Loggers</CAPTION>
     <TR>
         <TH>Logger Name</TH>
         <TH>Logging Level</TH>

@@ -1,42 +1,18 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 2009, 2021 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2009, 2021 Jason Mehrens. All rights reserved.
  *
- * Copyright (c) 2009-2017 Oracle and/or its affiliates. All rights reserved.
- * Copyright (c) 2009-2017 Jason Mehrens. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 package com.sun.mail.util.logging;
 
@@ -82,11 +58,18 @@ final class LogManagerProperties extends Properties {
      * Generated serial id.
      */
     private static final long serialVersionUID = -2239983349056806252L;
+
     /**
      * Holds the method used to get the LogRecord instant if running on JDK 9 or
      * later.
      */
     private static final Method LR_GET_INSTANT;
+
+    /**
+     * Holds the method used to get the long thread id if running on JDK 16 or
+     * later.
+     */
+    private static final Method LR_GET_LONG_TID;
 
     /**
      * Holds the method used to get the default time zone if running on JDK 9 or
@@ -112,6 +95,20 @@ final class LogManagerProperties extends Properties {
     @SuppressWarnings("VolatileArrayField")
     private static volatile String[] REFLECT_NAMES;
 
+    /**
+     * MethodHandle is available starting at JDK7 and Andriod API 26.
+     */
+    static { // Added in JDK16 see JDK-8245302
+        Method lrtid = null;
+        try {
+            lrtid = LogRecord.class.getMethod("getLongThreadID");
+        } catch (final RuntimeException ignore) {
+        } catch (final Exception ignore) { // No need for specific catch.
+        } catch (final LinkageError ignore) {
+        }
+        LR_GET_LONG_TID = lrtid;
+    }
+
     static {
         Method lrgi = null;
         Method zisd = null;
@@ -123,17 +120,17 @@ final class LogManagerProperties extends Properties {
             zisd = findClass("java.time.ZoneId")
                     .getMethod("systemDefault");
             if (!Modifier.isStatic(zisd.getModifiers())) {
+                lrgi = null;
                 throw new NoSuchMethodException(zisd.toString());
             }
 
             zdtoi = findClass("java.time.ZonedDateTime")
                     .getMethod("ofInstant", findClass("java.time.Instant"),
                             findClass("java.time.ZoneId"));
-            if (!Modifier.isStatic(zdtoi.getModifiers())) {
-                throw new NoSuchMethodException(zdtoi.toString());
-            }
-
-            if (!Comparable.class.isAssignableFrom(zdtoi.getReturnType())) {
+            if (!Modifier.isStatic(zdtoi.getModifiers())
+                    || !Comparable.class.isAssignableFrom(
+                    zdtoi.getReturnType())) {
+                lrgi = null;
                 throw new NoSuchMethodException(zdtoi.toString());
             }
         } catch (final RuntimeException ignore) {
@@ -162,8 +159,8 @@ final class LogManagerProperties extends Properties {
      *
      * @param parent the parent properties.
      * @param prefix the namespace prefix.
-     * @throws NullPointerException if <tt>prefix</tt> or <tt>parent</tt> is
-     *                              <tt>null</tt>.
+     * @throws NullPointerException if <code>prefix</code> or
+     *                              <code>parent</code> is <code>null</code>.
      */
     LogManagerProperties(final Properties parent, final String prefix) {
         super(parent);
@@ -379,6 +376,39 @@ final class LogManagerProperties extends Properties {
     }
 
     /**
+     * Gets the long thread id from the given log record.
+     *
+     * @param record used to get the long thread id.
+     * @return null if LogRecord doesn't support long thread ids.
+     * @throws NullPointerException if record is null.
+     * @since JavaMail 1.6.7
+     */
+    static Long getLongThreadID(final LogRecord record) {
+        if (record == null) {
+            throw new NullPointerException();
+        }
+
+        final Method m = LR_GET_LONG_TID;
+        if (m != null) {
+            try {
+                return (Long) m.invoke(record);
+            } catch (final InvocationTargetException ite) {
+                final Throwable cause = ite.getCause();
+                if (cause instanceof Error) {
+                    throw (Error) cause;
+                } else if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                } else { // Should never happen.
+                    throw new UndeclaredThrowableException(ite);
+                }
+            } catch (final RuntimeException ignore) {
+            } catch (final Exception ignore) {
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets the local host name from the given service.
      *
      * @param s the service to examine.
@@ -415,6 +445,7 @@ final class LogManagerProperties extends Properties {
      *
      * @param value an ISO-8601 duration character sequence.
      * @return the number of milliseconds parsed from the duration.
+     * @throws ArithmeticException         if the duration is too large or too small.
      * @throws ClassNotFoundException      if the java.time classes are not present.
      * @throws IllegalAccessException      if the method is inaccessible.
      * @throws InvocationTargetException   if the method throws an exception.
@@ -428,6 +459,9 @@ final class LogManagerProperties extends Properties {
      * @since JavaMail 1.5.5
      */
     static long parseDurationToMillis(final CharSequence value) throws Exception {
+        if (value == null) {
+            throw new NullPointerException();
+        }
         try {
             final Class<?> k = findClass("java.time.Duration");
             final Method parse = k.getMethod("parse", CharSequence.class);
@@ -445,7 +479,12 @@ final class LogManagerProperties extends Properties {
         } catch (final ExceptionInInitializerError EIIE) {
             throw wrapOrThrow(EIIE);
         } catch (final InvocationTargetException ite) {
-            throw paramOrError(ite);
+            final Throwable cause = ite.getCause();
+            if (cause instanceof ArithmeticException) {
+                throw (ArithmeticException) cause;
+            } else {
+                throw paramOrError(ite);
+            }
         }
     }
 
@@ -567,9 +606,9 @@ final class LogManagerProperties extends Properties {
         }
 
         Comparator<T> reverse = null;
-        // Comparator in Java 1.8 has 'reversed' as a default method.
+        // Comparator in JDK8 has 'reversed' as a default method.
         // This code calls that method first to allow custom
-        // code to define what reverse order means.
+        // code to define what reverse order means in versions older than JDK8.
         try {
             // assert Modifier.isPublic(c.getClass().getModifiers()) :
             //        Modifier.toString(c.getClass().getModifiers());
@@ -582,11 +621,9 @@ final class LogManagerProperties extends Properties {
                     throw wrapOrThrow(eiie);
                 }
             }
-        } catch (final NoSuchMethodException ignore) {
-        } catch (final IllegalAccessException ignore) {
-        } catch (final RuntimeException ignore) {
         } catch (final InvocationTargetException ite) {
             paramOrError(ite); // Ignore invocation bugs (returned values).
+        } catch (final ReflectiveOperationException | RuntimeException ignore) {
         }
 
         if (reverse == null) {
@@ -692,6 +729,8 @@ final class LogManagerProperties extends Properties {
         final Class<?> thisClass = LogManagerProperties.class;
         assert Modifier.isFinal(thisClass.getModifiers()) : thisClass;
         try {
+            // This code must use reflection to capture extra frames.
+            // The invoke API doesn't produce the frames needed.
             final HashSet<String> traces = new HashSet<>();
             Throwable t = Throwable.class.getConstructor().newInstance();
             for (StackTraceElement ste : t.getStackTrace()) {
@@ -702,6 +741,8 @@ final class LogManagerProperties extends Properties {
                 }
             }
 
+            // This code must use reflection to capture extra frames.
+            // The invoke API doesn't produce the frames needed.
             Throwable.class.getMethod("fillInStackTrace").invoke(t);
             for (StackTraceElement ste : t.getStackTrace()) {
                 if (!thisClass.getName().equals(ste.getClassName())) {
@@ -806,10 +847,10 @@ final class LogManagerProperties extends Properties {
     }
 
     /**
-     * This code is modified from the LogManager, which explictly states
+     * This code is modified from the LogManager, which explicitly states
      * searching the system class loader first, then the context class loader.
      * There is resistance (compatibility) to change this behavior to simply
-     * searching the context class loader.
+     * searching the context class loader. See JDK-6878454.
      *
      * @param name full class name
      * @return the class.

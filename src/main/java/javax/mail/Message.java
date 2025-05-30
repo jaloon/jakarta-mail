@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2017 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail;
@@ -77,7 +53,7 @@ import java.util.Date;
  * @author John Mani
  * @author Bill Shannon
  * @author Max Spivak
- * @see     javax.mail.Part
+ * @see javax.mail.Part
  */
 
 public abstract class Message implements Part {
@@ -112,8 +88,8 @@ public abstract class Message implements Part {
      * Constructor that takes a Folder and a message number.
      * Used by Folder implementations.
      *
-     * @param    folder    containing folder
-     * @param    msgnum    this message's sequence number within this folder
+     * @param folder containing folder
+     * @param msgnum this message's sequence number within this folder
      */
     protected Message(Folder folder, int msgnum) {
         this.folder = folder;
@@ -125,7 +101,7 @@ public abstract class Message implements Part {
      * Constructor that takes a Session. Used for client created
      * Message objects.
      *
-     * @param    session    A Session object
+     * @param session A Session object
      */
     protected Message(Session session) {
         this.session = session;
@@ -162,12 +138,12 @@ public abstract class Message implements Part {
      * Set the "From" attribute in this Message.
      *
      * @param address the sender
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void setFrom(Address address)
             throws MessagingException;
@@ -177,12 +153,12 @@ public abstract class Message implements Part {
      * attribute is obtained from the property "mail.user". If this
      * property is absent, the system property "user.name" is used.
      *
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void setFrom() throws MessagingException;
 
@@ -190,12 +166,12 @@ public abstract class Message implements Part {
      * Add these addresses to the existing "From" attribute
      *
      * @param addresses the senders
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void addFrom(Address[] addresses)
             throws MessagingException;
@@ -268,12 +244,12 @@ public abstract class Message implements Part {
      *
      * @param type      the recipient type
      * @param addresses the addresses
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void setRecipients(RecipientType type, Address[] addresses)
             throws MessagingException;
@@ -286,10 +262,10 @@ public abstract class Message implements Part {
      *
      * @param type    the recipient type
      * @param address the address
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
      */
     public void setRecipient(RecipientType type, Address address)
             throws MessagingException {
@@ -307,12 +283,12 @@ public abstract class Message implements Part {
      *
      * @param type      the recipient type
      * @param addresses the addresses
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void addRecipients(RecipientType type, Address[] addresses)
             throws MessagingException;
@@ -324,10 +300,10 @@ public abstract class Message implements Part {
      *
      * @param type    the recipient type
      * @param address the address
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
      */
     public void addRecipient(RecipientType type, Address address)
             throws MessagingException {
@@ -350,7 +326,7 @@ public abstract class Message implements Part {
      *
      * @return addresses to which replies should be directed
      * @throws MessagingException for failures
-     * @see        #getFrom
+     * @see #getFrom
      */
     public Address[] getReplyTo() throws MessagingException {
         return getFrom();
@@ -366,15 +342,15 @@ public abstract class Message implements Part {
      * MethodNotSupportedException.
      *
      * @param addresses addresses to which replies should be directed
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
-     * @exception MethodNotSupportedException if the underlying
-     * implementation does not support setting this
-     * attribute
+     * @throws MessagingException          for other failures
+     * @throws IllegalWriteException       if the underlying
+     *                                     implementation does not support modification
+     *                                     of existing values
+     * @throws IllegalStateException       if this message is
+     *                                     obtained from a READ_ONLY folder.
+     * @throws MethodNotSupportedException if the underlying
+     *                                     implementation does not support setting this
+     *                                     attribute
      */
     public void setReplyTo(Address[] addresses) throws MessagingException {
         throw new MethodNotSupportedException("setReplyTo not supported");
@@ -392,12 +368,12 @@ public abstract class Message implements Part {
      * Set the subject of this message.
      *
      * @param subject the subject
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void setSubject(String subject)
             throws MessagingException;
@@ -414,12 +390,12 @@ public abstract class Message implements Part {
      * Set the sent date of this message.
      *
      * @param date the sent date of this message
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
      */
     public abstract void setSentDate(Date date) throws MessagingException;
 
@@ -439,8 +415,8 @@ public abstract class Message implements Part {
      * not affect the flags of this message. Use <code>setFlags()</code>
      * to do that. <p>
      *
-     * @throws MessagingException for failures
      * @return Flags object containing the flags for this message
+     * @throws MessagingException for failures
      * @see javax.mail.Flags
      * @see #setFlags
      */
@@ -453,14 +429,14 @@ public abstract class Message implements Part {
      * The default implementation uses <code>getFlags</code>.
      *
      * @param flag the flag
-     * @throws MessagingException for failures
      * @return value of the specified flag for this message
-     * @see        javax.mail.Flags.Flag#ANSWERED
-     * @see        javax.mail.Flags.Flag#DELETED
-     * @see        javax.mail.Flags.Flag#DRAFT
-     * @see        javax.mail.Flags.Flag#FLAGGED
-     * @see        javax.mail.Flags.Flag#RECENT
-     * @see        javax.mail.Flags.Flag#SEEN
+     * @throws MessagingException for failures
+     * @see javax.mail.Flags.Flag#ANSWERED
+     * @see javax.mail.Flags.Flag#DELETED
+     * @see javax.mail.Flags.Flag#DRAFT
+     * @see javax.mail.Flags.Flag#FLAGGED
+     * @see javax.mail.Flags.Flag#RECENT
+     * @see javax.mail.Flags.Flag#SEEN
      * @see javax.mail.Flags.Flag
      */
     public boolean isSet(Flags.Flag flag) throws MessagingException {
@@ -478,13 +454,13 @@ public abstract class Message implements Part {
      *
      * @param flag Flags object containing the flags to be set
      * @param set  the value to be set
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values.
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
-     * @see        javax.mail.event.MessageChangedEvent
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values.
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
+     * @see javax.mail.event.MessageChangedEvent
      */
     public abstract void setFlags(Flags flag, boolean set)
             throws MessagingException;
@@ -500,13 +476,13 @@ public abstract class Message implements Part {
      *
      * @param flag Flags.Flag object containing the flag to be set
      * @param set  the value to be set
-     * @throws MessagingException for other failures
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values.
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
-     * @see        javax.mail.event.MessageChangedEvent
+     * @throws MessagingException    for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values.
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
+     * @see javax.mail.event.MessageChangedEvent
      */
     public void setFlag(Flags.Flag flag, boolean set)
             throws MessagingException {
@@ -535,7 +511,7 @@ public abstract class Message implements Part {
      * Set the Message number for this Message. This method is
      * invoked only by the implementation classes.
      *
-     * @param    msgnum    the message number
+     * @param msgnum the message number
      */
     protected void setMessageNumber(int msgnum) {
         this.msgnum = msgnum;
@@ -568,7 +544,7 @@ public abstract class Message implements Part {
      * expunge handling.
      *
      * @return true if the message is expunged
-     * @see    Folder#expunge
+     * @see Folder#expunge
      */
     public boolean isExpunged() {
         return expunged;
@@ -601,10 +577,10 @@ public abstract class Message implements Part {
      * <p>
      * The reply message will use the same session as this message.
      *
-     * @param    replyToAll    reply should be sent to all recipients
-     * of this message
+     * @param replyToAll reply should be sent to all recipients
+     *                   of this message
      * @return the reply Message
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
     public abstract Message reply(boolean replyToAll) throws MessagingException;
 
@@ -622,12 +598,12 @@ public abstract class Message implements Part {
      * Messages obtained from folders opened READ_ONLY should not be
      * modified and saveChanges should not be called on such messages.
      *
-     * @throws MessagingException for other failures
-     * @exception IllegalStateException if this message is
-     * obtained from a READ_ONLY folder.
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * of existing values.
+     * @throws MessagingException    for other failures
+     * @throws IllegalStateException if this message is
+     *                               obtained from a READ_ONLY folder.
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     *                               of existing values.
      */
     public abstract void saveChanges() throws MessagingException;
 
@@ -635,10 +611,10 @@ public abstract class Message implements Part {
      * Apply the specified Search criterion to this message.
      *
      * @param term the Search criterion
-     * @throws MessagingException for failures
      * @return true if the Message matches this search
      * criterion, false otherwise.
-     * @see        javax.mail.search.SearchTerm
+     * @throws MessagingException for failures
+     * @see javax.mail.search.SearchTerm
      */
     public boolean match(SearchTerm term) throws MessagingException {
         return term.match(this);
@@ -692,7 +668,7 @@ public abstract class Message implements Part {
         /**
          * Constructor for use by subclasses.
          *
-         * @param    type    the recipient type
+         * @param type the recipient type
          */
         protected RecipientType(String type) {
             this.type = type;
@@ -706,7 +682,7 @@ public abstract class Message implements Part {
          * instances before calling this super method.
          *
          * @return the RecipientType object instance
-         * @exception ObjectStreamException for object stream errors
+         * @throws ObjectStreamException for object stream errors
          */
         protected Object readResolve() throws ObjectStreamException {
             if (type.equals("To"))

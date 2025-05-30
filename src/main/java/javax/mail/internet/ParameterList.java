@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2017 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail.internet;
@@ -179,8 +155,8 @@ public class ParameterList {
      * Note that an empty parameter-list string is valid and will be
      * parsed into an empty ParameterList.
      *
-     * @param    s    the parameter-list string.
-     * @exception ParseException if the parse fails.
+     * @param s the parameter-list string.
+     * @throws ParseException if the parse fails.
      */
     public ParameterList(String s) throws ParseException {
         this();
@@ -644,8 +620,8 @@ public class ParameterList {
      * Set a parameter. If this parameter already exists, it is
      * replaced by this new value.
      *
-     * @param    name name of the parameter.
-     * @param    value    value of the parameter.
+     * @param name  name of the parameter.
+     * @param value value of the parameter.
      */
     public void set(String name, String value) {
         name = name.trim().toLowerCase(Locale.ENGLISH);
@@ -667,9 +643,9 @@ public class ParameterList {
      * is true, and the parameter value is non-ASCII, it will be
      * encoded with the specified charset, as specified by RFC 2231.
      *
-     * @param    name name of the parameter.
-     * @param    value    value of the parameter.
-     * @param    charset    charset of the parameter value.
+     * @param name    name of the parameter.
+     * @param value   value of the parameter.
+     * @param charset charset of the parameter value.
      * @since JavaMail 1.4
      */
     public void set(String name, String value, String charset) {
@@ -689,8 +665,8 @@ public class ParameterList {
      * further encoded.  Used to set the filename parameter when
      * "mail.mime.encodefilename" is true.
      *
-     * @param    name name of the parameter.
-     * @param    value    value of the parameter.
+     * @param name  name of the parameter.
+     * @param value value of the parameter.
      */
     void setLiteral(String name, String value) {
         LiteralValue lv = new LiteralValue();
@@ -702,7 +678,7 @@ public class ParameterList {
      * Removes the specified parameter from this ParameterList.
      * This method does nothing if the parameter is not present.
      *
-     * @param    name    name of the parameter.
+     * @param name name of the parameter.
      */
     public void remove(String name) {
         list.remove(name.trim().toLowerCase(Locale.ENGLISH));

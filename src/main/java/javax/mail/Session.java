@@ -1,45 +1,22 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail;
 
+import com.sun.mail.util.DefaultProvider;
 import com.sun.mail.util.LineInputStream;
 import com.sun.mail.util.MailLogger;
 
@@ -95,10 +72,10 @@ interface StreamLoader {
  * The first method allows the user to include their own version of the
  * resource file by placing it in the <i>conf</i> directory where the
  * <code>java.home</code> property points.  The second method allows an
- * application that uses the JavaMail APIs to include their own resource
+ * application that uses the Jakarta Mail APIs to include their own resource
  * files in their application's or jar file's <code>META-INF</code>
  * directory.  The <code>javamail.default.</code><i>X</i> default files
- * are part of the JavaMail <code>mail.jar</code> file and should not be
+ * are part of the Jakarta Mail <code>mail.jar</code> file and should not be
  * supplied by users. <p>
  * <p>
  * File location depends upon how the <code>ClassLoader</code> method
@@ -111,7 +88,7 @@ interface StreamLoader {
  * entries.  For example, the first IMAP provider found will be set as the
  * default IMAP implementation until explicitly changed by the
  * application.  The user- or system-supplied resource files augment, they
- * do not override, the default files included with the JavaMail APIs.
+ * do not override, the default files included with the Jakarta Mail APIs.
  * This means that all entries in all files loaded will be available. <p>
  *
  * <b><code>javamail.providers</code></b> and
@@ -248,17 +225,16 @@ public final class Session {
     private final Authenticator authenticator;
     private final Hashtable<URLName, PasswordAuthentication> authTable
             = new Hashtable<>();
+    private final List<Provider> providers = new ArrayList<>();
     private final Map<String, Provider> providersByProtocol = new HashMap<>();
     private final Map<String, Provider> providersByClassName = new HashMap<>();
     private final Properties addressMap = new Properties();
+    // maps type to protocol
     // the queue of events to be delivered, if mail.event.scope===session
     private final EventQueue q;
     private boolean debug = false;
     private PrintStream out;            // debug output stream
     private MailLogger logger;
-    private List<Provider> providers;
-    // maps type to protocol
-    private boolean loadedProviders;    // javamail.[default.]providers loaded?
 
     // Constructor is not public
     private Session(Properties props, Authenticator authenticator) {
@@ -269,7 +245,7 @@ public final class Session {
             debug = true;
 
         initLogger();
-        logger.log(Level.CONFIG, "JavaMail version {0}", Version.version);
+        logger.log(Level.CONFIG, "Jakarta Mail version {0}", Version.version);
 
         // get the Class associated with the Authenticator
         Class<?> cl;
@@ -278,6 +254,7 @@ public final class Session {
         else
             cl = this.getClass();
         // load the resources
+        loadProviders(cl);
         loadAddressMap(cl);
         q = new EventQueue((Executor) props.get("mail.event.executor"));
     }
@@ -285,18 +262,18 @@ public final class Session {
     /**
      * Get a new Session object.
      *
-     * @param    props    Properties object that hold relevant properties.<br>
-     * It is expected that the client supplies values
-     * for the properties listed in Appendix A of the
-     * JavaMail spec (particularly  mail.store.protocol,
-     * mail.transport.protocol, mail.host, mail.user,
-     * and mail.from) as the defaults are unlikely to
-     * work in all cases.
-     * @param    authenticator Authenticator object used to call back to
-     * the application when a user name and password is
-     * needed.
+     * @param props         Properties object that hold relevant properties.<br>
+     *                      It is expected that the client supplies values
+     *                      for the properties listed in Appendix A of the
+     *                      Jakarta Mail spec (particularly  mail.store.protocol,
+     *                      mail.transport.protocol, mail.host, mail.user,
+     *                      and mail.from) as the defaults are unlikely to
+     *                      work in all cases.
+     * @param authenticator Authenticator object used to call back to
+     *                      the application when a user name and password is
+     *                      needed.
      * @return a new Session object
-     * @see    javax.mail.Authenticator
+     * @see javax.mail.Authenticator
      */
     public static Session getInstance(Properties props,
                                       Authenticator authenticator) {
@@ -306,13 +283,13 @@ public final class Session {
     /**
      * Get a new Session object.
      *
-     * @param    props    Properties object that hold relevant properties.<br>
-     * It is expected that the client supplies values
-     * for the properties listed in Appendix A of the
-     * JavaMail spec (particularly  mail.store.protocol,
-     * mail.transport.protocol, mail.host, mail.user,
-     * and mail.from) as the defaults are unlikely to
-     * work in all cases.
+     * @param props Properties object that hold relevant properties.<br>
+     *              It is expected that the client supplies values
+     *              for the properties listed in Appendix A of the
+     *              Jakarta Mail spec (particularly  mail.store.protocol,
+     *              mail.transport.protocol, mail.host, mail.user,
+     *              and mail.from) as the defaults are unlikely to
+     *              work in all cases.
      * @return a new Session object
      * @since JavaMail 1.2
      */
@@ -354,18 +331,18 @@ public final class Session {
      * caller must have the <code>RuntimePermission("setFactory")</code>
      * permission.
      *
-     * @param    props    Properties object. Used only if a new Session
-     * object is created.<br>
-     * It is expected that the client supplies values
-     * for the properties listed in Appendix A of the
-     * JavaMail spec (particularly  mail.store.protocol,
-     * mail.transport.protocol, mail.host, mail.user,
-     * and mail.from) as the defaults are unlikely to
-     * work in all cases.
-     * @param    authenticator Authenticator object.  Used only if a
-     * new Session object is created.  Otherwise,
-     * it must match the Authenticator used to create
-     * the Session.
+     * @param props         Properties object. Used only if a new Session
+     *                      object is created.<br>
+     *                      It is expected that the client supplies values
+     *                      for the properties listed in Appendix A of the
+     *                      Jakarta Mail spec (particularly  mail.store.protocol,
+     *                      mail.transport.protocol, mail.host, mail.user,
+     *                      and mail.from) as the defaults are unlikely to
+     *                      work in all cases.
+     * @param authenticator Authenticator object.  Used only if a
+     *                      new Session object is created.  Otherwise,
+     *                      it must match the Authenticator used to create
+     *                      the Session.
      * @return the default Session object
      */
     public static synchronized Session getDefaultInstance(Properties props,
@@ -402,14 +379,14 @@ public final class Session {
      * machine, and the session can contain security sensitive
      * information such as user names and passwords.
      *
-     * @param    props    Properties object. Used only if a new Session
-     * object is created.<br>
-     * It is expected that the client supplies values
-     * for the properties listed in Appendix A of the
-     * JavaMail spec (particularly  mail.store.protocol,
-     * mail.transport.protocol, mail.host, mail.user,
-     * and mail.from) as the defaults are unlikely to
-     * work in all cases.
+     * @param props Properties object. Used only if a new Session
+     *              object is created.<br>
+     *              It is expected that the client supplies values
+     *              for the properties listed in Appendix A of the
+     *              Jakarta Mail spec (particularly  mail.store.protocol,
+     *              mail.transport.protocol, mail.host, mail.user,
+     *              and mail.from) as the defaults are unlikely to
+     *              work in all cases.
      * @return the default Session object
      * @since JavaMail 1.2
      */
@@ -540,7 +517,7 @@ public final class Session {
     public synchronized void setDebug(boolean debug) {
         this.debug = debug;
         initLogger();
-        logger.log(Level.CONFIG, "setDebug: JavaMail version {0}",
+        logger.log(Level.CONFIG, "setDebug: Jakarta Mail version {0}",
                 Version.version);
     }
 
@@ -565,7 +542,7 @@ public final class Session {
      * as a result of setting the <code>mail.debug</code> system property,
      * will always be sent to <code>System.out</code>.
      *
-     * @param    out    the PrintStream to use for debugging output
+     * @param out the PrintStream to use for debugging output
      * @since JavaMail 1.3
      */
     public synchronized void setDebugOut(PrintStream out) {
@@ -581,21 +558,8 @@ public final class Session {
      * @return Array of configured providers
      */
     public synchronized Provider[] getProviders() {
-        List<Provider> plist = new ArrayList<Provider>();
-        boolean needFallback = true;
-        // first, add all the services
-        ServiceLoader<Provider> loader = ServiceLoader.load(Provider.class);
-        for (Provider p : loader) {
-            plist.add(p);
-            needFallback = false;
-        }
-        // then, add all the providers from config files
-        if (!loadedProviders)
-            loadProviders(needFallback);
-        if (providers != null)
-            plist.addAll(providers);
-        Provider[] _providers = new Provider[plist.size()];
-        plist.toArray(_providers);
+        Provider[] _providers = new Provider[providers.size()];
+        providers.toArray(_providers);
         return _providers;
     }
 
@@ -610,8 +574,8 @@ public final class Session {
      *
      * @param protocol Configured protocol (i.e. smtp, imap, etc)
      * @return Currently configured Provider for the specified protocol
-     * @exception NoSuchProviderException If a provider for the given
-     * protocol is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 protocol is not found.
      */
     public synchronized Provider getProvider(String protocol)
             throws NoSuchProviderException {
@@ -630,11 +594,15 @@ public final class Session {
                         ".class property exists and points to " +
                         _className);
             }
-            _provider = getProviderByClassName(_className);
+            _provider = providersByClassName.get(_className);
         }
 
-        if (_provider == null)
-            _provider = getProviderByProtocol(protocol);
+        if (_provider != null) {
+            return _provider;
+        } else {
+            // returning currently default protocol in providersByProtocol
+            _provider = providersByProtocol.get(protocol);
+        }
 
         if (_provider == null) {
             throw new NoSuchProviderException("No provider for " + protocol);
@@ -652,8 +620,8 @@ public final class Session {
      *
      * @param provider Currently configured Provider which will be
      *                 set as the default for the protocol
-     * @exception NoSuchProviderException If the provider passed in
-     * is invalid.
+     * @throws NoSuchProviderException If the provider passed in
+     *                                 is invalid.
      */
     public synchronized void setProvider(Provider provider)
             throws NoSuchProviderException {
@@ -673,8 +641,8 @@ public final class Session {
      * NoSuchProviderException is thrown
      *
      * @return a Store object
-     * @exception NoSuchProviderException If a provider for the given
-     * protocol is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 protocol is not found.
      */
     public Store getStore() throws NoSuchProviderException {
         return getStore(getProperty("mail.store.protocol"));
@@ -685,10 +653,10 @@ public final class Session {
      * appropriate Store object cannot be obtained,
      * NoSuchProviderException is thrown.
      *
-     * @param     protocol    the Store protocol
+     * @param protocol the Store protocol
      * @return a Store object
-     * @exception NoSuchProviderException If a provider for the given
-     * protocol is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 protocol is not found.
      */
     public Store getStore(String protocol) throws NoSuchProviderException {
         return getStore(new URLName(protocol, null, -1, null, null, null));
@@ -701,12 +669,12 @@ public final class Session {
      * The "scheme" part of the URL string (Refer RFC 1738) is used
      * to locate the Store protocol. <p>
      *
-     * @param    url    URLName that represents the desired Store
+     * @param url URLName that represents the desired Store
      * @return a closed Store object
-     * @see        #getFolder(URLName)
-     * @see        javax.mail.URLName
-     * @exception NoSuchProviderException If a provider for the given
-     * URLName is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 URLName is not found.
+     * @see #getFolder(URLName)
+     * @see javax.mail.URLName
      */
     public Store getStore(URLName url) throws NoSuchProviderException {
         String protocol = url.getProtocol();
@@ -720,8 +688,8 @@ public final class Session {
      *
      * @param provider Store Provider that will be instantiated
      * @return Instantiated Store
-     * @exception NoSuchProviderException If a provider for the given
-     * Provider is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 Provider is not found.
      */
     public Store getStore(Provider provider) throws NoSuchProviderException {
         return getStore(provider, null);
@@ -736,8 +704,8 @@ public final class Session {
      * @param provider Store Provider that will be instantiated
      * @param url      URLName used to instantiate the Store
      * @return Instantiated Store
-     * @exception NoSuchProviderException If a provider for the given
-     * Provider/URLName is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 Provider/URLName is not found.
      */
     private Store getStore(Provider provider, URLName url)
             throws NoSuchProviderException {
@@ -765,14 +733,14 @@ public final class Session {
      * Providers of IP-based mail Stores should implement that
      * syntax for referring to Folders. <p>
      *
-     * @param    url    URLName that represents the desired folder
+     * @param url URLName that represents the desired folder
      * @return Folder
-     * @see        #getStore(URLName)
-     * @see        javax.mail.URLName
-     * @exception NoSuchProviderException If a provider for the given
-     * URLName is not found.
-     * @exception MessagingException if the Folder could not be
-     * located or created.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 URLName is not found.
+     * @throws MessagingException      if the Folder could not be
+     *                                 located or created.
+     * @see #getStore(URLName)
+     * @see javax.mail.URLName
      */
     public Folder getFolder(URLName url)
             throws MessagingException {
@@ -789,7 +757,7 @@ public final class Session {
      * object cannot be obtained, MessagingException is thrown.
      *
      * @return a Transport object
-     * @exception NoSuchProviderException If the provider is not found.
+     * @throws NoSuchProviderException If the provider is not found.
      */
     public Transport getTransport() throws NoSuchProviderException {
         String prot = getProperty("mail.transport.protocol");
@@ -807,10 +775,10 @@ public final class Session {
      * If an appropriate Transport object cannot be obtained, null is
      * returned.
      *
+     * @param protocol the Transport protocol
      * @return a Transport object
-     * @param    protocol the Transport protocol
-     * @exception NoSuchProviderException If provider for the given
-     * protocol is not found.
+     * @throws NoSuchProviderException If provider for the given
+     *                                 protocol is not found.
      */
     public Transport getTransport(String protocol)
             throws NoSuchProviderException {
@@ -824,11 +792,11 @@ public final class Session {
      * The "scheme" part of the URL string (Refer RFC 1738) is used
      * to locate the Transport protocol. <p>
      *
-     * @param    url    URLName that represents the desired Transport
+     * @param url URLName that represents the desired Transport
      * @return a closed Transport object
-     * @see        javax.mail.URLName
-     * @exception NoSuchProviderException If a provider for the given
-     * URLName is not found.
+     * @throws NoSuchProviderException If a provider for the given
+     *                                 URLName is not found.
+     * @see javax.mail.URLName
      */
     public Transport getTransport(URLName url) throws NoSuchProviderException {
         String protocol = url.getProtocol();
@@ -842,8 +810,8 @@ public final class Session {
      *
      * @param provider Transport Provider that will be instantiated
      * @return Instantiated Transport
-     * @exception NoSuchProviderException If provider for the given
-     * provider is not found.
+     * @throws NoSuchProviderException If provider for the given
+     *                                 provider is not found.
      */
     public Transport getTransport(Provider provider)
             throws NoSuchProviderException {
@@ -854,10 +822,10 @@ public final class Session {
      * Get a Transport object that can transport a Message of the
      * specified address type.
      *
-     * @param    address    an address for which a Transport is needed
+     * @param address an address for which a Transport is needed
      * @return A Transport object
-     * @exception NoSuchProviderException If provider for the
-     * Address type is not found
+     * @throws NoSuchProviderException If provider for the
+     *                                 Address type is not found
      * @see javax.mail.Address
      */
     public Transport getTransport(Address address)
@@ -878,11 +846,11 @@ public final class Session {
     /**
      * Get a Transport object using the given provider and urlname.
      *
+     * @param provider the provider to use
+     * @param url      urlname to use (can be null)
      * @return A Transport object
-     * @param    provider    the provider to use
-     * @param    url        urlname to use (can be null)
-     * @exception NoSuchProviderException    If no provider or the provider
-     * was the wrong class.
+     * @throws NoSuchProviderException If no provider or the provider
+     *                                 was the wrong class.
      */
 
     private Transport getTransport(Provider provider, URLName url)
@@ -903,10 +871,10 @@ public final class Session {
      * @param provider which provider to use
      * @param url      which URLName to use (can be null)
      * @param type     the service type (class)
-     * @exception NoSuchProviderException    thrown when the class cannot be
-     * found or when it does not have the correct constructor
-     * (Session, URLName), or if it is not derived from
-     * Service.
+     * @throws NoSuchProviderException thrown when the class cannot be
+     *                                 found or when it does not have the correct constructor
+     *                                 (Session, URLName), or if it is not derived from
+     *                                 Service.
      */
     private <T extends Service> T getService(Provider provider, URLName url,
                                              Class<T> type)
@@ -990,8 +958,8 @@ public final class Session {
      * to allow authentication information to be shared among multiple
      * uses of a session.
      *
-     * @param    url    the URLName
-     * @param    pw    the PasswordAuthentication to save
+     * @param url the URLName
+     * @param pw  the PasswordAuthentication to save
      */
     public void setPasswordAuthentication(URLName url,
                                           PasswordAuthentication pw) {
@@ -1005,7 +973,7 @@ public final class Session {
      * Return any saved PasswordAuthentication for this (store or transport)
      * URLName.  Normally used only by store or transport implementations.
      *
-     * @param    url    the URLName
+     * @param url the URLName
      * @return the PasswordAuthentication corresponding to the URLName
      */
     public PasswordAuthentication getPasswordAuthentication(URLName url) {
@@ -1023,12 +991,12 @@ public final class Session {
      * Password:
      * </pre>
      *
-     * @param    addr        InetAddress of the host.  may be null.
-     * @param    port        the port on the host
-     * @param    protocol    protocol scheme (e.g. imap, pop3, etc.)
-     * @param    prompt        any additional String to show as part of
-     * the prompt; may be null.
-     * @param    defaultUserName    the default username. may be null.
+     * @param addr            InetAddress of the host.  may be null.
+     * @param port            the port on the host
+     * @param protocol        protocol scheme (e.g. imap, pop3, etc.)
+     * @param prompt          any additional String to show as part of
+     *                        the prompt; may be null.
+     * @param defaultUserName the default username. may be null.
      * @return the authentication which was collected by the authenticator;
      * may be null.
      */
@@ -1057,7 +1025,7 @@ public final class Session {
      * Returns the value of the specified property. Returns null
      * if this property does not exist.
      *
-     * @param    name    the property name
+     * @param name the property name
      * @return String that is the property value
      */
     public String getProperty(String name) {
@@ -1065,64 +1033,9 @@ public final class Session {
     }
 
     /**
-     * Get the Provider that uses the specified class name.
-     *
-     * @param    className    the class name
-     * @return the Provider
-     */
-    private Provider getProviderByClassName(String className) {
-        // first, try our local list of providers
-        Provider p = providersByClassName.get(className);
-        if (p != null)
-            return p;
-
-        // now, try services
-        ServiceLoader<Provider> loader = ServiceLoader.load(Provider.class);
-        for (Provider pp : loader) {
-            if (className.equals(pp.getClassName()))
-                return pp;
-        }
-
-        // finally, if we haven't loaded our config, load it and try again
-        if (!loadedProviders) {
-            loadProviders(true);
-            p = providersByClassName.get(className);
-        }
-        return p;
-    }
-
-    /**
-     * Get the Provider for the specified protocol.
-     *
-     * @param    protocol    the protocol
-     * @return the Provider
-     */
-    private Provider getProviderByProtocol(String protocol) {
-        // first, try our local list of providers
-        Provider p = providersByProtocol.get(protocol);
-        if (p != null)
-            return p;
-
-        // now, try services
-        ServiceLoader<Provider> loader = ServiceLoader.load(Provider.class);
-        for (Provider pp : loader) {
-            if (protocol.equals(pp.getProtocol()))
-                return pp;
-        }
-
-        // finally, if we haven't loaded our config, load it and try again
-        if (!loadedProviders) {
-            loadProviders(true);
-            p = providersByProtocol.get(protocol);
-        }
-        return p;
-    }
-
-    /**
      * Load the protocol providers config files.
-     * If fallback is true, provide built in defaults if nothing is loaded.
      */
-    private void loadProviders(boolean fallback) {
+    private void loadProviders(Class<?> cl) {
         StreamLoader loader = new StreamLoader() {
             @Override
             public void load(InputStream is) throws IOException {
@@ -1137,12 +1050,12 @@ public final class Session {
                 loadFile(confDir + "javamail.providers", loader);
         } catch (SecurityException ex) {}
 
-        // get the Class associated with the Authenticator
-        Class<?> cl;
-        if (authenticator != null)
-            cl = authenticator.getClass();
-        else
-            cl = this.getClass();
+        // next, add all the non-default services
+        ServiceLoader<Provider> sl = ServiceLoader.load(Provider.class);
+        for (Provider p : sl) {
+            if (!p.getClass().isAnnotationPresent(DefaultProvider.class))
+                addProvider(p);
+        }
 
         // load the META-INF/javamail.providers file supplied by an application
         loadAllResources("META-INF/javamail.providers", cl, loader);
@@ -1150,11 +1063,17 @@ public final class Session {
         // load default META-INF/javamail.default.providers from mail.jar file
         loadResource("/META-INF/javamail.default.providers", cl, loader, false);
 
+        // finally, add all the default services
+        sl = ServiceLoader.load(Provider.class);
+        for (Provider p : sl) {
+            if (p.getClass().isAnnotationPresent(DefaultProvider.class))
+                addProvider(p);
+        }
+
         /*
-         * If we haven't loaded any providers and the fallback configuration
-         * is needed, fake it.
+         * If we haven't loaded any providers, fake it.
          */
-        if ((providers == null || providers.size() == 0) && fallback) {
+        if (providers.isEmpty()) {
             logger.config("failed to load any providers, using defaults");
             // failed to load any providers, initialize with our defaults
             addProvider(new Provider(Provider.Type.STORE,
@@ -1179,13 +1098,12 @@ public final class Session {
 
         if (logger.isLoggable(Level.CONFIG)) {
             // dump the output of the tables for debugging
-            logger.config("Tables of loaded providers from javamail.providers");
+            logger.config("Tables of loaded providers");
             logger.config("Providers Listed By Class Name: " +
                     providersByClassName.toString());
             logger.config("Providers Listed By Protocol: " +
                     providersByProtocol.toString());
         }
-        loadedProviders = true;
     }
 
     private void loadProvidersFromStream(InputStream is)
@@ -1250,12 +1168,10 @@ public final class Session {
     /**
      * Add a provider to the session.
      *
-     * @param    provider    the provider to add
+     * @param provider the provider to add
      * @since JavaMail 1.4
      */
     public synchronized void addProvider(Provider provider) {
-        if (providers == null)
-            providers = new ArrayList<Provider>();
         providers.add(provider);
         providersByClassName.put(provider.getClassName(), provider);
         if (!providersByProtocol.containsKey(provider.getProtocol()))
@@ -1301,10 +1217,10 @@ public final class Session {
      * <code>javamail.default.address.map</code> or
      * <code>javamail.address.map</code> files or resources.
      *
-     * @param    addresstype    type of address
-     * @param    protocol    name of protocol
-     * @since JavaMail 1.4
+     * @param addresstype type of address
+     * @param protocol    name of protocol
      * @see #getTransport(Address)
+     * @since JavaMail 1.4
      */
     public synchronized void setProtocolForAddress(String addresstype,
                                                    String protocol) {

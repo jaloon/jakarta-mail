@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package com.sun.mail.imap;
@@ -118,7 +94,7 @@ import java.util.logging.Level;
  * The connected IMAPStore object may or may not maintain a separate IMAP
  * protocol object that provides the store a dedicated connection to the
  * IMAP server. This is provided mainly for compatibility with previous
- * implementations of JavaMail and is determined by the value of the
+ * implementations of Jakarta Mail and is determined by the value of the
  * mail.imap.separatestoreconnection property. <p>
  *
  * An IMAPStore object provides closed IMAPFolder objects thru its list()
@@ -190,11 +166,6 @@ public class IMAPStore extends Store
     private final int minIdleTime;    // minimum idle time
     private final Object connectionFailedLock = new Object();
     private final ConnectionPool pool;
-    private final boolean ignoreSize;        // ignore the size in BODYSTRUCTURE?
-    private final String guid;            // for Yahoo! Mail IMAP
-    private final boolean debugusername;    // include username in debug output?
-    private final boolean debugpassword;    // include password in debug output?
-    private final boolean messageCacheDebug;
     // Auth info
     protected String host;
     protected String user;
@@ -203,6 +174,7 @@ public class IMAPStore extends Store
     protected String authorizationID;
     protected String saslRealm;
     protected MailLogger logger;    // for debug output
+    private boolean ignoreSize;        // ignore the size in BODYSTRUCTURE?
     private volatile int port = -1;    // port to use
     private Namespaces namespaces;
     private boolean enableStartTLS = false;    // enable STARTTLS
@@ -213,25 +185,9 @@ public class IMAPStore extends Store
     private boolean forcePasswordRefresh = false;
     // enable notification of IMAP responses
     private boolean enableResponseEvents = false;
-    /**
-     * A special response handler for connections that are being used
-     * to perform operations on behalf of an object other than the Store.
-     * It DOESN'T cause the Store to be cleaned up if a BYE is seen.
-     * The BYE may be real or synthetic and in either case just indicates
-     * that the connection is dead.
-     */
-    private final ResponseHandler nonStoreResponseHandler = new ResponseHandler() {
-        @Override
-        public void handleResponse(Response r) {
-            // Any of these responses may have a response code.
-            if (r.isOK() || r.isNO() || r.isBAD() || r.isBYE())
-                handleResponseCode(r);
-            if (r.isBYE())
-                logger.fine("IMAPStore non-store connection dead");
-        }
-    };
     // enable notification of IMAP responses during IDLE
     private boolean enableImapEvents = false;
+    private String guid;            // for Yahoo! Mail IMAP
     private boolean throwSearchException = false;
     private boolean peek = false;
     private boolean closeFoldersOnStoreFailure = true;
@@ -248,10 +204,31 @@ public class IMAPStore extends Store
      */
     private volatile boolean connectionFailed = false;
     private volatile boolean forceClose = false;
+    private boolean debugusername;    // include username in debug output?
+    private boolean debugpassword;    // include password in debug output?
+    private boolean messageCacheDebug;
     // constructors for IMAPFolder class provided by user
     private volatile Constructor<?> folderConstructor = null;
+
     // Connection pool info
     private volatile Constructor<?> folderConstructorLI = null;
+    /**
+     * A special response handler for connections that are being used
+     * to perform operations on behalf of an object other than the Store.
+     * It DOESN'T cause the Store to be cleaned up if a BYE is seen.
+     * The BYE may be real or synthetic and in either case just indicates
+     * that the connection is dead.
+     */
+    private ResponseHandler nonStoreResponseHandler = new ResponseHandler() {
+        @Override
+        public void handleResponse(Response r) {
+            // Any of these responses may have a response code.
+            if (r.isOK() || r.isNO() || r.isBAD() || r.isBYE())
+                handleResponseCode(r);
+            if (r.isBYE())
+                logger.fine("IMAPStore non-store connection dead");
+        }
+    };
 
     /**
      * Constructor that takes a Session object and a URLName that
@@ -1460,9 +1437,10 @@ public class IMAPStore extends Store
     public synchronized void close() throws MessagingException {
         cleanup();
         // do these again in case cleanup returned early
-        // because we were already closed due to a failure
-        closeAllFolders(false);
-        emptyConnectionPool(false);
+        // because we were already closed due to a failure,
+        // in which case we force close everything
+        closeAllFolders(true);
+        emptyConnectionPool(true);
     }
 
     @Override
@@ -2125,7 +2103,7 @@ public class IMAPStore extends Store
         // connection pool logger
         private final MailLogger logger;
         // container for the pool's IMAP protocol objects
-        private final Vector<IMAPProtocol> authenticatedConnections
+        private Vector<IMAPProtocol> authenticatedConnections
                 = new Vector<>();
         // vectore of open folders
         private Vector<IMAPFolder> folders;

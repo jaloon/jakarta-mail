@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail.internet;
@@ -170,8 +146,8 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * from a multipart stream and feed them into this constructor, without
      * the delimiter strings.
      *
-     * @param    is    the body part Input Stream
-     * @exception MessagingException for failures
+     * @param is the body part Input Stream
+     * @throws MessagingException for failures
      */
     public MimeBodyPart(InputStream is) throws MessagingException {
         if (!(is instanceof ByteArrayInputStream) &&
@@ -200,9 +176,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * <p>
      * Used by providers.
      *
-     * @param    headers    The header of this part
-     * @param    content    bytes representing the body of this part.
-     * @exception MessagingException for failures
+     * @param headers The header of this part
+     * @param content bytes representing the body of this part.
+     * @throws MessagingException for failures
      */
     public MimeBodyPart(InternetHeaders headers, byte[] content)
             throws MessagingException {
@@ -803,7 +779,7 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * special character '*', then the subtype is ignored during the
      * comparison.
      *
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
     @Override
     public boolean isMimeType(String mimeType) throws MessagingException {
@@ -821,7 +797,7 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * This implementation uses <code>getHeader(name)</code>
      * to obtain the requisite header field.
      *
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      * @see #headers
      */
     @Override
@@ -834,11 +810,11 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * of this body part.  If the disposition is null, any existing
      * "Content-Disposition" header field is removed.
      *
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
-     * @exception MessagingException for other failures
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
      */
     @Override
     public void setDisposition(String disposition) throws MessagingException {
@@ -879,12 +855,12 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * If the <code>cid</code> parameter is null, any existing
      * "Content-ID" is removed.
      *
-     * @param    cid    the Content-ID
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
-     * @exception MessagingException for other failures
+     * @param cid the Content-ID
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
      * @since JavaMail 1.3
      */
     public void setContentID(String cid) throws MessagingException {
@@ -910,10 +886,10 @@ public class MimeBodyPart extends BodyPart implements MimePart {
     /**
      * Set the "Content-MD5" header field of this body part.
      *
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
      */
     @Override
     public void setContentMD5(String md5) throws MessagingException {
@@ -982,14 +958,14 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * MessagingException.
      *
      * @param description content description
-     * @throws MessagingException otherwise; an
-     *                            UnsupportedEncodingException may be included
-     *                            in the exception chain if the charset
-     *                            conversion fails.
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
+     * @throws MessagingException    otherwise; an
+     *                               UnsupportedEncodingException may be included
+     *                               in the exception chain if the charset
+     *                               conversion fails.
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
      */
     @Override
     public void setDescription(String description) throws MessagingException {
@@ -1011,16 +987,16 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * is included in the chain of nested exceptions within the
      * MessagingException.
      *
-     * @throws MessagingException otherwise; an
-     *                            UnsupportedEncodingException may be included
-     *                            in the exception chain if the charset
-     *                            conversion fails.
-     * @param    description    Description
-     * @param    charset        Charset for encoding
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
+     * @param description Description
+     * @param charset     Charset for encoding
+     * @throws MessagingException    otherwise; an
+     *                               UnsupportedEncodingException may be included
+     *                               in the exception chain if the charset
+     *                               conversion fails.
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
      */
     public void setDescription(String description, String charset)
             throws MessagingException {
@@ -1067,12 +1043,12 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * characters in filenames.  The default value of this property
      * is false.
      *
-     * @param    filename    the file name
-     * @exception IllegalWriteException if the underlying
-     * implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
-     * @exception MessagingException for other failures
+     * @param filename the file name
+     * @throws IllegalWriteException if the underlying
+     *                               implementation does not support modification
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
+     * @throws MessagingException    for other failures
      */
     @Override
     public void setFileName(String filename) throws MessagingException {
@@ -1086,11 +1062,11 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * That is, it invokes getDataHandler().getInputStream();
      *
      * @return an InputStream
-     * @throws IOException this is typically thrown by the
-     *                     DataHandler. Refer to the documentation for
-     *                     javax.activation.DataHandler for more details.
-     * @exception MessagingException for other failures
-     * @see    #getContentStream
+     * @throws IOException        this is typically thrown by the
+     *                            DataHandler. Refer to the documentation for
+     *                            javax.activation.DataHandler for more details.
+     * @throws MessagingException for other failures
+     * @see #getContentStream
      * @see javax.activation.DataHandler#getInputStream
      */
     @Override
@@ -1106,7 +1082,7 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * content might want to override this method. <p>
      *
      * @return an InputStream containing the raw bytes
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      * @see #content
      * @see MimeMessage#getContentStream
      */
@@ -1131,9 +1107,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * method.
      *
      * @return an InputStream containing the raw bytes
-     * @exception MessagingException for failures
-     * @see    #getInputStream
-     * @see    #getContentStream
+     * @throws MessagingException for failures
+     * @see #getInputStream
+     * @see #getContentStream
      * @since JavaMail 1.2
      */
     public InputStream getRawInputStream() throws MessagingException {
@@ -1146,7 +1122,7 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * The implementation provided here works just like the
      * the implementation in MimeMessage.
      *
-     * @see    MimeMessage#getDataHandler
+     * @see MimeMessage#getDataHandler
      */
     @Override
     public DataHandler getDataHandler() throws MessagingException {
@@ -1162,8 +1138,8 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * @param dh The DataHandler for the content
      * @throws IllegalWriteException if the underlying
      *                               implementation does not support modification
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
      */
     @Override
     public void setDataHandler(DataHandler dh)
@@ -1227,8 +1203,8 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * @throws IllegalWriteException if the underlying
      *                               implementation does not support modification of
      *                               existing values.
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
      */
     @Override
     public void setContent(Multipart mp) throws MessagingException {
@@ -1241,18 +1217,18 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * <p>
      * The content is wrapped in a DataHandler object. Note that a
      * DataContentHandler class for the specified type should be
-     * available to the JavaMail implementation for this to work right.
+     * available to the Jakarta Mail implementation for this to work right.
      * That is, to do <code>setContent(foobar, "application/x-foobar")</code>,
      * a DataContentHandler for "application/x-foobar" should be installed.
      * Refer to the Java Activation Framework for more information.
      *
+     * @param o    the content object
+     * @param type Mime type of the object
      * @throws IllegalWriteException if the underlying
      *                               implementation does not support modification of
      *                               existing values
-     * @param    o    the content object
-     * @param    type    Mime type of the object
-     * @exception IllegalStateException if this body part is
-     * obtained from a READ_ONLY folder.
+     * @throws IllegalStateException if this body part is
+     *                               obtained from a READ_ONLY folder.
      */
     @Override
     public void setContent(Object o, String type)
@@ -1279,9 +1255,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * If the charset is already known, use the
      * <code>setText</code> method that takes the charset parameter.
      *
-     * @param    text    the text content to set
-     * @exception MessagingException    if an error occurs
-     * @see    #setText(String text, String charset)
+     * @param text the text content to set
+     * @throws MessagingException if an error occurs
+     * @see #setText(String text, String charset)
      */
     @Override
     public void setText(String text) throws MessagingException {
@@ -1295,9 +1271,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * using the specified charset. The charset is also used to set
      * the "charset" parameter.
      *
-     * @param    text    the text content to set
-     * @param    charset    the charset to use for the text
-     * @exception MessagingException    if an error occurs
+     * @param text    the text content to set
+     * @param charset the charset to use for the text
+     * @throws MessagingException if an error occurs
      */
     @Override
     public void setText(String text, String charset)
@@ -1312,10 +1288,10 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * using the specified charset. The charset is also used to set
      * the "charset" parameter.
      *
-     * @param    text    the text content to set
-     * @param    charset    the charset to use for the text
-     * @param    subtype    the MIME subtype to use (e.g., "html")
-     * @exception MessagingException    if an error occurs
+     * @param text    the text content to set
+     * @param charset the charset to use for the text
+     * @param subtype the MIME subtype to use (e.g., "html")
+     * @throws MessagingException if an error occurs
      * @since JavaMail 1.4
      */
     @Override
@@ -1332,9 +1308,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * file data.  The disposition of this part is set to
      * {@link Part#ATTACHMENT Part.ATTACHMENT}.
      *
-     * @param        file        the File object to attach
-     * @exception IOException    errors related to accessing the file
-     * @exception MessagingException    message related errors
+     * @param file the File object to attach
+     * @throws IOException        errors related to accessing the file
+     * @throws MessagingException message related errors
      * @since JavaMail 1.4
      */
     public void attachFile(File file) throws IOException, MessagingException {
@@ -1351,9 +1327,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * part.  The encoding will be chosen appropriately for the
      * file data.
      *
-     * @param        file        the name of the file to attach
-     * @exception IOException    errors related to accessing the file
-     * @exception MessagingException    message related errors
+     * @param file the name of the file to attach
+     * @throws IOException        errors related to accessing the file
+     * @throws MessagingException message related errors
      * @since JavaMail 1.4
      */
     public void attachFile(String file) throws IOException, MessagingException {
@@ -1371,11 +1347,11 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * part.  The disposition of this part is set to
      * {@link Part#ATTACHMENT Part.ATTACHMENT}.
      *
-     * @param        file        the File object to attach
-     * @param        contentType    the Content-Type, or null
-     * @param        encoding    the Content-Transfer-Encoding, or null
-     * @exception IOException    errors related to accessing the file
-     * @exception MessagingException    message related errors
+     * @param file        the File object to attach
+     * @param contentType the Content-Type, or null
+     * @param encoding    the Content-Transfer-Encoding, or null
+     * @throws IOException        errors related to accessing the file
+     * @throws MessagingException message related errors
      * @since JavaMail 1.5
      */
     public void attachFile(File file, String contentType, String encoding)
@@ -1396,11 +1372,11 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * part.  The disposition of this part is set to
      * {@link Part#ATTACHMENT Part.ATTACHMENT}.
      *
-     * @param        file        the name of the file
-     * @param        contentType    the Content-Type, or null
-     * @param        encoding    the Content-Transfer-Encoding, or null
-     * @exception IOException    errors related to accessing the file
-     * @exception MessagingException    message related errors
+     * @param file        the name of the file
+     * @param contentType the Content-Type, or null
+     * @param encoding    the Content-Transfer-Encoding, or null
+     * @throws IOException        errors related to accessing the file
+     * @throws MessagingException message related errors
      * @since JavaMail 1.5
      */
     public void attachFile(String file, String contentType, String encoding)
@@ -1412,9 +1388,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * Save the contents of this part in the specified file.  The content
      * is decoded and saved, without any of the MIME headers.
      *
-     * @param        file        the File object to write to
-     * @exception IOException    errors related to accessing the file
-     * @exception MessagingException    message related errors
+     * @param file the File object to write to
+     * @throws IOException        errors related to accessing the file
+     * @throws MessagingException message related errors
      * @since JavaMail 1.4
      */
     public void saveFile(File file) throws IOException, MessagingException {
@@ -1449,9 +1425,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * Save the contents of this part in the specified file.  The content
      * is decoded and saved, without any of the MIME headers.
      *
-     * @param        file        the name of the file to write to
-     * @exception IOException    errors related to accessing the file
-     * @exception MessagingException    message related errors
+     * @param file the name of the file to write to
+     * @throws IOException        errors related to accessing the file
+     * @throws MessagingException message related errors
      * @since JavaMail 1.4
      */
     public void saveFile(String file) throws IOException, MessagingException {
@@ -1496,9 +1472,9 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      *
      * @param name      the name of this header
      * @param delimiter delimiter between fields in returned string
-     * @throws MessagingException for failures
      * @return the value fields for all headers with
      * this name
+     * @throws MessagingException for failures
      */
     @Override
     public String getHeader(String name, String delimiter)
@@ -1644,7 +1620,7 @@ public class MimeBodyPart extends BodyPart implements MimePart {
      * stream data used to create this object is discarded,
      * and the {@link #cachedContent} field is cleared.
      *
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
     protected void updateHeaders() throws MessagingException {
         updateHeaders(this);

@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2019 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail;
@@ -172,12 +148,12 @@ public class URLName {
      * number of -1 indicates that the URL should use the default port for
      * the protocol.
      *
-     * @param    protocol    the protocol
-     * @param    host        the host name
-     * @param    port        the port number
-     * @param    file        the file
-     * @param    username    the user name
-     * @param    password    the password
+     * @param protocol the protocol
+     * @param host     the host name
+     * @param port     the port number
+     * @param file     the file
+     * @param username the user name
+     * @param password the password
      */
     public URLName(
             String protocol,
@@ -205,7 +181,7 @@ public class URLName {
     /**
      * Construct a URLName from a java.net.URL object.
      *
-     * @param    url    the URL
+     * @param url the URL
      */
     public URLName(URL url) {
         this(url.toString());
@@ -215,7 +191,7 @@ public class URLName {
      * Construct a URLName from the string.  Parses out all the possible
      * information (protocol, host, port, file, username, password).
      *
-     * @param    url    the URL string
+     * @param url the URL string
      */
     public URLName(String url) {
         parseString(url);
@@ -286,7 +262,7 @@ public class URLName {
 
     /**
      * Decodes a &quot;x-www-form-urlencoded&quot;
-     * to a <tt>String</tt>.
+     * to a <code>String</code>.
      *
      * @param s the <code>String</code> to decode
      * @return the newly decoded <code>String</code>
@@ -419,7 +395,7 @@ public class URLName {
     /**
      * Method which does all of the work of parsing the string.
      *
-     * @param    url    the URL string to parse
+     * @param url the URL string to parse
      */
     protected void parseString(String url) {
         // initialize everything in case called from subclass
@@ -578,7 +554,7 @@ public class URLName {
      * Constructs a URL from the URLName.
      *
      * @return the URL
-     * @exception MalformedURLException if the URL is malformed
+     * @throws MalformedURLException if the URL is malformed
      */
     public URL getURL() throws MalformedURLException {
         // URL expects the file to include the separating "/"

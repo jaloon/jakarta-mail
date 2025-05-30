@@ -4,43 +4,19 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <!--
 
-        DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+        Copyright (c) 1997, 2021 Oracle and/or its affiliates. All rights reserved.
 
-        Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+        This program and the accompanying materials are made available under the
+        terms of the Eclipse Public License v. 2.0, which is available at
+        http://www.eclipse.org/legal/epl-2.0.
 
-        The contents of this file are subject to the terms of either the GNU
-        General Public License Version 2 only ("GPL") or the Common Development
-        and Distribution License("CDDL") (collectively, the "License").  You
-        may not use this file except in compliance with the License.  You can
-        obtain a copy of the License at
-        https://oss.oracle.com/licenses/CDDL+GPL-1.1
-        or LICENSE.txt.  See the License for the specific
-        language governing permissions and limitations under the License.
+        This Source Code may also be made available under the following Secondary
+        Licenses when the conditions for such availability set forth in the
+        Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+        version 2 with the GNU Classpath Exception, which is available at
+        https://www.gnu.org/software/classpath/license.html.
 
-        When distributing the software, include this License Header Notice in each
-        file and include the License file at LICENSE.txt.
-
-        GPL Classpath Exception:
-        Oracle designates this particular file as subject to the "Classpath"
-        exception as provided by Oracle in the GPL Version 2 section of the License
-        file that accompanied this code.
-
-        Modifications:
-        If applicable, add the following below the License Header, with the fields
-        enclosed by brackets [] replaced by your own identifying information:
-        "Portions Copyright [year] [name of copyright owner]"
-
-        Contributor(s):
-        If you wish your version of this file to be governed by only the CDDL or
-        only the GPL Version 2, indicate your decision by adding "[Contributor]
-        elects to include this software in this distribution under the [CDDL or GPL
-        Version 2] license."  If you don't indicate a single choice of license, a
-        recipient has the option to distribute your version of this file under
-        either the CDDL, the GPL Version 2 or to extend the choice of license to
-        its licensees as provided above.  However, if you add GPL Version 2 code
-        and therefore, elected the GPL Version 2 license, then the option applies
-        only if the new code is made subject to such option by the copyright
-        holder.
+        SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
 
     -->
 
@@ -48,7 +24,7 @@
 </HEAD>
 <BODY BGCOLOR="white">
 
-A POP3 protocol provider for the JavaMail API
+A POP3 protocol provider for the Jakarta Mail API
 that provides access to a POP3 message store.
 Refer to <A HREF="http://www.ietf.org/rfc/rfc1939.txt" TARGET="_top">
     RFC 1939</A>
@@ -56,19 +32,19 @@ for more information.
 <P>
     The POP3 provider provides a Store object that contains a single Folder
     named "INBOX". Due to the limitations of the POP3 protocol, many of
-    the JavaMail API capabilities like event notification, folder management,
+    the Jakarta Mail API capabilities like event notification, folder management,
     flag management, etc. are not allowed. The corresponding methods throw
     the MethodNotSupportedException exception; see below for details.
 </P>
 <P>
-    Note that JavaMail does <strong>not</strong> include a local store into
+    Note that Jakarta Mail does <strong>not</strong> include a local store into
     which messages can be downloaded and stored. See our
-    <A HREF="http://java.sun.com/products/javamail/Third_Party.html" TARGET="_top">
+    <A HREF="https://eclipse-ee4j.github.io/jakartamail/ThirdPartyProducts" TARGET="_top">
         Third Party Products</A>
     web page for availability of "mbox" and "MH" local store providers.
 </P>
 <P>
-    The POP3 provider is accessed through the JavaMail APIs by using the protocol
+    The POP3 provider is accessed through the Jakarta Mail APIs by using the protocol
     name "pop3" or a URL of the form "pop3://user:password@host:port/INBOX".
 </P>
 <P>
@@ -197,10 +173,10 @@ folder.fetch(folder.getMessages(), fp);
     the LIST command will be sent as well, and the result will be used to size
     the I/O buffer, greatly reducing memory usage when fetching messages.
 </P>
-<A NAME="properties"><STRONG>Properties</STRONG></A>
+<A ID="properties"><STRONG>Properties</STRONG></A>
 <P>
     The POP3 protocol provider supports the following properties,
-    which may be set in the JavaMail <code>Session</code> object.
+    which may be set in the Jakarta Mail <code>Session</code> object.
     The properties are always set as strings; the Type column describes
     how the string is interpreted. For example, use
 </P>
@@ -214,7 +190,8 @@ folder.fetch(folder.getMessages(), fp);
     Note that if you're using the "pop3s" protocol to access POP3 over SSL,
     all the properties would be named "mail.pop3s.*".
 </P>
-<TABLE BORDER SUMMARY="POP3 properties">
+<TABLE BORDER="1">
+    <CAPTION>POP3 properties</CAPTION>
     <TR>
         <TH>Name</TH>
         <TH>Type</TH>
@@ -222,19 +199,19 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.user">mail.pop3.user</A></TD>
+        <TD><A ID="mail.pop3.user">mail.pop3.user</A></TD>
         <TD>String</TD>
         <TD>Default user name for POP3.</TD>
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.host">mail.pop3.host</A></TD>
+        <TD><A ID="mail.pop3.host">mail.pop3.host</A></TD>
         <TD>String</TD>
         <TD>The POP3 server to connect to.</TD>
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.port">mail.pop3.port</A></TD>
+        <TD><A ID="mail.pop3.port">mail.pop3.port</A></TD>
         <TD>int</TD>
         <TD>The POP3 server port to connect to, if the connect() method doesn't
             explicitly specify one. Defaults to 110.
@@ -242,7 +219,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.connectiontimeout">mail.pop3.connectiontimeout</A></TD>
+        <TD><A ID="mail.pop3.connectiontimeout">mail.pop3.connectiontimeout</A></TD>
         <TD>int</TD>
         <TD>Socket connection timeout value in milliseconds.
             This timeout is implemented by java.net.Socket.
@@ -251,7 +228,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.timeout">mail.pop3.timeout</A></TD>
+        <TD><A ID="mail.pop3.timeout">mail.pop3.timeout</A></TD>
         <TD>int</TD>
         <TD>Socket read timeout value in milliseconds.
             This timeout is implemented by java.net.Socket.
@@ -260,7 +237,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.writetimeout">mail.pop3.writetimeout</A></TD>
+        <TD><A ID="mail.pop3.writetimeout">mail.pop3.writetimeout</A></TD>
         <TD>int</TD>
         <TD>Socket write timeout value in milliseconds.
             This timeout is implemented by using a
@@ -272,7 +249,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.rsetbeforequit">mail.pop3.rsetbeforequit</A></TD>
+        <TD><A ID="mail.pop3.rsetbeforequit">mail.pop3.rsetbeforequit</A></TD>
         <TD>boolean</TD>
         <TD>
             Send a POP3 RSET command when closing the folder, before sending the
@@ -284,7 +261,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.message.class">mail.pop3.message.class</A></TD>
+        <TD><A ID="mail.pop3.message.class">mail.pop3.message.class</A></TD>
         <TD>String</TD>
         <TD>
             Class name of a subclass of <code>com.sun.mail.pop3.POP3Message</code>.
@@ -296,7 +273,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.localaddress">mail.pop3.localaddress</A></TD>
+        <TD><A ID="mail.pop3.localaddress">mail.pop3.localaddress</A></TD>
         <TD>String</TD>
         <TD>
             Local address (host name) to bind to when creating the POP3 socket.
@@ -307,7 +284,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.localport">mail.pop3.localport</A></TD>
+        <TD><A ID="mail.pop3.localport">mail.pop3.localport</A></TD>
         <TD>int</TD>
         <TD>
             Local port number to bind to when creating the POP3 socket.
@@ -316,7 +293,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.apop.enable">mail.pop3.apop.enable</A></TD>
+        <TD><A ID="mail.pop3.apop.enable">mail.pop3.apop.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, use APOP instead of USER/PASS to login to the
@@ -327,7 +304,114 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.socketFactory">mail.pop3.socketFactory</A></TD>
+        <TD><A ID="mail.pop3.auth.mechanisms">mail.pop3.auth.mechanisms</A></TD>
+        <TD>String</TD>
+        <TD>
+            If set, lists the authentication mechanisms to consider, and the order
+            in which to consider them. Only mechanisms supported by the server and
+            supported by the current implementation will be used.
+            The default is <code>"LOGIN PLAIN DIGEST-MD5 NTLM"</code>, which includes all
+            the authentication mechanisms supported by the current implementation
+            except XOAUTH2.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.login.disable">mail.pop3.auth.login.disable</A></TD>
+        <TD>boolean</TD>
+        <TD>If true, prevents use of the <code>USER</code> and <code>PASS</code>
+            commands.
+            Default is false.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.plain.disable">mail.pop3.auth.plain.disable</A></TD>
+        <TD>boolean</TD>
+        <TD>If true, prevents use of the <code>AUTH PLAIN</code> command.
+            Default is false.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.digest-md5.disable">mail.pop3.auth.digest-md5.disable</A></TD>
+        <TD>boolean</TD>
+        <TD>If true, prevents use of the <code>AUTH DIGEST-MD5</code> command.
+            Default is false.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.ntlm.disable">mail.pop3.auth.ntlm.disable</A></TD>
+        <TD>boolean</TD>
+        <TD>If true, prevents use of the <code>AUTH NTLM</code> command.
+            Default is false.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.ntlm.domain">mail.pop3.auth.ntlm.domain</A></TD>
+        <TD>String</TD>
+        <TD>
+            The NTLM authentication domain.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.ntlm.flags">mail.pop3.auth.ntlm.flags</A></TD>
+        <TD>int</TD>
+        <TD>
+            NTLM protocol-specific flags.
+            See <A HREF="http://curl.haxx.se/rfc/ntlm.html#theNtlmFlags" TARGET="_top">
+            http://curl.haxx.se/rfc/ntlm.html#theNtlmFlags</A> for details.
+        </TD>
+    </TR>
+
+    <!--
+    <TR>
+    <TD><A ID="mail.pop3.auth.ntlm.unicode">mail.pop3.auth.ntlm.unicode</A></TD>
+    <TD>boolean</TD>
+    <TD>
+    Set this to "true" if the username or password may use
+    Unicode UTF-8 encoded characters.  Default is "true".
+    Currently has no effect.
+    </TD>
+    </TR>
+
+    <TR>
+    <TD><A ID="mail.pop3.auth.ntlm.lmcompat">mail.pop3.auth.ntlm.lmcompat</A></TD>
+    <TD>int</TD>
+    <TD>
+    Sets the LM compatibility level, as described here:
+    <A HREF="http://curl.haxx.se/rfc/ntlm.html#ntlmVersion2" TARGET="_top">
+    http://curl.haxx.se/rfc/ntlm.html#ntlmVersion2</A>
+    Defaults to "3".  Currently not used.
+    </TD>
+    </TR>
+    -->
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.xoauth2.disable">mail.pop3.auth.xoauth2.disable</A></TD>
+        <TD>boolean</TD>
+        <TD>If true, prevents use of the <code>AUTHENTICATE XOAUTH2</code> command.
+            Because the OAuth 2.0 protocol requires a special access token instead of
+            a password, this mechanism is disabled by default. Enable it by explicitly
+            setting this property to "false" or by setting the "mail.pop3.auth.mechanisms"
+            property to "XOAUTH2".
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.auth.xoauth2.two.line.authentication.format">mail.pop3.auth.xoauth2.two.line.authentication.format</A>
+        </TD>
+        <TD>boolean</TD>
+        <TD>If true, splits authentication command on two lines.
+            Default is false.
+        </TD>
+    </TR>
+
+    <TR>
+        <TD><A ID="mail.pop3.socketFactory">mail.pop3.socketFactory</A></TD>
         <TD>SocketFactory</TD>
         <TD>
             If set to a class that implements the
@@ -339,7 +423,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.socketFactory.class">mail.pop3.socketFactory.class</A></TD>
+        <TD><A ID="mail.pop3.socketFactory.class">mail.pop3.socketFactory.class</A></TD>
         <TD>String</TD>
         <TD>
             If set, specifies the name of a class that implements the
@@ -349,7 +433,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.socketFactory.fallback">mail.pop3.socketFactory.fallback</A></TD>
+        <TD><A ID="mail.pop3.socketFactory.fallback">mail.pop3.socketFactory.fallback</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, failure to create a socket using the specified
@@ -360,7 +444,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.socketFactory.port">mail.pop3.socketFactory.port</A></TD>
+        <TD><A ID="mail.pop3.socketFactory.port">mail.pop3.socketFactory.port</A></TD>
         <TD>int</TD>
         <TD>
             Specifies the port to connect to when using the specified socket
@@ -370,7 +454,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.enable">mail.pop3.ssl.enable</A></TD>
+        <TD><A ID="mail.pop3.ssl.enable">mail.pop3.ssl.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, use SSL to connect and use the SSL port by default.
@@ -379,7 +463,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.checkserveridentity">mail.pop3.ssl.checkserveridentity</A></TD>
+        <TD><A ID="mail.pop3.ssl.checkserveridentity">mail.pop3.ssl.checkserveridentity</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, check the server identity as specified by
@@ -391,7 +475,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.trust">mail.pop3.ssl.trust</A></TD>
+        <TD><A ID="mail.pop3.ssl.trust">mail.pop3.ssl.trust</A></TD>
         <TD>String</TD>
         <TD>
             If set, and a socket factory hasn't been specified, enables use of a
@@ -403,7 +487,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.socketFactory">mail.pop3.ssl.socketFactory</A></TD>
+        <TD><A ID="mail.pop3.ssl.socketFactory">mail.pop3.ssl.socketFactory</A></TD>
         <TD>SSLSocketFactory</TD>
         <TD>
             If set to a class that extends the
@@ -415,7 +499,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.socketFactory.class">mail.pop3.ssl.socketFactory.class</A></TD>
+        <TD><A ID="mail.pop3.ssl.socketFactory.class">mail.pop3.ssl.socketFactory.class</A></TD>
         <TD>String</TD>
         <TD>
             If set, specifies the name of a class that extends the
@@ -425,7 +509,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.socketFactory.port">mail.pop3.ssl.socketFactory.port</A></TD>
+        <TD><A ID="mail.pop3.ssl.socketFactory.port">mail.pop3.ssl.socketFactory.port</A></TD>
         <TD>int</TD>
         <TD>
             Specifies the port to connect to when using the specified socket
@@ -435,7 +519,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.protocols">mail.pop3.ssl.protocols</A></TD>
+        <TD><A ID="mail.pop3.ssl.protocols">mail.pop3.ssl.protocols</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the SSL protocols that will be enabled for SSL connections.
@@ -445,7 +529,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.ssl.ciphersuites">mail.pop3.ssl.ciphersuites</A></TD>
+        <TD><A ID="mail.pop3.ssl.ciphersuites">mail.pop3.ssl.ciphersuites</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the SSL cipher suites that will be enabled for SSL connections.
@@ -455,7 +539,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.starttls.enable">mail.pop3.starttls.enable</A></TD>
+        <TD><A ID="mail.pop3.starttls.enable">mail.pop3.starttls.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If true, enables the use of the <code>STLS</code> command (if
@@ -472,7 +556,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.starttls.required">mail.pop3.starttls.required</A></TD>
+        <TD><A ID="mail.pop3.starttls.required">mail.pop3.starttls.required</A></TD>
         <TD>boolean</TD>
         <TD>
             If true, requires the use of the <code>STLS</code> command.
@@ -483,7 +567,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.proxy.host">mail.pop3.proxy.host</A></TD>
+        <TD><A ID="mail.pop3.proxy.host">mail.pop3.proxy.host</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the host name of an HTTP web proxy server that will be used for
@@ -492,7 +576,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.proxy.port">mail.pop3.proxy.port</A></TD>
+        <TD><A ID="mail.pop3.proxy.port">mail.pop3.proxy.port</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the port number for the HTTP web proxy server.
@@ -501,7 +585,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.proxy.user">mail.pop3.proxy.user</A></TD>
+        <TD><A ID="mail.pop3.proxy.user">mail.pop3.proxy.user</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the user name to use to authenticate with the HTTP web proxy server.
@@ -510,7 +594,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.proxy.password">mail.pop3.proxy.password</A></TD>
+        <TD><A ID="mail.pop3.proxy.password">mail.pop3.proxy.password</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the password to use to authenticate with the HTTP web proxy server.
@@ -519,7 +603,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.socks.host">mail.pop3.socks.host</A></TD>
+        <TD><A ID="mail.pop3.socks.host">mail.pop3.socks.host</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the host name of a SOCKS5 proxy server that will be used for
@@ -528,7 +612,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.socks.port">mail.pop3.socks.port</A></TD>
+        <TD><A ID="mail.pop3.socks.port">mail.pop3.socks.port</A></TD>
         <TD>string</TD>
         <TD>
             Specifies the port number for the SOCKS5 proxy server.
@@ -538,7 +622,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.disabletop">mail.pop3.disabletop</A></TD>
+        <TD><A ID="mail.pop3.disabletop">mail.pop3.disabletop</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, the POP3 TOP command will not be used to fetch
@@ -550,7 +634,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.disablecapa">mail.pop3.disablecapa</A></TD>
+        <TD><A ID="mail.pop3.disablecapa">mail.pop3.disablecapa</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, the POP3 CAPA command will not be used to fetch
@@ -562,7 +646,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.forgettopheaders">mail.pop3.forgettopheaders</A></TD>
+        <TD><A ID="mail.pop3.forgettopheaders">mail.pop3.forgettopheaders</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, the headers that might have been retrieved using
@@ -581,7 +665,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.filecache.enable">mail.pop3.filecache.enable</A></TD>
+        <TD><A ID="mail.pop3.filecache.enable">mail.pop3.filecache.enable</A></TD>
         <TD>boolean</TD>
         <TD>
             If set to true, the POP3 provider will cache message data in a temporary
@@ -594,7 +678,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.filecache.dir">mail.pop3.filecache.dir</A></TD>
+        <TD><A ID="mail.pop3.filecache.dir">mail.pop3.filecache.dir</A></TD>
         <TD>String</TD>
         <TD>
             If the file cache is enabled, this property can be used to override the
@@ -603,7 +687,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.cachewriteto">mail.pop3.cachewriteto</A></TD>
+        <TD><A ID="mail.pop3.cachewriteto">mail.pop3.cachewriteto</A></TD>
         <TD>boolean</TD>
         <TD>
             Controls the behavior of the
@@ -618,7 +702,7 @@ folder.fetch(folder.getMessages(), fp);
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.keepmessagecontent">mail.pop3.keepmessagecontent</A></TD>
+        <TD><A ID="mail.pop3.keepmessagecontent">mail.pop3.keepmessagecontent</A></TD>
         <TD>boolean</TD>
         <TD>
             The content of a message is cached when it is first fetched.
@@ -630,13 +714,13 @@ folder.fetch(folder.getMessages(), fp);
             will be kept, preventing the memory from being reused until the folder
             is closed or the cached content is explicitly invalidated (using the
             {@link com.sun.mail.pop3.POP3Message#invalidate invalidate} method).
-            (This was the behavior in previous versions of JavaMail.)
+            (This was the behavior in previous versions of Jakarta Mail.)
             Defaults to false.
         </TD>
     </TR>
 
     <TR>
-        <TD><A NAME="mail.pop3.finalizecleanclose">mail.pop3.finalizecleanclose</A></TD>
+        <TD><A ID="mail.pop3.finalizecleanclose">mail.pop3.finalizecleanclose</A></TD>
         <TD>boolean</TD>
         <TD>
             When the finalizer for POP3Store or POP3Folder is called,
@@ -665,7 +749,8 @@ folder.fetch(folder.getMessages(), fp);
     the com.sun.mail.pop3 provider logs the same information using
     {@link java.util.logging.Logger} as described in the following table:
 </P>
-<TABLE BORDER SUMMARY="POP3 Loggers">
+<TABLE BORDER="1">
+    <CAPTION>POP3 Loggers</CAPTION>
     <TR>
         <TH>Logger Name</TH>
         <TH>Logging Level</TH>

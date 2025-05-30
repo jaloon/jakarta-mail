@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail;
@@ -210,8 +186,8 @@ public abstract class Folder implements AutoCloseable {
      * does <em>not</em> include the password used to access the store.
      *
      * @return the URLName representing this folder
-     * @exception MessagingException for failures
-     * @see    URLName
+     * @throws MessagingException for failures
+     * @see URLName
      * @since JavaMail 1.1
      */
     public URLName getURLName() throws MessagingException {
@@ -269,7 +245,7 @@ public abstract class Folder implements AutoCloseable {
      * returns a new distinct Folder object.
      *
      * @return Parent folder
-     * @exception MessagingException for failures
+     * @throws MessagingException for failures
      */
     public abstract Folder getParent() throws MessagingException;
 
@@ -278,8 +254,8 @@ public abstract class Folder implements AutoCloseable {
      * This method can be invoked on a closed Folder.
      *
      * @return true if the folder exists, otherwise false
-     * @exception MessagingException typically if the connection
-     * to the server is lost.
+     * @throws MessagingException typically if the connection
+     *                            to the server is lost.
      * @see #create
      */
     public abstract boolean exists() throws MessagingException;
@@ -313,11 +289,11 @@ public abstract class Folder implements AutoCloseable {
      * This method can be invoked on a closed Folder.
      *
      * @param pattern the match pattern
+     * @return array of matching Folder objects. An empty
+     * array is returned if no matching Folders exist.
      * @throws FolderNotFoundException if this folder does
      *                                 not exist.
      * @throws MessagingException      for other failures
-     * @return array of matching Folder objects. An empty
-     * array is returned if no matching Folders exist.
      * @see #listSubscribed
      */
     public abstract Folder[] list(String pattern) throws MessagingException;
@@ -345,12 +321,12 @@ public abstract class Folder implements AutoCloseable {
      * This method can be invoked on a closed Folder.
      *
      * @param pattern the match pattern
-     * @throws FolderNotFoundException if this folder does
-     *                                 not exist.
-     * @throws MessagingException      for other failures
      * @return array of matching subscribed Folder objects. An
      * empty array is returned if no matching
      * subscribed folders exist.
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
+     * @throws MessagingException      for other failures
      * @see #list
      */
     public Folder[] listSubscribed(String pattern) throws MessagingException {
@@ -363,12 +339,12 @@ public abstract class Folder implements AutoCloseable {
      * method with <code>"%"</code> as the match pattern. This method can
      * be invoked on a closed Folder.
      *
+     * @return array of Folder objects under this Folder. An
+     * empty array is returned if no subfolders exist.
      * @throws FolderNotFoundException if this folder does
      *                                 not exist.
      * @throws MessagingException      for other failures
-     * @return array of Folder objects under this Folder. An
-     * empty array is returned if no subfolders exist.
-     * @see        #list
+     * @see #list
      */
 
     public Folder[] list() throws MessagingException {
@@ -381,13 +357,13 @@ public abstract class Folder implements AutoCloseable {
      * <code>listSubscribed(String pattern)</code> method with <code>"%"</code>
      * as the match pattern. This method can be invoked on a closed Folder.
      *
-     * @throws FolderNotFoundException if this folder does
-     *                                 not exist.
-     * @throws MessagingException      for other failures
      * @return array of subscribed Folder objects under this
      * Folder. An empty array is returned if no subscribed
      * subfolders exist.
-     * @see        #listSubscribed
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
+     * @throws MessagingException      for other failures
+     * @see #listSubscribed
      */
     public Folder[] listSubscribed() throws MessagingException {
         return listSubscribed("%");
@@ -413,7 +389,7 @@ public abstract class Folder implements AutoCloseable {
      * @return integer with appropriate bits set
      * @throws FolderNotFoundException if this folder does
      *                                 not exist.
-     * @see        #HOLDS_MESSAGES
+     * @see #HOLDS_MESSAGES
      * @see #HOLDS_FOLDERS
      */
     public abstract int getType() throws MessagingException;
@@ -426,10 +402,10 @@ public abstract class Folder implements AutoCloseable {
      * to any FolderListeners registered on this Folder and this Store.
      *
      * @param type The type of this folder.
-     * @throws MessagingException for failures
      * @return true if the creation succeeds, else false.
-     * @see        #HOLDS_MESSAGES
-     * @see        javax.mail.event.FolderEvent
+     * @throws MessagingException for failures
+     * @see #HOLDS_MESSAGES
+     * @see javax.mail.event.FolderEvent
      * @see #HOLDS_FOLDERS
      */
     public abstract boolean create(int type) throws MessagingException;
@@ -486,10 +462,10 @@ public abstract class Folder implements AutoCloseable {
      * This method can be invoked on a closed Folder that can contain
      * Messages.
      *
-     * @throws MessagingException for other failures
      * @return true if the Store has new Messages
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
      */
     public abstract boolean hasNewMessages() throws MessagingException;
 
@@ -510,8 +486,8 @@ public abstract class Folder implements AutoCloseable {
      * This method can be invoked on a closed Folder.
      *
      * @param name name of the Folder
-     * @throws MessagingException for failures
      * @return Folder object
+     * @throws MessagingException for failures
      */
     public abstract Folder getFolder(String name)
             throws MessagingException;
@@ -576,14 +552,14 @@ public abstract class Folder implements AutoCloseable {
      * </ol>
      * </ul>
      *
-     * @throws MessagingException for other failures
-     * @param    recurse    also delete subfolders?
+     * @param recurse also delete subfolders?
      * @return true if the Folder is deleted successfully
-     * @exception FolderNotFoundException if this folder does
-     * not exist
-     * @exception IllegalStateException if this folder is not in
-     * the closed state.
-     * @see        javax.mail.event.FolderEvent
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist
+     * @throws IllegalStateException   if this folder is not in
+     *                                 the closed state.
+     * @see javax.mail.event.FolderEvent
      */
     public abstract boolean delete(boolean recurse)
             throws MessagingException;
@@ -597,13 +573,13 @@ public abstract class Folder implements AutoCloseable {
      * Store.
      *
      * @param f a folder representing the new name for this Folder
-     * @throws MessagingException for other failures
      * @return true if the Folder is renamed successfully
-     * @exception FolderNotFoundException if this folder does
-     * not exist
-     * @exception IllegalStateException if this folder is not in
-     * the closed state.
-     * @see        javax.mail.event.FolderEvent
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist
+     * @throws IllegalStateException   if this folder is not in
+     *                                 the closed state.
+     * @see javax.mail.event.FolderEvent
      */
     public abstract boolean renameTo(Folder f) throws MessagingException;
 
@@ -621,11 +597,11 @@ public abstract class Folder implements AutoCloseable {
      * multiple writers as well as readers.
      *
      * @param mode open the Folder READ_ONLY or READ_WRITE
-     * @throws MessagingException for other failures
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
-     * @exception IllegalStateException if this folder is not in
-     * the closed state.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
+     * @throws IllegalStateException   if this folder is not in
+     *                                 the closed state.
      * @see #READ_ONLY
      * @see #READ_WRITE
      * @see #getType()
@@ -642,8 +618,8 @@ public abstract class Folder implements AutoCloseable {
      * MessagingException.
      *
      * @param expunge expunges all deleted messages if this flag is true
-     * @throws MessagingException for other failures
-     * @exception IllegalStateException if this folder is not opened
+     * @throws MessagingException    for other failures
+     * @throws IllegalStateException if this folder is not opened
      * @see javax.mail.event.ConnectionEvent
      */
     public abstract void close(boolean expunge) throws MessagingException;
@@ -661,10 +637,10 @@ public abstract class Folder implements AutoCloseable {
      * <p>
      * This implementation calls <code>close(true)</code>.
      *
-     * @throws MessagingException for other failures
-     * @exception IllegalStateException if this folder is not opened
-     * @since JavaMail 1.6
+     * @throws MessagingException    for other failures
+     * @throws IllegalStateException if this folder is not opened
      * @see javax.mail.event.ConnectionEvent
+     * @since JavaMail 1.6
      */
     @Override
     public void close() throws MessagingException {
@@ -685,8 +661,8 @@ public abstract class Folder implements AutoCloseable {
      * <code>Folder</code> provider has not been updated to use this new
      * method).
      *
-     * @exception IllegalStateException if this folder is not opened
      * @return the open mode of this folder
+     * @throws IllegalStateException if this folder is not opened
      * @since JavaMail 1.1
      */
     public synchronized int getMode() {
@@ -726,9 +702,9 @@ public abstract class Folder implements AutoCloseable {
      * @return total number of messages. -1 may be returned
      * by certain implementations if this method is
      * invoked on a closed folder.
-     * @throws MessagingException for other failures
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
      */
     public abstract int getMessageCount() throws MessagingException;
 
@@ -755,9 +731,9 @@ public abstract class Folder implements AutoCloseable {
      * @return number of new messages. -1 may be returned
      * by certain implementations if this method is
      * invoked on a closed folder.
-     * @throws MessagingException for other failures
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
      */
     public synchronized int getNewMessageCount()
             throws MessagingException {
@@ -801,9 +777,9 @@ public abstract class Folder implements AutoCloseable {
      * @return total number of unread messages. -1 may be returned
      * by certain implementations if this method is
      * invoked on a closed folder.
-     * @throws MessagingException for other failures
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
      */
     public synchronized int getUnreadMessageCount()
             throws MessagingException {
@@ -847,9 +823,9 @@ public abstract class Folder implements AutoCloseable {
      * @return number of deleted messages. -1 may be returned
      * by certain implementations if this method is
      * invoked on a closed folder.
-     * @throws MessagingException for other failures
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
      * @since JavaMail 1.3
      */
     public synchronized int getDeletedMessageCount() throws MessagingException {
@@ -893,14 +869,14 @@ public abstract class Folder implements AutoCloseable {
      *
      * @param msgnum the message number
      * @return the Message object
-     * @throws MessagingException for other failures
-     * @see        #getMessageCount
-     * @see        #fetch
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
-     * @exception IllegalStateException if this folder is not opened
-     * @exception IndexOutOfBoundsException if the message number
-     * is out of range.
+     * @throws MessagingException        for other failures
+     * @throws FolderNotFoundException   if this folder does
+     *                                   not exist.
+     * @throws IllegalStateException     if this folder is not opened
+     * @throws IndexOutOfBoundsException if the message number
+     *                                   is out of range.
+     * @see #getMessageCount
+     * @see #fetch
      */
     public abstract Message getMessage(int msgnum)
             throws MessagingException;
@@ -921,13 +897,13 @@ public abstract class Folder implements AutoCloseable {
      * @param start the number of the first message
      * @param end   the number of the last message
      * @return the Message objects
-     * @throws MessagingException for other failures
-     * @see        #fetch
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
-     * @exception IllegalStateException if this folder is not opened.
-     * @exception IndexOutOfBoundsException if the start or end
-     * message numbers are out of range.
+     * @throws MessagingException        for other failures
+     * @throws FolderNotFoundException   if this folder does
+     *                                   not exist.
+     * @throws IllegalStateException     if this folder is not opened.
+     * @throws IndexOutOfBoundsException if the start or end
+     *                                   message numbers are out of range.
+     * @see #fetch
      */
     public synchronized Message[] getMessages(int start, int end)
             throws MessagingException {
@@ -951,13 +927,13 @@ public abstract class Folder implements AutoCloseable {
      *
      * @param msgnums the array of message numbers
      * @return the array of Message objects.
-     * @throws MessagingException for other failures
-     * @see        #fetch
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
-     * @exception IllegalStateException if this folder is not opened.
-     * @exception IndexOutOfBoundsException if any message number
-     * in the given array is out of range.
+     * @throws MessagingException        for other failures
+     * @throws FolderNotFoundException   if this folder does
+     *                                   not exist.
+     * @throws IllegalStateException     if this folder is not opened.
+     * @throws IndexOutOfBoundsException if any message number
+     *                                   in the given array is out of range.
+     * @see #fetch
      */
     public synchronized Message[] getMessages(int[] msgnums)
             throws MessagingException {
@@ -984,11 +960,11 @@ public abstract class Folder implements AutoCloseable {
      *
      * @return array of Message objects, empty array if folder
      * is empty.
-     * @throws MessagingException for other failures
-     * @see        #fetch
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
-     * @exception IllegalStateException if this folder is not opened.
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
+     * @throws IllegalStateException   if this folder is not opened.
+     * @see #fetch
      */
     public synchronized Message[] getMessages() throws MessagingException {
         if (!isOpen())    // otherwise getMessageCount might return -1
@@ -1011,9 +987,9 @@ public abstract class Folder implements AutoCloseable {
      * expunged Message.
      *
      * @param msgs array of Messages to be appended
-     * @throws MessagingException if the append failed.
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
+     * @throws MessagingException      if the append failed.
+     * @throws FolderNotFoundException if this folder does
+     *                                 not exist.
      */
     public abstract void appendMessages(Message[] msgs)
             throws MessagingException;
@@ -1054,8 +1030,8 @@ public abstract class Folder implements AutoCloseable {
      *
      * @param msgs fetch items for these messages
      * @param fp   the FetchProfile
-     * @exception IllegalStateException if this folder is not opened
-     * @exception MessagingException for other failures
+     * @throws IllegalStateException if this folder is not opened
+     * @throws MessagingException    for other failures
      */
     public void fetch(Message[] msgs, FetchProfile fp)
             throws MessagingException {
@@ -1083,11 +1059,11 @@ public abstract class Folder implements AutoCloseable {
      * @param msgs  the array of message objects
      * @param flag  Flags object containing the flags to be set
      * @param value set the flags to this boolean value
-     * @throws MessagingException for other failures
-     * @exception IllegalStateException if this folder is not opened
-     * or if it has been opened READ_ONLY.
-     * @see        Message#setFlags
-     * @see        javax.mail.event.MessageChangedEvent
+     * @throws MessagingException    for other failures
+     * @throws IllegalStateException if this folder is not opened
+     *                               or if it has been opened READ_ONLY.
+     * @see Message#setFlags
+     * @see javax.mail.event.MessageChangedEvent
      */
     public synchronized void setFlags(Message[] msgs,
                                       Flags flag, boolean value) throws MessagingException {
@@ -1124,13 +1100,13 @@ public abstract class Folder implements AutoCloseable {
      * @param end   the number of the last message
      * @param flag  Flags object containing the flags to be set
      * @param value set the flags to this boolean value
-     * @throws MessagingException for other failures
-     * @exception IllegalStateException if this folder is not opened
-     * or if it has been opened READ_ONLY.
-     * @exception IndexOutOfBoundsException if the start or end
-     * message numbers are out of range.
-     * @see        Message#setFlags
-     * @see        javax.mail.event.MessageChangedEvent
+     * @throws MessagingException        for other failures
+     * @throws IllegalStateException     if this folder is not opened
+     *                                   or if it has been opened READ_ONLY.
+     * @throws IndexOutOfBoundsException if the start or end
+     *                                   message numbers are out of range.
+     * @see Message#setFlags
+     * @see javax.mail.event.MessageChangedEvent
      */
     public synchronized void setFlags(int start, int end,
                                       Flags flag, boolean value) throws MessagingException {
@@ -1166,13 +1142,13 @@ public abstract class Folder implements AutoCloseable {
      * @param msgnums the array of message numbers
      * @param flag    Flags object containing the flags to be set
      * @param value   set the flags to this boolean value
-     * @throws MessagingException for other failures
-     * @exception IllegalStateException if this folder is not opened
-     * or if it has been opened READ_ONLY.
-     * @exception IndexOutOfBoundsException if any message number
-     * in the given array is out of range.
-     * @see        Message#setFlags
-     * @see        javax.mail.event.MessageChangedEvent
+     * @throws MessagingException        for other failures
+     * @throws IllegalStateException     if this folder is not opened
+     *                                   or if it has been opened READ_ONLY.
+     * @throws IndexOutOfBoundsException if any message number
+     *                                   in the given array is out of range.
+     * @see Message#setFlags
+     * @see javax.mail.event.MessageChangedEvent
      */
     public synchronized void setFlags(int[] msgnums,
                                       Flags flag, boolean value) throws MessagingException {
@@ -1229,11 +1205,11 @@ public abstract class Folder implements AutoCloseable {
      *
      * @param msgs   the array of message objects
      * @param folder the folder to copy the messages to
-     * @exception FolderNotFoundException if the destination
-     * folder does not exist.
-     * @exception IllegalStateException if this folder is not opened.
-     * @exception MessagingException for other failures
-     * @see        #appendMessages
+     * @throws FolderNotFoundException if the destination
+     *                                 folder does not exist.
+     * @throws IllegalStateException   if this folder is not opened.
+     * @throws MessagingException      for other failures
+     * @see #appendMessages
      */
     public void copyMessages(Message[] msgs, Folder folder)
             throws MessagingException {
@@ -1269,13 +1245,13 @@ public abstract class Folder implements AutoCloseable {
      * corresponding Message object; other methods may throw
      * <code>MessageRemovedException</code>
      *
-     * @throws MessagingException for other failures
      * @return array of expunged Message objects
-     * @exception FolderNotFoundException if this folder does not
-     * exist
-     * @exception IllegalStateException if this folder is not opened.
-     * @see        Message#isExpunged
-     * @see        javax.mail.event.MessageCountEvent
+     * @throws MessagingException      for other failures
+     * @throws FolderNotFoundException if this folder does not
+     *                                 exist
+     * @throws IllegalStateException   if this folder is not opened.
+     * @see Message#isExpunged
+     * @see javax.mail.event.MessageCountEvent
      */
     public abstract Message[] expunge() throws MessagingException;
 
@@ -1295,10 +1271,10 @@ public abstract class Folder implements AutoCloseable {
      * @throws javax.mail.search.SearchException if the search
      *                                           term is too complex for the implementation to handle.
      * @throws MessagingException                for other failures
-     * @exception FolderNotFoundException if this folder does
-     * not exist.
-     * @exception IllegalStateException if this folder is not opened.
-     * @see        javax.mail.search.SearchTerm
+     * @throws FolderNotFoundException           if this folder does
+     *                                           not exist.
+     * @throws IllegalStateException             if this folder is not opened.
+     * @see javax.mail.search.SearchTerm
      */
     public Message[] search(SearchTerm term) throws MessagingException {
         return search(term, getMessages());
@@ -1330,8 +1306,8 @@ public abstract class Folder implements AutoCloseable {
      * @throws javax.mail.search.SearchException if the search
      *                                           term is too complex for the implementation to handle.
      * @throws MessagingException                for other failures
-     * @exception IllegalStateException if this folder is not opened
-     * @see        javax.mail.search.SearchTerm
+     * @throws IllegalStateException             if this folder is not opened
+     * @see javax.mail.search.SearchTerm
      */
     public Message[] search(SearchTerm term, Message[] msgs)
             throws MessagingException {
@@ -1355,7 +1331,7 @@ public abstract class Folder implements AutoCloseable {
      * to an internal list of ConnectionListeners.
      *
      * @param l the Listener for Connection events
-     * @see        javax.mail.event.ConnectionEvent
+     * @see javax.mail.event.ConnectionEvent
      */
     public synchronized void
     addConnectionListener(ConnectionListener l) {
@@ -1371,7 +1347,7 @@ public abstract class Folder implements AutoCloseable {
      * from the internal list of ConnectionListeners.
      *
      * @param l the listener
-     * @see        #addConnectionListener
+     * @see #addConnectionListener
      */
     public synchronized void
     removeConnectionListener(ConnectionListener l) {
@@ -1390,7 +1366,7 @@ public abstract class Folder implements AutoCloseable {
      * in a separate thread, thus avoiding potential deadlock problems.
      *
      * @param type the ConnectionEvent type
-     * @see        javax.mail.event.ConnectionEvent
+     * @see javax.mail.event.ConnectionEvent
      */
     protected void notifyConnectionListeners(int type) {
         if (connectionListeners != null) {
@@ -1419,7 +1395,7 @@ public abstract class Folder implements AutoCloseable {
      * to an internal list of FolderListeners.
      *
      * @param l the Listener for Folder events
-     * @see        javax.mail.event.FolderEvent
+     * @see javax.mail.event.FolderEvent
      */
     public synchronized void addFolderListener(FolderListener l) {
         if (folderListeners == null)
@@ -1434,7 +1410,7 @@ public abstract class Folder implements AutoCloseable {
      * from the internal list of FolderListeners.
      *
      * @param l the listener
-     * @see        #addFolderListener
+     * @see #addFolderListener
      */
     public synchronized void removeFolderListener(FolderListener l) {
         if (folderListeners != null)
@@ -1454,7 +1430,7 @@ public abstract class Folder implements AutoCloseable {
      * Store to notify any FolderListeners registered on the store.
      *
      * @param type type of FolderEvent
-     * @see        #notifyFolderRenamedListeners
+     * @see #notifyFolderRenamedListeners
      */
     protected void notifyFolderListeners(int type) {
         if (folderListeners != null) {
@@ -1477,8 +1453,8 @@ public abstract class Folder implements AutoCloseable {
      * also invokes <code>notifyFolderRenamedListeners</code> on this
      * folder's Store to notify any FolderListeners registered on the store.
      *
-     * @param    folder    Folder representing the new name.
-     * @see        #notifyFolderListeners
+     * @param folder Folder representing the new name.
+     * @see #notifyFolderListeners
      * @since JavaMail 1.1
      */
     protected void notifyFolderRenamedListeners(Folder folder) {
@@ -1497,7 +1473,7 @@ public abstract class Folder implements AutoCloseable {
      * to an internal list of MessageCountListeners.
      *
      * @param l the Listener for MessageCount events
-     * @see        javax.mail.event.MessageCountEvent
+     * @see javax.mail.event.MessageCountEvent
      */
     public synchronized void addMessageCountListener(MessageCountListener l) {
         if (messageCountListeners == null)
@@ -1512,7 +1488,7 @@ public abstract class Folder implements AutoCloseable {
      * from the internal list of MessageCountListeners.
      *
      * @param l the listener
-     * @see        #addMessageCountListener
+     * @see #addMessageCountListener
      */
     public synchronized void
     removeMessageCountListener(MessageCountListener l) {
@@ -1532,7 +1508,7 @@ public abstract class Folder implements AutoCloseable {
      * MessageCountListeners. Note that the event dispatching occurs
      * in a separate thread, thus avoiding potential deadlock problems.
      *
-     * @param    msgs    the messages that were added
+     * @param msgs the messages that were added
      */
     protected void notifyMessageAddedListeners(Message[] msgs) {
         if (messageCountListeners == null)
@@ -1559,8 +1535,8 @@ public abstract class Folder implements AutoCloseable {
      * MessageCountListeners. Note that the event dispatching occurs
      * in a separate thread, thus avoiding potential deadlock problems.
      *
-     * @param    removed    was the message removed by this client?
-     * @param    msgs    the messages that were removed
+     * @param removed was the message removed by this client?
+     * @param msgs    the messages that were removed
      */
     protected void notifyMessageRemovedListeners(boolean removed,
                                                  Message[] msgs) {
@@ -1582,7 +1558,7 @@ public abstract class Folder implements AutoCloseable {
      * to an internal list of MessageChangedListeners.
      *
      * @param l the Listener for MessageChanged events
-     * @see        javax.mail.event.MessageChangedEvent
+     * @see javax.mail.event.MessageChangedEvent
      */
     public synchronized void
     addMessageChangedListener(MessageChangedListener l) {
@@ -1598,7 +1574,7 @@ public abstract class Folder implements AutoCloseable {
      * from the internal list of MessageChangedListeners.
      *
      * @param l the listener
-     * @see        #addMessageChangedListener
+     * @see #addMessageChangedListener
      */
     public synchronized void
     removeMessageChangedListener(MessageChangedListener l) {
@@ -1616,8 +1592,8 @@ public abstract class Folder implements AutoCloseable {
      * MessageChangedListeners. Note that the event dispatching occurs
      * in a separate thread, thus avoiding potential deadlock problems.
      *
-     * @param    type    the MessageChangedEvent type
-     * @param    msg    the message that changed
+     * @param type the MessageChangedEvent type
+     * @param msg  the message that changed
      */
     protected void notifyMessageChangedListeners(int type, Message msg) {
         if (messageChangedListeners == null)

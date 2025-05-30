@@ -1,41 +1,17 @@
 /*
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * Copyright (c) 1997, 2018 Oracle and/or its affiliates. All rights reserved.
  *
- * Copyright (c) 1997-2018 Oracle and/or its affiliates. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0, which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
  *
- * The contents of this file are subject to the terms of either the GNU
- * General Public License Version 2 only ("GPL") or the Common Development
- * and Distribution License("CDDL") (collectively, the "License").  You
- * may not use this file except in compliance with the License.  You can
- * obtain a copy of the License at
- * https://oss.oracle.com/licenses/CDDL+GPL-1.1
- * or LICENSE.txt.  See the License for the specific
- * language governing permissions and limitations under the License.
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the
+ * Eclipse Public License v. 2.0 are satisfied: GNU General Public License,
+ * version 2 with the GNU Classpath Exception, which is available at
+ * https://www.gnu.org/software/classpath/license.html.
  *
- * When distributing the software, include this License Header Notice in each
- * file and include the License file at LICENSE.txt.
- *
- * GPL Classpath Exception:
- * Oracle designates this particular file as subject to the "Classpath"
- * exception as provided by Oracle in the GPL Version 2 section of the License
- * file that accompanied this code.
- *
- * Modifications:
- * If applicable, add the following below the License Header, with the fields
- * enclosed by brackets [] replaced by your own identifying information:
- * "Portions Copyright [year] [name of copyright owner]"
- *
- * Contributor(s):
- * If you wish your version of this file to be governed by only the CDDL or
- * only the GPL Version 2, indicate your decision by adding "[Contributor]
- * elects to include this software in this distribution under the [CDDL or GPL
- * Version 2] license."  If you don't indicate a single choice of license, a
- * recipient has the option to distribute your version of this file under
- * either the CDDL, the GPL Version 2 or to extend the choice of license to
- * its licensees as provided above.  However, if you add GPL Version 2 code
- * and therefore, elected the GPL Version 2 license, then the option applies
- * only if the new code is made subject to such option by the copyright
- * holder.
+ * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
 package javax.mail.internet;
@@ -112,7 +88,7 @@ public class InternetAddress extends Address implements Cloneable {
      * <code>InternetAddress(address, false)</code>.
      *
      * @param address the address in RFC822 format
-     * @exception AddressException if the parse failed
+     * @throws AddressException if the parse failed
      */
     public InternetAddress(String address) throws AddressException {
         // use our address parsing utility routine to parse the string
@@ -137,9 +113,9 @@ public class InternetAddress extends Address implements Cloneable {
      * If <code>strict</code> is false, the detailed syntax of the
      * address isn't checked.
      *
-     * @param    address        the address in RFC822 format
-     * @param    strict        enforce RFC822 syntax
-     * @exception AddressException if the parse failed
+     * @param address the address in RFC822 format
+     * @param strict  enforce RFC822 syntax
+     * @throws AddressException if the parse failed
      * @since JavaMail 1.3
      */
     public InternetAddress(String address, boolean strict)
@@ -159,8 +135,8 @@ public class InternetAddress extends Address implements Cloneable {
      *
      * @param address  the address in RFC822 format
      * @param personal the personal name
-     * @exception UnsupportedEncodingException if the personal name
-     * can't be encoded in the given charset
+     * @throws UnsupportedEncodingException if the personal name
+     *                                      can't be encoded in the given charset
      */
     public InternetAddress(String address, String personal)
             throws UnsupportedEncodingException {
@@ -174,8 +150,8 @@ public class InternetAddress extends Address implements Cloneable {
      * @param address  the address in RFC822 format
      * @param personal the personal name
      * @param charset  the MIME charset for the name
-     * @exception UnsupportedEncodingException if the personal name
-     * can't be encoded in the given charset
+     * @throws UnsupportedEncodingException if the personal name
+     *                                      can't be encoded in the given charset
      */
     public InternetAddress(String address, String personal, String charset)
             throws UnsupportedEncodingException {
@@ -241,10 +217,10 @@ public class InternetAddress extends Address implements Cloneable {
      * hence is mail-safe. <p>
      *
      * @param addresses array of InternetAddress objects
+     * @return comma separated string of addresses
      * @throws ClassCastException if any address object in the
      *                            given array is not an InternetAddress object. Note
      *                            that this is a RuntimeException.
-     * @return comma separated string of addresses
      */
     public static String toString(Address[] addresses) {
         return toString(addresses, 0);
@@ -256,10 +232,10 @@ public class InternetAddress extends Address implements Cloneable {
      * resulting string contains Unicode characters. <p>
      *
      * @param addresses array of InternetAddress objects
+     * @return comma separated string of addresses
      * @throws ClassCastException if any address object in the
      *                            given array is not an InternetAddress object. Note
      *                            that this is a RuntimeException.
-     * @return comma separated string of addresses
      * @since JavaMail 1.6
      */
     public static String toUnicodeString(Address[] addresses) {
@@ -281,10 +257,10 @@ public class InternetAddress extends Address implements Cloneable {
      * @param used      number of character positions already used, in
      *                  the field into which the address string is to
      *                  be inserted.
+     * @return comma separated string of addresses
      * @throws ClassCastException if any address object in the
      *                            given array is not an InternetAddress object. Note
      *                            that this is a RuntimeException.
-     * @return comma separated string of addresses
      */
     public static String toString(Address[] addresses, int used) {
         if (addresses == null || addresses.length == 0)
@@ -330,10 +306,10 @@ public class InternetAddress extends Address implements Cloneable {
      * @param used      number of character positions already used, in
      *                  the field into which the address string is to
      *                  be inserted.
+     * @return comma separated string of addresses
      * @throws ClassCastException if any address object in the
      *                            given array is not an InternetAddress object. Note
      *                            that this is a RuntimeException.
-     * @return comma separated string of addresses
      * @since JavaMail 1.6
      */
     /*
@@ -439,7 +415,7 @@ public class InternetAddress extends Address implements Cloneable {
      * are ignored.  If it is not possible to determine an email address,
      * null is returned.
      *
-     * @param    session        Session object used for property lookup
+     * @param session Session object used for property lookup
      * @return current user's email address
      */
     public static InternetAddress getLocalAddress(Session session) {
@@ -544,7 +520,7 @@ public class InternetAddress extends Address implements Cloneable {
      *
      * @param addresslist comma separated address strings
      * @return array of InternetAddress objects
-     * @exception AddressException if the parse failed
+     * @throws AddressException if the parse failed
      */
     public static InternetAddress[] parse(String addresslist)
             throws AddressException {
@@ -564,10 +540,10 @@ public class InternetAddress extends Address implements Cloneable {
      * mail addresses entered by a human.  Strict parsing is typically
      * used when parsing address headers in mail messages.
      *
-     * @param    addresslist    comma separated address strings
-     * @param    strict        enforce RFC822 syntax
+     * @param addresslist comma separated address strings
+     * @param strict      enforce RFC822 syntax
      * @return array of InternetAddress objects
-     * @exception AddressException if the parse failed
+     * @throws AddressException if the parse failed
      */
     public static InternetAddress[] parse(String addresslist, boolean strict)
             throws AddressException {
@@ -588,10 +564,10 @@ public class InternetAddress extends Address implements Cloneable {
      * email address or addresses, the syntax of the addresses themselves
      * is not checked.
      *
-     * @param    addresslist    comma separated address strings
-     * @param    strict        enforce RFC822 syntax
+     * @param addresslist comma separated address strings
+     * @param strict      enforce RFC822 syntax
      * @return array of InternetAddress objects
-     * @exception AddressException if the parse failed
+     * @throws AddressException if the parse failed
      * @since JavaMail 1.3
      */
     public static InternetAddress[] parseHeader(String addresslist,
@@ -1145,7 +1121,11 @@ public class InternetAddress extends Address implements Cloneable {
                     throw new AddressException(
                             "Quoted local address contains newline without whitespace",
                             addr);
-            } else if (c == '.') {
+            }
+            if (inquote)
+                continue;
+            // dot rules should not be applied to quoted-string
+            if (c == '.') {
                 if (i == start)
                     throw new AddressException(
                             "Local address starts with dot", addr);
@@ -1153,8 +1133,6 @@ public class InternetAddress extends Address implements Cloneable {
                     throw new AddressException(
                             "Local address contains dot-dot", addr);
             }
-            if (inquote)
-                continue;
             if (c == '@') {
                 if (i == 0)
                     throw new AddressException("Missing local name", addr);
@@ -1296,11 +1274,11 @@ public class InternetAddress extends Address implements Cloneable {
      * charset as per RFC 2047. If the name contains only US-ASCII
      * characters, no encoding is done and the name is used as is. <p>
      *
+     * @param name    personal name
+     * @param charset MIME charset to be used to encode the name as
+     *                per RFC 2047
      * @throws UnsupportedEncodingException if the charset encoding
      *                                      fails.
-     * @param    name personal name
-     * @param    charset    MIME charset to be used to encode the name as
-     * per RFC 2047
      * @see #setPersonal(String)
      */
     public void setPersonal(String name, String charset)
@@ -1324,7 +1302,7 @@ public class InternetAddress extends Address implements Cloneable {
     /**
      * Set the email address.
      *
-     * @param    address email address
+     * @param address email address
      */
     public void setAddress(String address) {
         this.address = address;
@@ -1362,9 +1340,9 @@ public class InternetAddress extends Address implements Cloneable {
      * default charset. If the name contains only US-ASCII characters,
      * no encoding is done and the name is used as is. <p>
      *
+     * @param name personal name
      * @throws UnsupportedEncodingException if the charset encoding
      *                                      fails.
-     * @param    name personal name
      * @see #setPersonal(String name, String charset)
      */
     public void setPersonal(String name)
@@ -1451,7 +1429,7 @@ public class InternetAddress extends Address implements Cloneable {
      * the address may be correct, there's no guarantee that a
      * mailbox of that name exists.
      *
-     * @exception AddressException if the address isn't valid.
+     * @throws AddressException if the address isn't valid.
      * @since JavaMail 1.3
      */
     public void validate() throws AddressException {
@@ -1491,9 +1469,9 @@ public class InternetAddress extends Address implements Cloneable {
      * the group list is parsed using strict RFC 822 rules or not.
      * The parsing is done using the <code>parseHeader</code> method.
      *
-     * @param    strict    use strict RFC 822 rules?
+     * @param strict use strict RFC 822 rules?
      * @return array of InternetAddress objects, or null
-     * @exception AddressException if the group list can't be parsed
+     * @throws AddressException if the group list can't be parsed
      * @since JavaMail 1.3
      */
     public InternetAddress[] getGroup(boolean strict) throws AddressException {
