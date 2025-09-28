@@ -168,6 +168,24 @@ public class MimeMultipart extends Multipart {
     protected boolean allowEmpty = false;
 
     /**
+     * Constructor a MimeMultipart object from the given MimeMultipart.
+     *
+     * @param multipart the MimeMultipart to copy
+     */
+    protected MimeMultipart(MimeMultipart multipart) {
+        this.parts = multipart.parts;
+        this.contentType = multipart.contentType;
+        this.parent = multipart.parent;
+        this.ds = multipart.ds;
+        this.parsed = multipart.parsed;
+        this.complete = multipart.complete;
+        this.ignoreMissingEndBoundary = multipart.ignoreMissingEndBoundary;
+        this.ignoreMissingBoundaryParameter = multipart.ignoreMissingBoundaryParameter;
+        this.ignoreExistingBoundaryParameter = multipart.ignoreExistingBoundaryParameter;
+        this.allowEmpty = multipart.allowEmpty;
+    }
+
+    /**
      * Default constructor. An empty MimeMultipart object
      * is created. Its content type is set to "multipart/mixed".
      * A unique boundary string is generated and this string is
