@@ -1,2 +1,2 @@
-# javax-mail
-JavaMail API Reference Implementation
+# jakarta-mail
+Jakarta Mail API Reference Implementation
